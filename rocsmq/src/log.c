@@ -14,6 +14,7 @@ static int self_opened = 0;
 
 char const *loglevelstrings[] = { "DEBUG", "INFO", "WARNING", "ERROR" };
 
+
 int openlog(char const *name, char const *filename) {
 	self_opened = 1;
 	FILE *fp = fopen(filename, "a");
@@ -49,6 +50,18 @@ void log_message(int level, char const *text, ...) {
 		fprintf(logfile,"\n");
 		fflush(logfile);
 	}
+}
+
+int log_getlevel(char *level) {
+	int i;
+	
+	for (i = 0; i < COUNT_LOG_LEVELS; i++) {
+		if (0 == strcasecmp(level, loglevelstrings[i])) {
+			return i;
+		}
+	}
+	
+	return -1;
 }
 
 void log_setlevel(int level) {

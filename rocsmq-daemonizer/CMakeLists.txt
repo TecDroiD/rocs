@@ -3,7 +3,7 @@ set(PROJECTNAME rocsmq-daemonizer)
 project(${PROJECTNAME})
 
 # in case of libraries which are needed...
-set (PROJECT_LINK_LIBS librocsmq.a)
+set (PROJECT_LINK_LIBS librocsmq.a libjson-c.a)
 link_directories(~/projects/rocs/rocsmq/build)
 include_directories(~/projects/rocs/rocsmq/include)
 

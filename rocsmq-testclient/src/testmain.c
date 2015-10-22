@@ -8,6 +8,9 @@
 //#include <linkedlist.h>
 #include <rocsmq.h>
 #include <rocsmqthread.h>
+#include <configparser.h> 
+#include <log.h> 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,23 +20,51 @@
 #include <SDL/SDL_timer.h>
 //#include <unistd.h>
 
-#define CLIENTNAME "testclient"
+#define CONFIGFILE "conf/rocsmq-testclient.config"
 
 TCPsocket sock;
+
+t_rocsmq_serverdata server = {
+	.ip = ROCSMQ_IP,
+	.port = ROCSMQ_PORT
+};
+
+t_rocsmq_baseconfig baseconfig = {
+	};
+
 
 int main(int argc, char **argv) {
 	SDL_Init(0);
 	SDL_Thread *thread;
 	int i;
-
 	char buffer[32];
-
+	
+	// parse config file 
+	parseconfig(CONFIGFILE, &baseconfig, 0 ,0);
+	
+	// open log
+	if (strlen(baseconfig.logfile) > 0) {
+		printf("logging to file.. '%s'\n", baseconfig.logfile);
+		openlog((char const *)baseconfig.clientname, (char const*)baseconfig.logfile);
+	} else {
+		printf("logging to stdout\n");
+		log_init((char const *)baseconfig.clientname, stdout);
+	}
+	printf("loglevel = %d\n", baseconfig.loglevel);
+		
+	// set loglevel	
+	log_setlevel(baseconfig.loglevel);
+	
+	log_message(DEBUG, "clientname: %s", baseconfig.clientname);
+	
 	t_rocsmq_message message;
-	strncpy (message.sender, CLIENTNAME, 20);
+	strncpy (message.sender, baseconfig.clientname, 20);
 	memset  (message.tail, 0, 1000);
 	message.id = 0;
 
-	sock = rocsmq_init(CLIENTNAME,0,0);
+
+
+	sock = rocsmq_init(baseconfig.clientname,&server, 0,0);
 	if (!sock) {
 		SDL_Quit();
 		printf("could not connect to Server: %s\n", rocsmq_error());

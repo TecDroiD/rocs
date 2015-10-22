@@ -34,7 +34,7 @@ void pca_port(p_pca_device device, Uint8 portno, int ppm) {
 	port.port_addr = ADDR_PORT(portno);
 	port.on_time = 0;
 	port.off_time = PCA_OFFTIME(ppm);
-	i2cbus_write(&port, sizeof(t_pca_port));
+	i2cbus_write((char *) &port, sizeof(t_pca_port));
 
 }
 

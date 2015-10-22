@@ -2,10 +2,11 @@ cmake_minimum_required(VERSION 3.0.0)
 set(PROJECTNAME rocsmq)
 project(${PROJECTNAME})
 
+
 # in case of libraries which are needed...
-# set (PROJECT_LINK_LIBS librocsmq.a)
-# link_directories(~/projects/rocs/rocsmq/build)
-# include_directories(~/projects/rocs/rocsmq/include)
+set (PROJECT_LINK_LIBS json-c) 
+# link_directories(JSON-C_LINK_DIR)
+# include_directories(JSON-C_INCLUDE_DIR)
 
 # add all headers
 include_directories(include)

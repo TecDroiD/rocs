@@ -14,10 +14,12 @@ char *rocsmq_error() {
 	return SDLNet_GetError();
 }
 
-TCPsocket rocsmq_init(char const *name, Uint32 filter, Uint32 mask) {
+
+
+TCPsocket rocsmq_init(char const *name, p_rocsmq_serveradata server, Uint32 filter, Uint32 mask) {
 	TCPsocket sock;
 	IPaddress ip;
-
+	
 	/* create client information */
 	t_rocsmq_message message;
 	strncpy(message.sender,name,ROCS_CLIENTNAMESIZE);
@@ -35,7 +37,7 @@ TCPsocket rocsmq_init(char const *name, Uint32 filter, Uint32 mask) {
 	/* initialize SDL_net */
 	if(SDLNet_Init()==-1) return 0;
 
-	if(SDLNet_ResolveHost(&ip,ROCSMQ_IP,ROCSMQ_PORT)==-1)
+	if(SDLNet_ResolveHost(&ip,server->ip,server->port)==-1)
 	{
 		SDLNet_Quit();
 		return 0;
@@ -102,6 +104,14 @@ int rocsmq_send (TCPsocket sock,p_rocsmq_message mesg, int flags) {
 	return result;
 }
 
+
+json_object * rocsmq_get_message_json(p_rocsmq_message mesg) {
+	return json_tokener_parse(mesg->tail);
+}
+
+int rocsmq_set_message_json(p_rocsmq_message mesg, json_object *object) {
+	strncpy (mesg->tail, json_object_to_json_string(object), ROCS_MESSAGESIZE);
+}
 
 
 #endif

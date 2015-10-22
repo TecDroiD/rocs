@@ -6,8 +6,14 @@ project(${PROJECTNAME})
 find_package(SDL REQUIRED)
 find_package(SDL_net REQUIRED)
 
+#configure config file
+configure_file(
+	${PROJECT_SOURCE_DIR}/conf/config.in 
+	${PROJECT_BINARY_DIR}/conf/${PROJECTNAME}.config
+)
+
 # in case of libraries which are needed...
-set (PROJECT_LINK_LIBS librocsmq.a ${SDL_LIBRARY} ${SDL_NET_LIBRARY})
+set (PROJECT_LINK_LIBS librocsmq.a ${SDL_LIBRARY} ${SDL_NET_LIBRARY} libjson-c.a)
 link_directories(~/projects/rocs/rocsmq/build ${SDL_LINK_DIR} ${SDL_NET_LINK_DIR})
 include_directories(~/projects/rocs/rocsmq/include ${SDL_INCLUDE_DIR} ${SDL_NET_INCLUDE_DIR})
 

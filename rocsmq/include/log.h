@@ -19,6 +19,7 @@
 #define LOG_LEVEL_INFO		1
 #define LOG_LEVEL_WARNING 	2
 #define LOG_LEVEL_ERROR 	3
+#define COUNT_LOG_LEVELS	4
 
 #define DEBUG 	LOG_LEVEL_DEBUG
 #define INFO 	LOG_LEVEL_INFO
@@ -56,4 +57,8 @@ void log_message(int level, char const *text, ...);
  */
 void log_setlevel(int level);
 
+/**
+ * gets the loglevel by string
+ */ 
+int log_getlevel(char *level);
 #endif /* LOG_H_ */

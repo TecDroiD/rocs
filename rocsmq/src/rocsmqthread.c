@@ -11,19 +11,6 @@ t_processdata pdata = {
 		1, 0, 0, 0
 };
 
-/**
- * rocsmq threaed function
- */
-int rocsmq_thread (void *data) {
-	t_rocsmq_message message;
-
-	while (pdata.running) {
-		if (rocsmq_recv(pdata.sock,&message,0)) {
-			rocsmq_add(&message);
-		}
-	}
-	return 0;
-}
 
 /**
  * add a message to the rocsmq
@@ -36,6 +23,20 @@ void rocsmq_add(p_rocsmq_message message) {
 	pdata.queue = ll_add(pdata.queue,listitem,LL_BACK, 0);
 
 	SDL_UnlockMutex(pdata.mutex);
+}
+
+/**
+ * rocsmq threaed function
+ */
+int rocsmq_thread (void *data) {
+	t_rocsmq_message message;
+
+	while (pdata.running) {
+		if (rocsmq_recv(pdata.sock,&message,0)) {
+			rocsmq_add((p_rocsmq_message) &message);
+		}
+	}
+	return 0;
 }
 
 /**
