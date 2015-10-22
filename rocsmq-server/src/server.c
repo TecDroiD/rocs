@@ -7,6 +7,7 @@
 
 #include <getopt.h>
 #include <log.h>
+#include <configparser.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -21,7 +22,16 @@
 #include <daemonizer.h>
 //#include <unistd.h>
 
-#define PROGNAME "rocsmq-server"
+#define CONFIGFILE "conf/rocsmq-server.config"
+
+t_rocsmq_baseconfig baseconfig = {
+	.serverip = "127.0.0.1",
+	.port = ROCSMQ_PORT,
+	.rundaemon = 0,
+	.loglevel = INFO,
+	.logfile = "",
+	.clientname = "rocsmq-server",
+	};
 
 typedef struct {
 	TCPsocket sock;
@@ -32,15 +42,6 @@ int running = 1;
 p_client clients = NULL;
 int num_clients = 0;
 TCPsocket server;
-
-/*
- * configuration data
- */
-int port 		= ROCSMQ_PORT;
-int rundaemon 	= 0;
-int loglevel 	= INFO;
-int logtofile 	= 0;
-char logfile[255] = "log/"PROGNAME".log";
 
 
 /**
@@ -92,6 +93,8 @@ int main(int argc, char **argv) {
 	const char *host = NULL;
 	Uint32 ipaddr;
 
+	// parse options
+	parseconfig(CONFIGFILE, &baseconfig, 0 ,0);
 	getoptions(argc, argv);
 
 	log_message(INFO, "starting server.");
@@ -110,7 +113,7 @@ int main(int argc, char **argv) {
 	}
 
 	/* Resolve the argument into an IPaddress type */
-	if (SDLNet_ResolveHost(&ip, NULL, port) == -1) {
+	if (SDLNet_ResolveHost(&ip, NULL, baseconfig.port) == -1) {
 		log_message(ERROR,"SDLNet_ResolveHost: %s\n", SDLNet_GetError());
 		SDLNet_Quit();
 		SDL_Quit();
@@ -322,7 +325,7 @@ Uint32 read_clientdata(TCPsocket sock, p_rocsmq_clientdata client) {
  */
 void print_usage (void) {
 	printf("Usage\n" );
-	printf(PROGNAME " [options]\n" );
+	printf("%s [options]\n",baseconfig.clientname  );
 	printf(" options\n --------\n" );
 	printf(" -D : Set output level to DEBUG\n" );
 	printf(" -I : Set output level to INFO\n" );
@@ -353,33 +356,35 @@ void getoptions (int argc, char **argv) {
 	int opt;
 	while((opt = getopt(argc, argv, "DIEWSl:dp:"))!= -1) {
 		switch(opt) {
-		case 'D': loglevel = DEBUG; break; /* Debug level DEBUG */
-		case 'I': loglevel = INFO; break; /* Debug level INFO */
-		case 'E': loglevel = ERROR; break; /* Debug level ERROR */
-		case 'W': loglevel = WARNING; break; /* Debug level WARNING */
-		case 'l': strncpy(logfile,optarg,255); logtofile=1; break; /* log to file [filename] */
-		case 'd': rundaemon = 1; break;
-		case 'p': port = atoi(optarg); break;
+		case 'D': baseconfig.loglevel = DEBUG; break; /* Debug level DEBUG */
+		case 'I': baseconfig.loglevel = INFO; break; /* Debug level INFO */
+		case 'E': baseconfig.loglevel = ERROR; break; /* Debug level ERROR */
+		case 'W': baseconfig.loglevel = WARNING; break; /* Debug level WARNING */
+		case 'l': strncpy(baseconfig.logfile,optarg,255); break; /* log to file [filename] */
+		case 'd': baseconfig.rundaemon = 1; 
+				  if(strlen(baseconfig.logfile) == 0) {
+					  printf("creating log file");
+					  sprintf(baseconfig.logfile, "/tmp/log.out");
+				  }
+				  break;
+		case 'p': baseconfig.port = atoi(optarg); break;
 		default:
 			print_usage();
 		}
 	}
 
+	printf("daemoinizing...\n");
 	/* daemonize if neccessary */
-	if(rundaemon) {
+	if(baseconfig.rundaemon) {
 		daemonize("~", server_signal_handler);
 	}
 
 	/*
 	 * initialize logging system
 	 */
-	if (logtofile || rundaemon) {
-		openlog(PROGNAME, logfile);
-	} else {
-		log_init(PROGNAME,stdout);
-	}
-	log_setlevel(loglevel);
+	openlog(baseconfig.clientname, baseconfig.logfile);
+	log_setlevel(baseconfig.loglevel);
 
-	log_message(DEBUG, PROGNAME " starting..");
+	log_message(DEBUG,  "%s starting..", baseconfig.clientname);
 
 }

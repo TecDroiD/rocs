@@ -16,9 +16,14 @@ char const *loglevelstrings[] = { "DEBUG", "INFO", "WARNING", "ERROR" };
 
 
 int openlog(char const *name, char const *filename) {
-	self_opened = 1;
-	FILE *fp = fopen(filename, "a");
-	if (! fp) return -1;
+	FILE *fp = stdout;
+	if (filename != 0 && strlen(filename) > 0) {
+		printf("opening logfile\n");
+		self_opened = 1;
+		fp = fopen(filename, "a");
+		if (! fp) return -1;
+	}
+
 	log_init(name,fp);
 	return 0;
 }

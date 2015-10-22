@@ -16,6 +16,12 @@ include_directories(include)
 # add all sources
 file(GLOB SOURCES "src/*.c")
 
+#configure config file
+configure_file(
+	${PROJECT_SOURCE_DIR}/conf/config.in 
+	${PROJECT_BINARY_DIR}/conf/${PROJECTNAME}.config
+)
+
 # when project is a library
 # add_library(${PROJECTNAME} STATIC ${SOURCES})
 

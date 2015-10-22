@@ -30,6 +30,12 @@ t_rocsmq_serverdata server = {
 };
 
 t_rocsmq_baseconfig baseconfig = {
+	.serverip = "127.0.0.1",
+	.port = 8389,
+	.rundaemon = 0,
+	.loglevel = INFO,
+	.logfile = "",
+	.clientname = "testclient",
 	};
 
 
@@ -41,15 +47,12 @@ int main(int argc, char **argv) {
 	
 	// parse config file 
 	parseconfig(CONFIGFILE, &baseconfig, 0 ,0);
+	strncpy(server.ip, baseconfig.serverip, 15);
+	server.port = baseconfig.port;
 	
 	// open log
-	if (strlen(baseconfig.logfile) > 0) {
-		printf("logging to file.. '%s'\n", baseconfig.logfile);
-		openlog((char const *)baseconfig.clientname, (char const*)baseconfig.logfile);
-	} else {
-		printf("logging to stdout\n");
-		log_init((char const *)baseconfig.clientname, stdout);
-	}
+	printf("logging to file.. '%s'\n", baseconfig.logfile);
+	openlog((char const *)baseconfig.clientname, (char const*)baseconfig.logfile);
 	printf("loglevel = %d\n", baseconfig.loglevel);
 		
 	// set loglevel	
@@ -82,7 +85,7 @@ int main(int argc, char **argv) {
 			printf("sending: %s\n",buffer);
 			strncpy(message.tail,buffer,32);
 			if (! rocsmq_send(sock,&message,0)) {
-				printf("could not send: %s\n",rocsmq_error());
+				log_message(ERROR,"could not send: %s\n",rocsmq_error());
 			}
 		}
 
@@ -90,10 +93,10 @@ int main(int argc, char **argv) {
 		while(rocsmq_has_messages()) {
 
 			rocsmq_get_message(&message);
-			printf("incoming:%s\n",message.tail);
+			log_message( INFO, "incoming:%s\n",message.tail);
 			if (strcmp("quit",message.tail) == 0) {
 				rocsmq_thread_set_running(0);
-				printf("quitting..\n");
+				log_message(INFO,"quitting..\n");
 			}
 
 		}
