@@ -8,6 +8,7 @@
 #include <getopt.h>
 #include <log.h>
 #include <configparser.h>
+#include <messages.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -38,7 +39,6 @@ typedef struct {
 	t_rocsmq_clientdata info;
 } t_client, *p_client;
 
-int running = 1;
 p_client clients = NULL;
 int num_clients = 0;
 TCPsocket server;
@@ -83,6 +83,21 @@ void print_usage(void);
 void getoptions (int argc, char **argv);
 
 /**
+ * signal handler for the server 
+ */ 
+void server_signal_handler(int sig);
+
+/**
+ * handle messages for infrastructure
+ */
+int handle_message(p_rocsmq_message message);
+  
+/**
+ * quit the system
+ */   
+void quit (void);  
+
+/**
  * server main routine
  */
 int main(int argc, char **argv) {
@@ -97,7 +112,27 @@ int main(int argc, char **argv) {
 	parseconfig(CONFIGFILE, &baseconfig, 0 ,0);
 	getoptions(argc, argv);
 
-	log_message(INFO, "starting server.");
+	/* daemonize if neccessary */
+	if(baseconfig.rundaemon) {
+		log_message(DEBUG, "daemonizing...\n");
+		if(strlen(baseconfig.logfile) == 0) {
+			log_message(DEBUG, "  -> creating std-logfilename"); 
+		  sprintf(baseconfig.logfile, "/tmp/log.out");
+		}
+		
+		if (0 != daemonize("~", server_signal_handler)) {
+			exit(0);
+		}
+	}
+	
+	log_message(DEBUG, "	-> done...");
+
+	/*
+	 * initialize logging system
+	 */
+	openlog(baseconfig.clientname, baseconfig.logfile);
+	log_setlevel(baseconfig.loglevel);
+	log_message(DEBUG,  "%s starting server ..", baseconfig.clientname);
 
 	/* initialize SDL */
 	if (SDL_Init(0) == -1) {
@@ -129,12 +164,6 @@ int main(int argc, char **argv) {
 
 	/* resolve the hostname for the IPaddress */
 	host = SDLNet_ResolveIP(&ip);
-
-	/* print out the hostname we got */
-	if (host)
-		log_message(DEBUG,"Hostname   : %s\n", host);
-	else
-		printf("Hostname   : N/A\n");
 
 	/* open the server socket */
 	server = SDLNet_TCP_Open(&ip);
@@ -180,13 +209,20 @@ int main(int argc, char **argv) {
 		log_message(DEBUG,"clients: %d, numready: %d\n", num_clients,numready);
 		for (i = 0; numready && i < num_clients; i++) {
 			if (SDLNet_SocketReady(clients[i].sock)) {
-
+				// receive message
 				if (rocsmq_recv(clients[i].sock, (p_rocsmq_message) & message,
 						ROCSMQ_POLL)) {
 					numready--;
 					log_message(DEBUG,"received message\nid is %d\nsender is %s\ntail is %s\n",
 								message.id, message.sender,message.tail);
+
+					// send message to all
 					send_all((p_rocsmq_message) & message);
+					
+					// handle message if it's for the infrastructure		
+					if(message.id & MESSAGE_ID_SYSTEM) {
+						handle_message(&message);
+					}
 				} else {
 					log_message(DEBUG,"removing client %s\n", clients[i].info.name);
 					remove_client(i);
@@ -195,30 +231,8 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	/* shutdown SDL_net */
-	SDLNet_Quit();
-
-	/* shutdown SDL */
-	SDL_Quit();
-
-	return (0);
+	quit();
 }
-
-/**
- * signal handler function for signals to handle ;-p
- */
-void rocsmq_signal_handler(int sig) {
-	switch (sig) {
-	case SIGHUP:
-		log_message(INFO, "hangup signal catched");
-		break;
-	case SIGTERM:
-		log_message(INFO, "terminate signal catched");
-		running = 0;
-		break;
-	}
-}
-
 
 /**
  * add a client into our array of clients
@@ -293,7 +307,7 @@ void send_all(p_rocsmq_message message) {
 	while (cindex < num_clients) {
 		/* send to all clients that macht the filter */
 		/* with error checking */
-		if (filtermatch(message, &clients[cindex].info)) {
+		if (message->id & MESSAGE_ID_SYSTEM || filtermatch(message, &clients[cindex].info)) {
 			log_message(DEBUG, "  - to client %s", clients[cindex].info.name);
 			if (rocsmq_send(clients[cindex].sock, message, 0)) {
 				cindex++;
@@ -311,7 +325,7 @@ Uint32 read_clientdata(TCPsocket sock, p_rocsmq_clientdata client) {
 	Uint32 result;
 	t_rocsmq_message message;
 	result = rocsmq_recv(sock, &message,0);
-	printf("-->sender: %s\n",message.sender);
+	log_message(DEBUG, "-->sender: %s\n",message.sender);
 
 	if(result == sizeof(t_rocsmq_message)) {
 		memcpy(client, message.tail , sizeof(t_rocsmq_clientdata));
@@ -342,10 +356,15 @@ void print_usage (void) {
  */
 void server_signal_handler(int sig) {
 	simple_signal_handler(sig);
-
+	
 	if (sig == SIGTERM) {
-		log_message(INFO, "quitting..\n");
-		running = 0;
+		log_message(INFO, "catched TERM signal. quitting..\n");
+		closelog();
+		/* shutdown SDL_net */
+		SDLNet_Quit();
+		/* shutdown SDL */
+		SDL_Quit();
+		exit (0);
 	}
 }
 
@@ -361,30 +380,30 @@ void getoptions (int argc, char **argv) {
 		case 'E': baseconfig.loglevel = ERROR; break; /* Debug level ERROR */
 		case 'W': baseconfig.loglevel = WARNING; break; /* Debug level WARNING */
 		case 'l': strncpy(baseconfig.logfile,optarg,255); break; /* log to file [filename] */
-		case 'd': baseconfig.rundaemon = 1; 
-				  if(strlen(baseconfig.logfile) == 0) {
-					  printf("creating log file");
-					  sprintf(baseconfig.logfile, "/tmp/log.out");
-				  }
-				  break;
+		case 'd': baseconfig.rundaemon = 1; break; /* daemonize */
 		case 'p': baseconfig.port = atoi(optarg); break;
 		default:
 			print_usage();
 		}
 	}
 
-	printf("daemoinizing...\n");
-	/* daemonize if neccessary */
-	if(baseconfig.rundaemon) {
-		daemonize("~", server_signal_handler);
-	}
+}
 
-	/*
-	 * initialize logging system
-	 */
-	openlog(baseconfig.clientname, baseconfig.logfile);
-	log_setlevel(baseconfig.loglevel);
+/**
+ * handle rocsmq message
+ */
+int handle_message(p_rocsmq_message message) {
+	
+	return 0;
+}
 
-	log_message(DEBUG,  "%s starting..", baseconfig.clientname);
 
+void quit(void) {
+		log_message(INFO, "cleaning up server");
+	closelog();
+	/* shutdown SDL_net */
+	SDLNet_Quit();
+	/* shutdown SDL */
+	SDL_Quit();
+	exit (0);
 }

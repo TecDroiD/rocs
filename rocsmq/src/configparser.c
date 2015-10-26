@@ -89,7 +89,6 @@ int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, custom_con
 	char *text;
 	char loglevel[20] = "";
 	
-	printf("opening file %s\n", filename);
 	
 	size_t filesize;
 	json_object * json;
@@ -104,20 +103,16 @@ int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, custom_con
 	fseek(fp, 0, SEEK_END);
 	filesize = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
-	
-	printf("config file size %d\n", filesize);
-	
+		
 	// allocate memory for file
 	text = malloc(filesize);
 	fread(text, filesize, 1, fp);
 	
-	printf("config file %s\n", text);
-	
 	// parse json text
 	json = json_tokener_parse(text);
-	
-	json_object_object_foreach (json, key, val) {
-		printf("  -> '%s' : %s\n", key, val);
+	if (!json) {
+		printf("Could not parse config json text --\n%s\n--\n,text);
+		return -1;
 	}
 	
 	// get config base data
@@ -125,7 +120,6 @@ int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, custom_con
 		get_intval(json,KEY_PORT, &(baseconfig->port));
 		get_boolval(json, KEY_DAEMON, &(baseconfig->rundaemon));
 		get_stringval(json,KEY_LOGLEVEL, loglevel, 20);
-		printf("loglevel = '%s'", loglevel);
 		baseconfig->loglevel = log_getlevel(loglevel); 
 		
 		get_stringval(json,KEY_LOGFILE, baseconfig->logfile,255);

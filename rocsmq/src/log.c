@@ -42,7 +42,12 @@ void log_init(char const *name, FILE *fp) {
 
 void log_message(int level, char const *text, ...) {
 	char date[64];
-	if (logfile && loglevel <= level) {
+
+	if (!logfile) {
+		logfile = stdout;
+	}
+	
+	if (loglevel <= level) {
 		va_list args;
 		va_start(args, text);
 		time_t now;

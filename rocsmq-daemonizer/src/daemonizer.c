@@ -36,9 +36,9 @@ int daemonize(const char *runningdir, t_sighandler sig_handler_func) {
 		return 0; /* already a daemon */
 	i = fork();
 	if (i < 0)
-		return 1; /* fork error */
+		return -1; /* fork error */
 	if (i > 0)
-		return 0; /* parent exits */
+		return 1; /* parent exits */
 	/* child (daemon) continues */
 	setsid(); /* obtain a new process group */
 	for (i = getdtablesize(); i >= 0; --i)
@@ -55,7 +55,7 @@ int daemonize(const char *runningdir, t_sighandler sig_handler_func) {
 	lfp = open(LOCK_FILE, O_RDWR | O_CREAT, 0640);
 	if (lfp < 0)  {
 		log_message(ERROR, "could not open lockfile");
-		return 1; /* can not open */
+		return -1; /* can not open */
 	}
 	if (lockf(lfp, F_TLOCK, 0) < 0) {
 		log_message(WARNING, "could not lock lockfile");

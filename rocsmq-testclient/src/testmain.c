@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
 		if (argc > 1) {
 			printf("> ");
 			fgets(buffer,32,stdin);
-			printf("sending: %s\n",buffer);
+			log_message(DEBUG, "sending: %s\n",buffer);
 			strncpy(message.tail,buffer,32);
 			if (! rocsmq_send(sock,&message,0)) {
 				log_message(ERROR,"could not send: %s\n",rocsmq_error());
@@ -104,10 +104,12 @@ int main(int argc, char **argv) {
 		if(argc < 1) {
 			SDL_Delay(5000);
 		}
+/*
 		for (i = 0; i < 10; i++) {
 			sprintf(message.tail, "testmessage %d",i);
 			rocsmq_send(sock,&message, 0);
 		}
+*/
 	}
 
 	rocsmq_destroy_thread(thread);

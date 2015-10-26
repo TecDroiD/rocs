@@ -1,0 +1,48 @@
+[file_prefs]
+final_new_line=true
+ensure_convert_new_lines=false
+strip_trailing_spaces=false
+replace_tabs=false
+
+[indentation]
+indent_width=4
+indent_type=1
+indent_hard_tab_width=8
+detect_indent=false
+detect_indent_width=false
+indent_mode=2
+
+[project]
+name=rocsmq-server
+base_path=/home/tecdroid/projects/rocs/rocsmq-server/
+description=
+file_patterns=
+
+[long line marker]
+long_line_behaviour=1
+long_line_column=72
+
+[files]
+current_page=0
+FILE_NAME_0=602;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2Fsrc%2Fserver.c;0;4
+FILE_NAME_1=787;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2FCMakeLists.txt;0;4
+
+[VTE]
+last_dir=/home/tecdroid
+
+[build-menu]
+NF_00_LB=_Make
+NF_00_CM=make clean all
+NF_00_WD=%p/build
+NF_01_LB=Make (eigenes _Target)...
+NF_01_CM=make 
+NF_01_WD=%p/build
+NF_02_LB=Make _Objekt-Datei
+NF_02_CM=make %e.o
+NF_02_WD=%p/build
+NF_03_LB=cmake
+NF_03_CM=cmake ..
+NF_03_WD=%p/build
+EX_00_LB=_Ausführen
+EX_00_CM="%p/build/rocsmq-server"
+EX_00_WD=%p/build
