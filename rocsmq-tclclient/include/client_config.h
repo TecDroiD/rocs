@@ -6,8 +6,6 @@
 #include <rocsmq.h>
 #include <configparser.h>
 
-#define CONFIG_KEY_FILTER "filter"
-#define CONFIG_KEY_MASK "mask"
 #define CONFIG_KEY_SCRIPTDIR	"scriptdir"
 #define CONFIG_KEY_SCRIPTS "scripts"
 #define CONFIG_KEY_MESSAGE_ID "message"
@@ -21,8 +19,6 @@ typedef struct s_script {
 } t_script, *p_script;
 
 typedef struct s_tclclient_config {
-	int filter;
-	int mask;
 	char scriptdir[255];
 	int cntscripts;
 	p_script scripts;

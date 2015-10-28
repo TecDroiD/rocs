@@ -31,13 +31,10 @@
 TCPsocket sock;
 
 
-t_rocsmq_serverdata server = {
-	.ip = ROCSMQ_IP,
-	.port = ROCSMQ_PORT
-};
-
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
+	.filter 	= MESSAGE_ID_INFRASTRUCTURE,
+	.mask 		= MESSAGE_MASK_MAIN,
 	.port = 8389,
 	.rundaemon = 0,
 	.loglevel = INFO,
@@ -46,8 +43,6 @@ t_rocsmq_baseconfig baseconfig = {
 };
 
 t_tclclient_config clientconfig = {
-	.filter 	= MESSAGE_ID_INFRASTRUCTURE,
-	.mask 		= MESSAGE_MASK_MAIN,
 	.scriptdir	= SCRIPTDIR,
 };
 
@@ -88,8 +83,6 @@ int main(int argc, char **argv) {
 	
 	// parse config file 
 	parseconfig(CONFIGFILE, &baseconfig, custom_config, &clientconfig);
-	strncpy(server.ip, baseconfig.serverip, 15);
-	server.port = baseconfig.port;
 	
 	// open log
 	printf("logging to file.. '%s'\n", baseconfig.logfile);
@@ -106,7 +99,7 @@ int main(int argc, char **argv) {
 	memset  (message.tail, 0, 1000);
 	message.id = 0;
 
-	sock = rocsmq_init(baseconfig.clientname,&server, 0,0);
+	sock = rocsmq_init(&baseconfig);
 	if (!sock) {
 		SDL_Quit();
 		log_message(ERROR,"could not connect to Server: %s\n", rocsmq_error());
@@ -153,6 +146,7 @@ int main(int argc, char **argv) {
  */ 
 void handle_message(p_rocsmq_message message) {
 	json_object * json;
+	char val[32];
 	int i;
 	char *result;
 	
@@ -169,6 +163,10 @@ void handle_message(p_rocsmq_message message) {
 	} 
 	// copy json content from message
 
+	json = rocsmq_get_message_json(message);
+	get_stringval(json,"hello",val,32);
+		log_message(DEBUG, "testcontent %s", val);
+	
 	result = (char*)Tcl_SetVar(tcl.interpreter,"json",message->tail, 0);
 	if (result == 0) {
 		log_message(ERROR, "Error setting value %s: %s",
@@ -199,7 +197,8 @@ int init_interpreter() {
 		log_message(ERROR, "Could not instanciate TCL interpreter");
 		return -1;
 	}
-	
+	// initialize tcl interpreter
+	Tcl_Init(tcl.interpreter);
 	
 	// add commands to interpreter
 	if (0 == Tcl_CreateCommand(tcl.interpreter,"send_message",tcl_send_message,NULL,NULL)) {

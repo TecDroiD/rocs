@@ -2,8 +2,6 @@
 	"clientname" : "${PROJECTNAME}",
 	"server"	: "127.0.0.1",
 	"port" : 8389,
-	"filter" : 0,
-	"mask" : 0,
 	"daemonize" : false,
 	"loglevel" : "debug",
 	"logfile" : "",

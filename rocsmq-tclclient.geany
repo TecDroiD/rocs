@@ -23,8 +23,11 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=0
-FILE_NAME_0=2149;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclientmain.c;0;4
+current_page=3
+FILE_NAME_0=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclient_config.c;0;4
+FILE_NAME_1=2110;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclientmain.c;0;4
+FILE_NAME_2=411;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Finclude%2Fclient_config.h;0;4
+FILE_NAME_3=648;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2FCMakeLists.txt;0;4
 
 [VTE]
 last_dir=/home/tecdroid
@@ -43,5 +46,5 @@ NF_03_LB=cmake
 NF_03_CM=cmake ..
 NF_03_WD=%p/build
 EX_00_LB=_Ausführen
-EX_00_CM="%p/build/rocsmq-tclclient"
+EX_00_CM=%p/build/rocsmq-tclclient
 EX_00_WD=%p/build

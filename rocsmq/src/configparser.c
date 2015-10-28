@@ -111,13 +111,15 @@ int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, custom_con
 	// parse json text
 	json = json_tokener_parse(text);
 	if (!json) {
-		printf("Could not parse config json text --\n%s\n--\n,text);
+		printf("Could not parse config json text --\n%s\n--\n",text);
 		return -1;
 	}
 	
 	// get config base data
 		get_stringval(json, KEY_SERVERIP, baseconfig->serverip, 15);
 		get_intval(json,KEY_PORT, &(baseconfig->port));
+		get_intval(json,KEY_FILTER, &(baseconfig->filter));
+		get_intval(json,KEY_MASK, &(baseconfig->mask));
 		get_boolval(json, KEY_DAEMON, &(baseconfig->rundaemon));
 		get_stringval(json,KEY_LOGLEVEL, loglevel, 20);
 		baseconfig->loglevel = log_getlevel(loglevel); 
@@ -133,4 +135,31 @@ int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, custom_con
 	json_object_put(json);
 	free(text);
 	return 0;
+}
+
+int b64encode(char * in, char *out, int size) {
+	char *pos = out;
+	int cnt = 0;
+	base64_encodestate s;
+	base64_init_encodestate(&s);
+	
+		cnt = base64_encode_block(in, strlen(in), pos, &s);
+		pos += cnt;
+	
+	cnt = base64_encode_blockend(pos, &s);
+	pos += cnt;
+	
+	*pos = '\0'; /* string terminator */
+}
+
+int b64decode(char * in, char *out, int size) {
+	char *pos = out;
+	int cnt = 0;
+	base64_decodestate s;
+	base64_init_decodestate(&s);
+	
+		cnt = base64_decode_block(in, strlen(in), pos, &s);
+		pos += cnt;
+		
+	*pos = '\0'; /* string terminator */
 }

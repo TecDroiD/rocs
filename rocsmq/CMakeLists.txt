@@ -4,7 +4,7 @@ project(${PROJECTNAME})
 
 
 # in case of libraries which are needed...
-set (PROJECT_LINK_LIBS json-c) 
+set (PROJECT_LINK_LIBS libjson-c.a) 
 # link_directories(JSON-C_LINK_DIR)
 # include_directories(JSON-C_INCLUDE_DIR)
 

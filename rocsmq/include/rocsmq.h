@@ -13,6 +13,7 @@
 #include <json-c/json.h>
 
 #include "linkedlist.h"
+#include "configparser.h"
 
 #define ROCSMQ_PORT		0x20C5
 #define ROCSMQ_POLL		0x01
@@ -20,11 +21,6 @@
 
 #define ROCS_MESSAGESIZE 	1000
 #define ROCS_CLIENTNAMESIZE 20
-
-typedef struct s_rocsmq_serverdata {
-	char ip[15];
-	int port;
-} t_rocsmq_serverdata, *p_rocsmq_serveradata;
 
 /**
  * data type for the standard message
@@ -46,7 +42,7 @@ typedef struct s_rocsmq_clientdata {
 } t_rocsmq_clientdata, *p_rocsmq_clientdata;
 
 
-TCPsocket rocsmq_init(char const *name, p_rocsmq_serveradata server, Uint32 filter, Uint32 mask) ;
+TCPsocket rocsmq_init(p_rocsmq_baseconfig server) ;
 int rocsmq_exit	(TCPsocket sock);
 int rocsmq_recv (TCPsocket sock, p_rocsmq_message mesg, int flags);
 int rocsmq_send (TCPsocket sock, p_rocsmq_message mesg, int flags);

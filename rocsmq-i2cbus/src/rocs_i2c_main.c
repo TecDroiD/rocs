@@ -26,27 +26,32 @@
 
 #include "i2cbus.h"
 #include "pca9685.h"
+#include "customconfig.h"
 
-#define PROGNAME "rocsmq-i2c"
+
+#define PROGNAME "rocsmq-i2cbus"
+#define CONFIGFILE "conf/"PROGNAME".config"
+
 #define PROG_FILTER 0x0000
 #define PROG_MASK	0x0000
 
 #define MOTORS_PER_DEVICE	16
 
-int port 		= ROCSMQ_PORT;
-int rundaemon 	= 0;
-int loglevel 	= INFO;
-int logtofile 	= 0;
-char logfile[255] = "log/"PROGNAME".log";
-int baudrate	= 125;
-char device[255] = "/dev/i2c-0\0";
-
-t_pca_device pca_devices[] = {
-	 {.addr=0xa1}
-	,{.addr=0xa2}
+t_rocsmq_baseconfig baseconfig = {
+	.serverip = "127.0.0.1",
+	.filter 	= MESSAGE_ID_INFRASTRUCTURE,
+	.mask 		= MESSAGE_MASK_MAIN,
+	.port = 8389,
+	.rundaemon = 0,
+	.loglevel = INFO,
+	.logfile = "",
+	.clientname = "i2cbus",
 };
 
-
+t_clientconfig clientconfig = {
+	.kbaud	= 125,
+	.devicefile = "/dev/i2c-0\0",
+};
 
 /**
  * signal handler function for signals to handle ;-p
@@ -87,14 +92,14 @@ int getoptions (int argc, char **argv) {
 	int opt;
 	while((opt = getopt(argc, argv, "DIEWSl:dp:c:"))!= -1) {
 		switch(opt) {
-		case 'D': loglevel = DEBUG; break; /* Debug level DEBUG */
-		case 'I': loglevel = INFO; break; /* Debug level INFO */
-		case 'E': loglevel = ERROR; break; /* Debug level ERROR */
-		case 'W': loglevel = WARNING; break; /* Debug level WARNING */
-		case 'l': strncpy(logfile,optarg,255); logtofile=1; break; /* log to file [filename] */
-		case 'd': rundaemon = 1; break;
-		case 'p': port = atoi(optarg); break;
-		case 'c': strncpy(device, optarg, 255); break;
+		case 'D': baseconfig.loglevel = DEBUG; break; /* Debug level DEBUG */
+		case 'I': baseconfig.loglevel = INFO; break; /* Debug level INFO */
+		case 'E': baseconfig.loglevel = ERROR; break; /* Debug level ERROR */
+		case 'W': baseconfig.loglevel = WARNING; break; /* Debug level WARNING */
+		case 'l': strncpy(baseconfig.logfile,optarg,255); break; /* log to file [filename] */
+		case 'd': baseconfig.rundaemon = 1; break;
+		case 'p': baseconfig.port = atoi(optarg); break;
+		case 'c': strncpy(clientconfig.devicefile, optarg, 255); break;
 		default:
 			print_usage();
 			return 1;
@@ -102,7 +107,7 @@ int getoptions (int argc, char **argv) {
 	}
 
 	/* daemonize if neccessary */
-	if(rundaemon) {
+	if(baseconfig.rundaemon) {
 		if(0 != daemonize("~", client_signal_handler))
 			return 1;
 	}
@@ -110,12 +115,8 @@ int getoptions (int argc, char **argv) {
 	/*
 	 * initialize logging system
 	 */
-	if (logtofile || rundaemon) {
-		openlog(PROGNAME, logfile);
-	} else {
-		log_init(PROGNAME,stdout);
-	}
-	log_setlevel(loglevel);
+	openlog(PROGNAME, baseconfig.logfile);
+	log_setlevel(baseconfig.loglevel);
 
 	log_message(DEBUG, PROGNAME " starting..");
 
@@ -152,7 +153,7 @@ int set_motor_per_json(json_object * json) {
 								
 					//set motor position
 					log_message(DEBUG, "Setting motor %d to %d ppm.", id, pos);
-					pca_port(&(pca_devices[id%MOTORS_PER_DEVICE]),id/MOTORS_PER_DEVICE,pos);
+					//pca_port(&(pca_devices[id%MOTORS_PER_DEVICE]),id/MOTORS_PER_DEVICE,pos);
 				}
 			}  else {
 				log_message(ERROR, "Message Syntax Error.");
@@ -212,15 +213,16 @@ int main(int argc, char **argv) {
 	
 
 	/* get options */
+	parseconfig(CONFIGFILE, &baseconfig, i2cbus_custom_config, &clientconfig);
 	if(0 != getoptions(argc, argv))
 		exit(1);
 
 	/* initialize i2c */
-	if(0 > i2cbus_init(device))
+	if(0 > i2cbus_init(clientconfig.devicefile))
 		exit(1);
 		
 
-	sock = rocsmq_init(PROGNAME,PROG_FILTER,PROG_MASK);
+	sock = rocsmq_init(&baseconfig);
 	if(! sock) {
 		log_message(ERROR, "could not connect to server %s", rocsmq_error());
 		exit(1);
@@ -260,7 +262,7 @@ int main(int argc, char **argv) {
 	rocsmq_destroy_thread(thread);
 	rocsmq_error(sock);
 
-	if (logtofile)
+	if (baseconfig.logtofile)
 		closelog();
 
 	SDL_Quit();

@@ -17,7 +17,7 @@ file (GLOB SCRIPTS "${PROJECT_SOURCE_DIR}/script/*.tcl")
 file (COPY ${SCRIPTS} DESTINATION ${PROJECT_BINARY_DIR}/script)
 
 # in case of libraries which are needed...
-set (PROJECT_LINK_LIBS librocsmq.a ${SDL_LIBRARY} ${SDL_NET_LIBRARY} ${TCL_LIBRARY} libjson-c.a)
+set (PROJECT_LINK_LIBS librocsmq.a ${SDL_LIBRARY} ${SDL_NET_LIBRARY} ${TCL_LIBRARY} libjson-c.a libb64.a)
 link_directories(~/projects/rocs/rocsmq/build ${SDL_LINK_DIR} ${SDL_NET_LINK_DIR} ${TCL_LINK_DIR})
 include_directories(~/projects/rocs/rocsmq/include ${SDL_INCLUDE_DIR} ${SDL_NET_INCLUDE_DIR} ${TCL_INCLUDE_DIR})
 

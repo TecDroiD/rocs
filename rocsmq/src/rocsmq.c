@@ -16,18 +16,18 @@ char *rocsmq_error() {
 
 
 
-TCPsocket rocsmq_init(char const *name, p_rocsmq_serveradata server, Uint32 filter, Uint32 mask) {
+TCPsocket rocsmq_init(p_rocsmq_baseconfig server) {
 	TCPsocket sock;
 	IPaddress ip;
 	
 	/* create client information */
 	t_rocsmq_message message;
-	strncpy(message.sender,name,ROCS_CLIENTNAMESIZE);
+	strncpy(message.sender,server->clientname,ROCS_CLIENTNAMESIZE);
 
 		p_rocsmq_clientdata cdata = (p_rocsmq_clientdata) message.tail;
-		cdata->filter = filter;
-		cdata->mask=mask;
-		strncpy(cdata->name,name,ROCS_CLIENTNAMESIZE);
+		cdata->filter = server->filter;
+		cdata->mask= server->mask;
+		strncpy(cdata->name,server->clientname,ROCS_CLIENTNAMESIZE);
 
 
 
@@ -37,7 +37,7 @@ TCPsocket rocsmq_init(char const *name, p_rocsmq_serveradata server, Uint32 filt
 	/* initialize SDL_net */
 	if(SDLNet_Init()==-1) return 0;
 
-	if(SDLNet_ResolveHost(&ip,server->ip,server->port)==-1)
+	if(SDLNet_ResolveHost(&ip,server->serverip,server->port)==-1)
 	{
 		SDLNet_Quit();
 		return 0;

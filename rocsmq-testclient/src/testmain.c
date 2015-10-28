@@ -24,11 +24,6 @@
 
 TCPsocket sock;
 
-t_rocsmq_serverdata server = {
-	.ip = ROCSMQ_IP,
-	.port = ROCSMQ_PORT
-};
-
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
 	.port = 8389,
@@ -47,8 +42,6 @@ int main(int argc, char **argv) {
 	
 	// parse config file 
 	parseconfig(CONFIGFILE, &baseconfig, 0 ,0);
-	strncpy(server.ip, baseconfig.serverip, 15);
-	server.port = baseconfig.port;
 	
 	// open log
 	printf("logging to file.. '%s'\n", baseconfig.logfile);
@@ -67,7 +60,7 @@ int main(int argc, char **argv) {
 
 
 
-	sock = rocsmq_init(baseconfig.clientname,&server, 0,0);
+	sock = rocsmq_init(&baseconfig);
 	if (!sock) {
 		SDL_Quit();
 		printf("could not connect to Server: %s\n", rocsmq_error());

@@ -13,8 +13,8 @@ configure_file(
 )
 
 # in case of libraries which are needed...
-set (PROJECT_LINK_LIBS librocsmq.a ${SDL_LIBRARY} ${SDL_NET_LIBRARY} libjson-c.a)
-link_directories(~/projects/rocs/rocsmq/build ${SDL_LINK_DIR} ${SDL_NET_LINK_DIR})
+set (PROJECT_LINK_LIBS librocsmq.a ${SDL_LIBRARY} ${SDL_NET_LIBRARY} libjson-c.a libb64.a)
+link_directories(~/projects/rocs/rocsmq/build ${SDL_LINK_DIR} ${SDL_NET_LINK_DIR} /usr/lib/x86_64-linux-gnu)
 include_directories(~/projects/rocs/rocsmq/include ${SDL_INCLUDE_DIR} ${SDL_NET_INCLUDE_DIR})
 
 # add all headers
