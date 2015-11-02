@@ -5,9 +5,8 @@ set(PROJECTUSER rocs)
 project(${PROJECTNAME})
 
 # in case of libraries which are needed...
-set (PROJECT_LINK_LIBS librocsmq.a libjson-c.a)
-link_directories(~/projects/rocs/rocsmq/build)
-include_directories(~/projects/rocs/rocsmq/include)
+set (PROJECT_LINK_LIBS rocsmq libjson-c.a)
+include_directories(../rocsmq/include)
 
 # add all headers
 include_directories(include)
