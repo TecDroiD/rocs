@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 set(PROJECTNAME rocs)
+set(PROJECTUSER rocs)
+
 project(${PROJECTNAME})
 
 add_subdirectory(rocsmq)

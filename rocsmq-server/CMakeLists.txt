@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 set(PROJECTNAME rocsmq-server)
+set(PROJECTUSER rocs)
+
 project(${PROJECTNAME})
 
 # in case of libraries which are needed...
@@ -20,6 +22,11 @@ file(GLOB SOURCES "src/*.c")
 configure_file(
 	${PROJECT_SOURCE_DIR}/conf/config.in 
 	${PROJECT_BINARY_DIR}/conf/${PROJECTNAME}.config
+)
+
+configure_file(
+	${PROJECT_SOURCE_DIR}/conf/init.d.in 
+	${PROJECT_BINARY_DIR}/etc/init.d/${PROJECTNAME}
 )
 
 # when project is a library

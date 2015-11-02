@@ -1,10 +1,22 @@
 cmake_minimum_required(VERSION 3.0.0)
 set(PROJECTNAME rocsmq-client-template)
+set(PROJECTUSER rocs)
+
 project(${PROJECTNAME})
 
 # if SDL or other packages are needed:
 find_package(SDL REQUIRED)
 find_package(SDL_net REQUIRED)
+
+configure_file(
+	${PROJECT_SOURCE_DIR}/conf/init.d.in 
+	${PROJECT_BINARY_DIR}/etc/init.d/${PROJECTNAME}
+)
+
+configure_file(
+	${PROJECT_SOURCE_DIR}/conf/init.d.in 
+	${PROJECT_BINARY_DIR}/etc/init.d/${PROJECTNAME}
+)
 
 # in case of libraries which are needed...
 set (PROJECT_LINK_LIBS librocsmq.a librocsmq-daemonizer.a ${SDL_LIBRARY} ${SDL_NET_LIBRARY})

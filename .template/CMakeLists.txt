@@ -1,9 +1,16 @@
 cmake_minimum_required(VERSION 3.0.0)
 set(PROJECTNAME test)
+set(PROJECTUSER rocs)
+
 project(${PROJECTNAME})
 
 # if SDL or other packages are needed:
 # find_package(SDL REQUIRED)
+
+configure_file(
+	${PROJECT_SOURCE_DIR}/conf/init.d.in 
+	${PROJECT_BINARY_DIR}/etc/init.d/${PROJECTNAME}
+)
 
 # in case of libraries which are needed...
 # set (PROJECT_LINK_LIBS librocsmq.a ${SDL_LIBRARY})

@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
+# configure project 
 set(PROJECTNAME rocsmq-tclclient)
+set(PROJECTUSER rocs)
+
 project(${PROJECTNAME})
 
 # if SDL or other packages are needed:
@@ -12,6 +15,12 @@ configure_file(
 	${PROJECT_SOURCE_DIR}/conf/config.in 
 	${PROJECT_BINARY_DIR}/conf/${PROJECTNAME}.config
 )
+
+configure_file(
+	${PROJECT_SOURCE_DIR}/conf/init.d.in 
+	${PROJECT_BINARY_DIR}/etc/init.d/${PROJECTNAME}
+)
+
 #copy scripts to build dir
 file (GLOB SCRIPTS "${PROJECT_SOURCE_DIR}/script/*.tcl")
 file (COPY ${SCRIPTS} DESTINATION ${PROJECT_BINARY_DIR}/script)

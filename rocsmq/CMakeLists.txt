@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
 set(PROJECTNAME rocsmq)
-project(${PROJECTNAME})
+set(PROJECTUSER rocs)
 
+project(${PROJECTNAME})
 
 # in case of libraries which are needed...
 set (PROJECT_LINK_LIBS libjson-c.a) 
