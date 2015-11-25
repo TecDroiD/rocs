@@ -15,12 +15,14 @@
 
 #define MESSAGE_ID_ACTOR			0x1000 /* data for the actor clients */
 #define MESSAGE_ID_SENSOR			0x2000 /* data from sensors */
+#define MESSAGE_ID_LOGIC			0x3000 /* information for logic unis */
 #define MESSAGE_ID_INFRASTRUCTURE	0x4000 /* information for infrastructure */
 #define MESSAGE_ID_SYSTEM			0x8000 /* control information for system */
 #define MESSAGE_ID_QUEUE			0xf000 /* all messages */
 
 #define MESSAGE_CLIENT_CAN			0x0100
 #define MESSAGE_CLIENT_I2C			0x0200
+#define MESSAGE_CLIENT_RS232		0x0300
 
 #define MESSAGE_ID_MOTORPOS			0x0010
 #define MESSAGE_ID_AQUIRE			0x0020

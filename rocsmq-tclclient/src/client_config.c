@@ -31,8 +31,8 @@ int custom_config (json_object *json, void * p_datastruct) {
 	int i;
 	p_tclclient_config config = (p_tclclient_config)p_datastruct;
 	
-	get_intval(json,CONFIG_KEY_FILTER, &config->filter);
-	get_intval(json,CONFIG_KEY_MASK, &config->mask);
+//	get_intval(json,CONFIG_KEY_FILTER, &config->filter);
+//	get_intval(json,CONFIG_KEY_MASK, &config->mask);
 	get_stringval(json,CONFIG_KEY_SCRIPTDIR, config->scriptdir, 255);
 	
 	// get size of scripts

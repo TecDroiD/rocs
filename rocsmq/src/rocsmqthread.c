@@ -35,6 +35,7 @@ int rocsmq_thread (void *data) {
 		if (rocsmq_recv(pdata.sock,&message,0)) {
 			rocsmq_add((p_rocsmq_message) &message);
 		}
+		SDL_Delay(50);
 	}
 	return 0;
 }

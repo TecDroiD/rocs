@@ -6,8 +6,9 @@
 #include <rocsmq.h>
 #include <configparser.h>
 
-#define CONFIG_KEY_SCRIPTDIR	"scriptdir"
-#define CONFIG_KEY_SCRIPTS "scripts"
+#define CONFIG_KEY_FILTER	 "filter"
+#define CONFIG_KEY_SCRIPTDIR "scriptdir"
+#define CONFIG_KEY_SCRIPTS 	 "scripts"
 #define CONFIG_KEY_MESSAGE_ID "message"
 #define CONFIG_KEY_SCRIPTFILE "scriptfile"
 

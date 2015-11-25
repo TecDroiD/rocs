@@ -3,6 +3,15 @@
  *
  *  Created on: 06.10.2015
  *      Author: tecdroid
+ * 
+ * message 
+ * {
+ * 	"type":"read|write",
+ *  "slave":10,
+ *  "addr":"120",
+ *  "length":2,
+ *  "data": "xwwer",
+ * }
  */
 
 #include <daemonizer.h>
@@ -36,6 +45,9 @@
 #define PROG_MASK	0x0000
 
 #define MOTORS_PER_DEVICE	16
+
+TCPsocket sock;
+
 
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
@@ -123,78 +135,52 @@ int getoptions (int argc, char **argv) {
 	return 0;
 }
 
-/**
- * parse json object
- */ 
-int set_motor_per_json(json_object * json) {
-	int id = 0;
-	int pos = 0;
-	int arraylen;
-	int i;
-	
-	enum json_type type;
-	json_object * data;
-		
-	json_object_object_foreach(json,key,val) {
-	
-		if (strncmp(key, "motor",5) == 0) {
-			// if item is a motor
-			type = json_object_get_type(val);
-			if (type == json_type_array) {
-				// read motor and value data
-				arraylen = json_object_array_length(val);
-				for (i = 0; i < arraylen; i++) { 
-					// get motor id
-					json_object_object_get_ex(val, "id", &data);
-					id = json_object_get_int(data);
-					// get motor position
-					json_object_object_get_ex(val, "pos", &data);
-					pos = json_object_get_int(data);
-								
-					//set motor position
-					log_message(DEBUG, "Setting motor %d to %d ppm.", id, pos);
-					//pca_port(&(pca_devices[id%MOTORS_PER_DEVICE]),id/MOTORS_PER_DEVICE,pos);
-				}
-			}  else {
-				log_message(ERROR, "Message Syntax Error.");
-				return -1;
-			}
-		} else {
-			log_message(ERROR, "Wrong Message Error.");
-		}
-	}
-	return 0;
-}
-
-/**
- * read sensor data 
- */ 
-void aquire_sensor_data(json_object *json) {
-	
-	
-}
-
 /*
  * handle rocsmq message
  */
 int handle_message(p_rocsmq_message message) {
 	// parse message into json object
 	json_object *json = rocsmq_get_message_json(message);
-	
-	// switch message type
-	switch(message->id & MESSAGE_MASK_SUB) {
-	case MESSAGE_ID_MOTORPOS:
-		// 	to motor array
-		// send data to i2c bus
-		set_motor_per_json(json);
-		break;
-	case MESSAGE_ID_AQUIRE:	
-		aquire_sensor_data(json);
-		break;
-	default:
-		break;
-	}
 
+	int write;
+	int32_t d;
+	char buf[255];
+	char answer[1000];
+	
+	t_i2cmesg i2c = {
+		.slave=0,
+		.addr=0,
+		.data="\0",
+		.length=0
+	};
+	
+	get_intval(json, JSON_KEY_TYPE, &write);
+	get_intval(json, JSON_KEY_SLAVE, &d);
+	i2c.slave = d;
+	get_intval(json, JSON_KEY_ADDR, &d);
+	i2c.addr = d;
+	get_intval(json, JSON_KEY_LENGTH, &d);
+	i2c.length = d;
+	get_stringval(json, JSON_KEY_DATA, buf, I2C_MAXLEN);
+
+	i2cbus_setslave(i2c.slave);
+	if(write) {
+		// write data to i2c
+		b64decode(buf,i2c.data,I2C_MAXLEN);	
+		i2cbus_write(&i2c.addr, 1);
+		i2cbus_write(i2c.data,strlen(i2c.data));
+	} else {
+		// read data from i2c
+		i2cbus_write(&i2c.addr, 1);
+		i2cbus_read(i2c.data, i2c.length);
+		b64encode(i2c.data,buf,255);
+		
+		// prepare message and send 
+		message->id = MESSAGE_ID_SENSOR | MESSAGE_CLIENT_I2C;
+		sprintf(answer,"{\""JSON_KEY_SLAVE"\":%d,\""JSON_KEY_ADDR"\":%d,\""JSON_KEY_LENGTH"\":\"%s\",}"
+				,i2c.slave, i2c.addr, i2c.length,buf);
+		rocsmq_send(sock,message,0);
+	}
 	// delete json object
 	json_object_put(json);
 	return 0;
@@ -204,7 +190,6 @@ int handle_message(p_rocsmq_message message) {
  * main function
  */
 int main(int argc, char **argv) {
-	TCPsocket sock;
 	SDL_Thread *thread;
 	t_rocsmq_message message;
 
@@ -253,7 +238,7 @@ int main(int argc, char **argv) {
 		/*
 		 * wait 100ms
 		 */
-		SDL_Delay(100);
+		SDL_Delay(1);
 	}
 
 	/*

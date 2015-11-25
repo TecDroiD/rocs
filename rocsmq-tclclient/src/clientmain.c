@@ -74,7 +74,20 @@ int tcl_send_message(ClientData cdata, Tcl_Interp *interpreter, int argc, const 
  * tcl command for logging messages to rocsmq 
  */
 int tcl_log_message(ClientData cdata, Tcl_Interp *interpreter, int argc, const char *argv[]);
-  
+
+/**
+ * tcl command for encoding data into base 64 
+ */ 
+int tcl_b64_encode(ClientData cdata, Tcl_Interp *interpreter, int argc, const char *argv[]);
+
+/**
+ * tcl command for decoding base 64 into whatever.. 
+ */ 
+int tcl_b64_decode(ClientData cdata, Tcl_Interp *interpreter, int argc, const char *argv[]);  
+
+/**
+ * main function
+ */ 
 int main(int argc, char **argv) {
 	SDL_Init(0);
 	SDL_Thread *thread;
@@ -164,8 +177,6 @@ void handle_message(p_rocsmq_message message) {
 	// copy json content from message
 
 	json = rocsmq_get_message_json(message);
-	get_stringval(json,"hello",val,32);
-		log_message(DEBUG, "testcontent %s", val);
 	
 	result = (char*)Tcl_SetVar(tcl.interpreter,"json",message->tail, 0);
 	if (result == 0) {
@@ -209,6 +220,14 @@ int init_interpreter() {
 		log_message(ERROR, "Could not create command log_message");
 		return -1;
 	}
+	if (0 == Tcl_CreateCommand(tcl.interpreter,"b64_encode",tcl_b64_encode,NULL,NULL)) {
+		log_message(ERROR, "Could not create command b64_encode");
+		return -1;
+	}
+	if (0 == Tcl_CreateCommand(tcl.interpreter,"b64_decode",tcl_b64_decode,NULL,NULL)) {
+		log_message(ERROR, "Could not create command b64_decode");
+		return -1;
+	}
 	
 	
 	// link json to interpreter
@@ -246,6 +265,28 @@ void uninit_interpreter() {
 	Tcl_DecrRefCount(tcl.json_string);  
 	Tcl_DeleteInterp(tcl.interpreter);
 }
+
+/**
+ * tcl procedure for encoding to b64
+ */
+int tcl_b64_encode(ClientData cdata, Tcl_Interp *interpreter, int argc, const char *argv[]) {
+	char *data = (char*) argv[1];
+	char retval[1000]; 
+	b64encode(data, retval, 1000);
+	Tcl_SetResult(interpreter, retval, TCL_VOLATILE);
+	return TCL_OK;
+}  
+
+/**
+ * tcl procedure for decoding b64
+ */
+int tcl_b64_decode(ClientData cdata, Tcl_Interp *interpreter, int argc, const char *argv[]) {
+	char *data = (char *)argv[1];
+	char retval[1000]; 
+	b64decode(data, retval, 1000);
+	Tcl_SetResult(interpreter, retval, TCL_VOLATILE);
+	return TCL_OK;
+}  
 
 /**
  * tcl procedure for sending messages

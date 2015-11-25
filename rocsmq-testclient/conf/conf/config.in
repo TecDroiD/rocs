@@ -14,9 +14,5 @@
 			"message" : 1, 
 			"scriptfile": "script/foobar.tcl"
 		},
-		{
-			"message" : 4096,
-			"scriptfile": "script/set_leds.tcl"
-		},
 	],
 }
