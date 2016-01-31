@@ -25,7 +25,7 @@ long_line_column=72
 [files]
 current_page=1
 FILE_NAME_0=684;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclient_config.c;0;4
-FILE_NAME_1=1861;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclientmain.c;0;4
+FILE_NAME_1=1885;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclientmain.c;0;4
 FILE_NAME_2=693;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Finclude%2Fclient_config.h;0;4
 FILE_NAME_3=652;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2FCMakeLists.txt;0;4
 FILE_NAME_4=9;Sh;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fconf%2Finit.d.in;0;4

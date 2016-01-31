@@ -77,10 +77,6 @@ void remove_client(int i);
  * print program usage
  */
 void print_usage(void);
-/**
- * get options
- */
-void getoptions (int argc, char **argv);
 
 /**
  * signal handler for the server 
@@ -109,8 +105,15 @@ int main(int argc, char **argv) {
 	Uint32 ipaddr;
 
 	// parse options
-	parseconfig(CONFIGFILE, &baseconfig, 0 ,0);
-	getoptions(argc, argv);
+	switch (argc) {
+		case 1: parseconfig(CONFIGFILE, &baseconfig, 0 ,0);
+			break;
+		case 2: parseconfig(argv[1], &baseconfig, 0 ,0);
+			break;
+		default:
+			printf("Usage: %s [configfile]\n", argv[0]);
+			exit(EXIT_FAILURE);
+	}
 
 	/* daemonize if neccessary */
 	if(baseconfig.rundaemon) {
@@ -368,26 +371,6 @@ void server_signal_handler(int sig) {
 	}
 }
 
-/**
- * get functional options
- */
-void getoptions (int argc, char **argv) {
-	int opt;
-	while((opt = getopt(argc, argv, "DIEWSl:dp:"))!= -1) {
-		switch(opt) {
-		case 'D': baseconfig.loglevel = DEBUG; break; /* Debug level DEBUG */
-		case 'I': baseconfig.loglevel = INFO; break; /* Debug level INFO */
-		case 'E': baseconfig.loglevel = ERROR; break; /* Debug level ERROR */
-		case 'W': baseconfig.loglevel = WARNING; break; /* Debug level WARNING */
-		case 'l': strncpy(baseconfig.logfile,optarg,255); break; /* log to file [filename] */
-		case 'd': baseconfig.rundaemon = 1; break; /* daemonize */
-		case 'p': baseconfig.port = atoi(optarg); break;
-		default:
-			print_usage();
-		}
-	}
-
-}
 
 /**
  * handle rocsmq message
