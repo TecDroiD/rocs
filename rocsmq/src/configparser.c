@@ -116,6 +116,7 @@ int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, custom_con
 	}
 	
 	// get config base data
+		get_stringval(json, KEY_CLIENTNAME, baseconfig->clientname,20);
 		get_stringval(json, KEY_SERVERIP, baseconfig->serverip, 15);
 		get_intval(json,KEY_PORT, &(baseconfig->port));
 		get_intval(json,KEY_FILTER, &(baseconfig->filter));

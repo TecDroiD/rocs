@@ -3,6 +3,10 @@
  *
  *  Created on: 07.10.2015
  *      Author: tecdroid
+ * 
+ * Servo value between 400 and 1400 is good
+ * so there are theoretically 1000 steps.
+ * 
  */
 
 #include "i2cbus.h"
@@ -32,24 +36,31 @@ int i2cbus_setslave(int slave) {
 	return 0;
 }
 
-int i2cbus_write(char *data, size_t size) {
+int i2cbus_write(char reg, char *data, size_t size) {
 	int ret;
+	int i;
 	log_message(DEBUG, "Writing %d bytes of data to I2C slave.", size);
-	ret = write(i2cfile,data,size);
-    if ( ret != size) {
-        log_message(ERROR,"Failed to write to the i2c bus. Errno: %d", errno);
-    }
-
+	for (i = 0; i < size; i++) {
+		ret = i2c_smbus_write_byte_data(i2cfile,reg, data[i]);
+		if ( ret == -1 ) {
+			log_message(ERROR,"Failed to write to the i2c bus. Errno: %d", errno);
+			return -1;
+		}
+	}
     return ret;
 }
 
-int i2cbus_read(char *data, size_t size) {
+int i2cbus_read(char reg, char *data, size_t size) {
 	int ret;
+	int i;
 	log_message(DEBUG, "Reading %d bytes of data from I2C slave.", size);
-	ret = read(i2cfile, data, size);
-	if (ret != size) {
-		log_message(ERROR,"Failed to read from the i2c bus. Errno: %d", errno);
-
+	for (i = 0; i < size; i++) {
+		ret = i2c_smbus_read_byte_data(i2cfile, reg);
+		if (-1 == ret) {
+			log_message(ERROR,"Failed to read from the i2c bus. Errno: %d", errno);
+			return -1;
+		}
+		data[i] = (char)ret;
 	}
 	return ret;
 }

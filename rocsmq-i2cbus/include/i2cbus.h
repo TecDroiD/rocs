@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <log.h>
 
-#define JSON_KEY_TYPE	"read"
+#define JSON_KEY_READ	"read"
 #define JSON_KEY_SLAVE	"slave"
 #define JSON_KEY_ADDR	"addr"
 #define JSON_KEY_DATA	"data"
@@ -40,7 +40,7 @@ int i2cbus_init(char *filename);
 int i2cbus_deinit();
 
 int i2cbus_setslave(int slave);
-int i2cbus_write(char *data, size_t size);
-int i2cbus_read(char *data, size_t size);
+int i2cbus_write(char reg, char *data, size_t size);
+int i2cbus_read(char reg, char *data, size_t size);
 
 #endif /* I2CBUS_H_ */

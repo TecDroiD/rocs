@@ -6,11 +6,11 @@
  * 
  * message 
  * {
- * 	"type":"read|write",
+ * 	"read":1|0,
  *  "slave":10,
- *  "addr":"120",
+ *  "addr":120,
  *  "length":2,
- *  "data": "xwwer",
+ *  "data": "b64",
  * }
  */
 
@@ -34,7 +34,6 @@
 #include <json-c/json.h>
 
 #include "i2cbus.h"
-#include "pca9685.h"
 #include "customconfig.h"
 
 
@@ -55,7 +54,7 @@ t_rocsmq_baseconfig baseconfig = {
 	.mask 		= MESSAGE_MASK_MAIN,
 	.port = 8389,
 	.rundaemon = 0,
-	.loglevel = INFO,
+	.loglevel = DEBUG,
 	.logfile = "",
 	.clientname = "i2cbus",
 };
@@ -63,6 +62,8 @@ t_rocsmq_baseconfig baseconfig = {
 t_clientconfig clientconfig = {
 	.kbaud	= 125,
 	.devicefile = "/dev/i2c-0\0",
+	.num_initscripts = 0,
+	.initscripts = 0,
 };
 
 /**
@@ -142,7 +143,7 @@ int handle_message(p_rocsmq_message message) {
 	// parse message into json object
 	json_object *json = rocsmq_get_message_json(message);
 
-	int write;
+	int read;
 	int32_t d;
 	char buf[255];
 	char answer[1000];
@@ -154,7 +155,7 @@ int handle_message(p_rocsmq_message message) {
 		.length=0
 	};
 	
-	get_intval(json, JSON_KEY_TYPE, &write);
+	get_intval(json, JSON_KEY_READ, &read);
 	get_intval(json, JSON_KEY_SLAVE, &d);
 	i2c.slave = d;
 	get_intval(json, JSON_KEY_ADDR, &d);
@@ -164,15 +165,13 @@ int handle_message(p_rocsmq_message message) {
 	get_stringval(json, JSON_KEY_DATA, buf, I2C_MAXLEN);
 
 	i2cbus_setslave(i2c.slave);
-	if(write) {
+	if(read) {
 		// write data to i2c
 		b64decode(buf,i2c.data,I2C_MAXLEN);	
-		i2cbus_write(&i2c.addr, 1);
-		i2cbus_write(i2c.data,strlen(i2c.data));
+		i2cbus_write(i2c.addr, i2c.data,strlen(i2c.data));
 	} else {
 		// read data from i2c
-		i2cbus_write(&i2c.addr, 1);
-		i2cbus_read(i2c.data, i2c.length);
+		i2cbus_read(i2c.addr, i2c.data, i2c.length);
 		b64encode(i2c.data,buf,255);
 		
 		// prepare message and send 
@@ -187,12 +186,55 @@ int handle_message(p_rocsmq_message message) {
 }
 
 /**
+ * initialize devices 
+ */
+void init_devices() {
+	int cnt, addr, val;
+	char buf[2];
+	
+	char line[255];
+	
+	p_initscript init;
+	FILE *fp;
+	
+	// for each init entry
+	for (cnt = 0; cnt < clientconfig.num_initscripts; cnt++) {
+		init = &clientconfig.initscripts[cnt];
+		i2cbus_setslave(init->slave);
+	
+		log_message(DEBUG, "reading init script file '%s' for slave %x", init->initfile, init->slave);
+		// open file
+		fp = fopen(init->initfile, "r");
+		if (! fp) {
+			log_message(ERROR,"Could not open init file '%s'", init->initfile);
+			return;
+		}
+		
+		// read until eof
+		while(! feof(fp)) {
+			fgets (line, 255,fp);
+			log_message(DEBUG, "reading line '%s'", line);
+			if (line[0] != '#') {
+				sscanf(line, "%d %d", &addr, &val);
+				buf[0] = addr;
+				buf[1] = val;
+				i2cbus_write(buf[0],&buf[1],1);
+			} else {
+				SDL_Delay(2);
+			}
+		}
+		
+		// close file
+		fclose(fp);
+	}	
+}
+/**
  * main function
  */
 int main(int argc, char **argv) {
 	SDL_Thread *thread;
 	t_rocsmq_message message;
-
+	
 	/* initialize sdl */
 	SDL_Init(0);
 	
@@ -203,9 +245,10 @@ int main(int argc, char **argv) {
 		exit(1);
 
 	/* initialize i2c */
-	if(0 > i2cbus_init(clientconfig.devicefile))
+	if(0 > i2cbus_init(clientconfig.devicefile)) {
+		log_message(ERROR, "could not init i2c device %s", clientconfig.devicefile);		
 		exit(1);
-		
+	}
 
 	sock = rocsmq_init(&baseconfig);
 	if(! sock) {
@@ -217,6 +260,11 @@ int main(int argc, char **argv) {
 		log_message(ERROR, "could not start listener thread %s", rocsmq_error());
 	}
 
+	/**
+	 * initialize devices
+	 */ 
+	init_devices();
+	  
 	/**
 	 * process main loop
 	 */
@@ -231,12 +279,8 @@ int main(int argc, char **argv) {
 			handle_message(&message);
 
 		}
-
-			/*
-			 * todo: handle i²c message - not yet neccessary
-			 */
 		/*
-		 * wait 100ms
+		 * wait 1ms
 		 */
 		SDL_Delay(1);
 	}

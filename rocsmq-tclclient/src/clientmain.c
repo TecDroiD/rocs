@@ -94,8 +94,15 @@ int main(int argc, char **argv) {
 	int i;
 	char buffer[32];
 	
-	// parse config file 
-	parseconfig(CONFIGFILE, &baseconfig, custom_config, &clientconfig);
+	// parse configuration
+	if (argc <= 1) {
+		parseconfig(CONFIGFILE, &baseconfig, custom_config, &clientconfig);
+	} else if (argc == 2) {
+		parseconfig(argv[1], &baseconfig, custom_config, &clientconfig);
+	} else {
+		printf("Usage: %s [configfile]\n", argv[0]);
+		exit(EXIT_FAILURE);
+	}
 	
 	// open log
 	printf("logging to file.. '%s'\n", baseconfig.logfile);
