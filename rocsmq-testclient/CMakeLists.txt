@@ -39,4 +39,4 @@ add_executable(${PROJECTNAME} ${SOURCES})
 target_link_libraries(${PROJECTNAME} ${PROJECT_LINK_LIBS})
 
 # install whatever you built
-install(TARGETS ${PROJECTNAME} DESTINATION /usr/lib)
+install(TARGETS ${PROJECTNAME} DESTINATION /usr/local/bin)

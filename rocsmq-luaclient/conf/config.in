@@ -1,0 +1,22 @@
+{
+	"clientname" : "${PROJECTNAME}",
+	"server"	: "127.0.0.1",
+	"port" : 8389,
+	"daemonize" : false,
+	"loglevel" : "debug",
+	"logfile" : "",
+	"scripts" : [
+		{
+			"message" : 0, 
+			"scriptfile": "script/helloworld.lua"
+		},
+		{
+			"message" : 1, 
+			"scriptfile": "script/foobar.lua"
+		},
+		{
+			"message" : 4096,
+			"scriptfile": "script/set_leds.lua"
+		},
+	],
+}

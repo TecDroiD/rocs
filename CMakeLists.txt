@@ -9,6 +9,7 @@ add_subdirectory(rocsmq-daemonizer)
 
 add_subdirectory(rocsmq-server)
 add_subdirectory(rocsmq-tclclient)
+add_subdirectory(rocsmq-luaclient)
 add_subdirectory(rocsmq-testclient)
 add_subdirectory(rocsmq-canbus)
 add_subdirectory(rocsmq-i2cbus)

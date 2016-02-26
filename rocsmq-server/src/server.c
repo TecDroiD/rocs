@@ -220,7 +220,7 @@ int main(int argc, char **argv) {
 								message.id, message.sender,message.tail);
 
 					// send message to all
-					send_all((p_rocsmq_message) & message);
+					send_all( & message);
 					
 					// handle message if it's for the infrastructure		
 					if(message.id & MESSAGE_ID_SYSTEM) {
