@@ -22,6 +22,7 @@ TCPsocket rocsmq_init(p_rocsmq_baseconfig server) {
 	
 	/* create client information */
 	t_rocsmq_message message;
+	message.id = 0;
 	strncpy(message.sender,server->clientname,ROCS_CLIENTNAMESIZE);
 
 		p_rocsmq_clientdata cdata = (p_rocsmq_clientdata) message.tail;
@@ -51,7 +52,8 @@ TCPsocket rocsmq_init(p_rocsmq_baseconfig server) {
 		return 0;
 	}
 
-	printf("sending login info: %s\n", message.sender);
+	log_message(DEBUG,"sending login info: %s\n", message.sender);
+	log_message(DEBUG," -- %d, %s \n", sock, message.tail);
 	/*
 	 * send client data
 	 */
@@ -59,6 +61,7 @@ TCPsocket rocsmq_init(p_rocsmq_baseconfig server) {
 		return 0;
 	}
 
+	log_message(DEBUG, "successfully logged in");
 	return sock;
 }
 /**
@@ -83,7 +86,7 @@ int rocsmq_recv (TCPsocket sock,p_rocsmq_message mesg, int flags) {
 	result = SDLNet_TCP_Recv(sock, mesg, sizeof(t_rocsmq_message));
 	if (result < sizeof(t_rocsmq_message)) {
 		if (SDLNet_GetError() && strlen(SDLNet_GetError())) /* sometimes blank! */
-			printf("SDLNet_TCP_Recv: %s\n", SDLNet_GetError());
+			log_message(ERROR, "SDLNet_TCP_Recv: %s\n", SDLNet_GetError());
 	}
 
 	return result;
@@ -95,12 +98,12 @@ int rocsmq_recv (TCPsocket sock,p_rocsmq_message mesg, int flags) {
  */
 int rocsmq_send (TCPsocket sock,p_rocsmq_message mesg, int flags) {
 	Uint32 result;
-
 	result=SDLNet_TCP_Send(sock,mesg,sizeof(t_rocsmq_message));
 		if(result<sizeof(t_rocsmq_message)) {
 			if(SDLNet_GetError() && strlen(SDLNet_GetError())) /* sometimes blank! */
-				printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
+				log_message(DEBUG, "SDLNet_TCP_Send: %s\n", SDLNet_GetError());
 		}
+	
 	return result;
 }
 

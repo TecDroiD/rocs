@@ -1,4 +1,6 @@
 {
+	"mask"	: 0,
+	"filter" : 0,
 	"clientname" : "${PROJECTNAME}",
 	"server"	: "127.0.0.1",
 	"port" : 8389,

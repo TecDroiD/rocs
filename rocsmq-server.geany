@@ -24,9 +24,11 @@ long_line_column=72
 
 [files]
 current_page=0
-FILE_NAME_0=2175;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2Fsrc%2Fserver.c;0;4
-FILE_NAME_1=308;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2FCMakeLists.txt;0;4
+FILE_NAME_0=2188;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2Fsrc%2Fserver.c;0;4
+FILE_NAME_1=912;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2FCMakeLists.txt;0;4
 FILE_NAME_2=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
+FILE_NAME_3=1222;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-luaclient%2Fsrc%2Fclient_config.c;0;4
+FILE_NAME_4=2867;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-luaclient%2Fsrc%2Fclientmain.c;0;4
 
 [VTE]
 last_dir=/home/tecdroid

@@ -198,10 +198,11 @@ int main(int argc, char **argv) {
 
 				/*printf("Accepted...\n"); */
 				if ( 0 != read_clientdata(sock, &clientinfo)) {
-					log_message(DEBUG,"welcoming client %s\n",clientinfo.name);
+					log_message(DEBUG,"welcoming client %s",clientinfo.name);
+					log_message(DEBUG," filter : %d, filtermask : %d", clientinfo.filter, clientinfo.mask);
 					add_client(sock, &clientinfo);
 				} else {
-					log_message(ERROR,"could not connect client: %s\n",rocsmq_error());
+					log_message(ERROR,"could not connect client: %s",rocsmq_error());
 					SDLNet_TCP_Close(sock);
 				}
 			}
@@ -209,7 +210,7 @@ int main(int argc, char **argv) {
 		/**
 		 * receive message and send it to all
 		 */
-		log_message(DEBUG,"clients: %d, numready: %d\n", num_clients,numready);
+		log_message(DEBUG,"clients: %d, numready: %d", num_clients,numready);
 		for (i = 0; numready && i < num_clients; i++) {
 			if (SDLNet_SocketReady(clients[i].sock)) {
 				// receive message

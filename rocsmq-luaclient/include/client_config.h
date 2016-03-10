@@ -24,7 +24,6 @@ typedef struct s_script {
 } t_script, *p_script;
 
 typedef struct s_luaclient_config {
-	char scriptdir[255];
 	int cntscripts;
 	p_script scripts;
 	

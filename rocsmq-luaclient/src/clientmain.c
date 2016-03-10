@@ -39,13 +39,14 @@ t_rocsmq_baseconfig baseconfig = {
 	.mask 		= MESSAGE_MASK_MAIN,
 	.port = 8389,
 	.rundaemon = 0,
-	.loglevel = INFO,
+	.loglevel = DEBUG,
 	.logfile = "",
 	.clientname = "luaclient",
 };
 
 t_luaclient_config clientconfig = {
-	.scriptdir	= SCRIPTDIR,
+	.cntscripts = 0,
+	.scripts = 0,
 };
 
 t_lua lua = {
@@ -132,6 +133,7 @@ int main(int argc, char **argv) {
 		exit(1);
 	};
 
+	printf("Test");
 	// start network listener
 	thread = rocsmq_start_thread(sock);
 
@@ -140,13 +142,11 @@ int main(int argc, char **argv) {
 		while(rocsmq_has_messages()) {
 
 			rocsmq_get_message(&message);
-			//log_message( DEBUG, "incoming:%s\n",message.tail);
+			log_message( DEBUG, "incoming:%s\n",message.tail);
 			handle_message(&message);
 		}
 
-		if(argc < 1) {
 			SDL_Delay(100);
-		}
 	}
 
 	/*
@@ -184,13 +184,8 @@ void handle_message(p_rocsmq_message message) {
 	} 
 	// copy json content from message
 
-	json = rocsmq_get_message_json(message);
+	//json = rocsmq_get_message_json(message);
 	
-//	result = (char*)lua_SetVar(lua.interpreter,"json",message->tail, 0);
-	if (result == 0) {
-//		log_message(ERROR, "Error setting value %s: %s",
-//			message->tail,lua_GetStringResult(lua.interpreter));	
-	}
 	log_message(DEBUG, "message-id %d", message->id);
 	log_message(DEBUG, "  -> message-tail %s", result);
 	log_message(DEBUG, "have scripts %d", clientconfig.cntscripts);
@@ -219,6 +214,7 @@ void handle_message(p_rocsmq_message message) {
 			}
 		}
 	}
+	 
 }
 /**
  * 

@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
 	message.id = 0;
 
 	// get command line options
-	while ((opt = getopt(argc, argv, "i:m:x")) != -1) {
+	while ((opt = getopt(argc, argv, "i:m:f:x")) != -1) {
 		switch(opt) {
 			case 'i':
 				message.id = atoi(optarg);
@@ -73,8 +73,10 @@ int main(int argc, char **argv) {
 			case 'x':
 				x_it = 1;
 				break;
+			case 'f':
+				parseconfig(optarg, &baseconfig,0,0);	
 			default:
-				printf("usage:\n %s [-i message-id] [-m message] [-x]\n");
+				printf("usage:\n %s [-i message-id] [-m message] [-x]\n", argv[0]);
 				printf(" -i - identifier of the message\n");
 				printf(" -m - body of the message\n");
 				printf(" -x - exit after sending, goes into listening mode else.\n");

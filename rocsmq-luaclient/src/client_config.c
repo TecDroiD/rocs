@@ -30,14 +30,12 @@ int custom_config (json_object *json, void * p_datastruct) {
 	json_object *scripts,*script;
 	int i;
 	p_luaclient_config config = (p_luaclient_config)p_datastruct;
-	
-//	get_intval(json,CONFIG_KEY_FILTER, &config->filter);
-//	get_intval(json,CONFIG_KEY_MASK, &config->mask);
-	get_stringval(json,CONFIG_KEY_SCRIPTDIR, config->scriptdir, 255);
-	
+		
 	// get size of scripts
 	get_objval(json, CONFIG_KEY_SCRIPTS, &scripts);
 	config->cntscripts = json_object_array_length(scripts);
+
+printf("got %d scripts", config->cntscripts);
 
 	// allocate data for scripts
 	config->scripts = malloc(config->cntscripts * sizeof(t_script));
@@ -45,10 +43,13 @@ int custom_config (json_object *json, void * p_datastruct) {
 
 	// create scripts
 	for (i = 0; i < config->cntscripts; i++) {
+		log_message(DEBUG, "script %d: %s", i, config->scripts[i]);
 		p_script ps = &(config->scripts[i]);
 		script = json_object_array_get_idx(scripts, i);
 		get_intval(script,CONFIG_KEY_MESSAGE_ID, &(ps->filter));
 		get_stringval(script,CONFIG_KEY_SCRIPTFILE, ps->filename,255);
+
+		printf("script %d: %d, %s\n", i, config->scripts[i].filter, config->scripts[i].filename);
 		
 	}
 		
