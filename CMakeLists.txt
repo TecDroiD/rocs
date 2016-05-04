@@ -8,6 +8,7 @@ add_subdirectory(rocsmq)
 add_subdirectory(rocsmq-daemonizer)
 
 add_subdirectory(rocsmq-server)
+add_subdirectory(rocsmq-cron)
 add_subdirectory(rocsmq-tclclient)
 add_subdirectory(rocsmq-luaclient)
 add_subdirectory(rocsmq-testclient)

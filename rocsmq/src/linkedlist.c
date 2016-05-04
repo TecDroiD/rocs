@@ -58,18 +58,74 @@ p_linkedlist ll_add(p_linkedlist list, p_linkedlist items, int where,
 			return list;
 		}
 	case LL_SORT:
-		/* todo: sort into list
-		 iterator = ll_find(list,comparefunc);
-		 dummy = iterator->next;
-		 if(iterator->last) {
-		 items->last = iterator->last;
-		 }
-		 */
-		return 0;
+		iterator = ll_getlast(items);
+		iterator->next = list;
+		iterator = ll_sort(items, comparefunc);
+		return iterator;
 	default:
 		return items;
 	}
 }
+
+void exchange (p_linkedlist a, p_linkedlist b) {
+	t_linkedlist dummy;
+	
+	dummy.next = a->next;
+	dummy.last = a->last;
+	
+	a->last = b->last;
+	a->next = b->next;
+	if (a->last) 
+		a->last->next = a;
+	if (a->next) 
+		a->next->last = a;
+		
+	b->last = dummy.last;
+	b->next = dummy.next;
+	if (b->last)
+		b->last->next = b;
+	if (b->next)
+		b->next->last = b;
+		
+}
+
+p_linkedlist ll_sort(p_linkedlist list, _ll_compare comparefunc) {
+	p_linkedlist start, cmp, dummy;	
+	
+	if (list == 0) return list;
+	start = list;
+	cmp = start;
+	printf("TeST --------------------------------------\n");
+
+	/*
+	 * iteratively sort a bubble
+	 */ 
+	while (cmp->next != 0) {
+		cmp = cmp->next;
+		printf("testing : %d, %d \n", start, cmp); 
+		
+		if (comparefunc(start, cmp) < 0) {
+			printf("exchanging...\n");
+			exchange(start, cmp);
+//			dummy = start;
+			start = cmp;
+//			cmp = dummy;
+		}
+	}
+	
+	
+	/*
+	 * bubble up
+	 */ 
+	if (start->next != 0) {
+		printf("next iteration...\n");
+		start->next = ll_sort(start->next,comparefunc);
+		start->next->last = start;
+	}
+	
+	return start;
+}
+
 p_linkedlist ll_find(p_linkedlist list, p_linkedlist item, _ll_compare comparefunc) {
 	if (0 == comparefunc(list, item)) {
 		return list;
@@ -83,9 +139,17 @@ p_linkedlist ll_find(p_linkedlist list, p_linkedlist item, _ll_compare comparefu
 }
 
 p_linkedlist ll_remove(p_linkedlist list, p_linkedlist item) {
-	item->last->next = item->next;
+	p_linkedlist ll = list;
+	if (ll == item) {
+		ll = item->next;
+	}
+
+	if (item->last)
+		item->last->next = item->next;
+	if (item->next)	
 	item->next->last = item->last;
-	return list;
+	
+	return ll;
 }
 
 p_linkedlist ll_pop(p_linkedlist list, p_linkedlist *item, int where, _ll_compare comparefunc) {

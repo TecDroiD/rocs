@@ -307,18 +307,20 @@ void send_all(p_rocsmq_message message) {
 	int cindex;
 	if (!message || !num_clients) return;
 	cindex = 0;
-	log_message(DEBUG, "Sending message '%s'", message->tail);
+	log_message(DEBUG, "Sending message '%s', possibly to %d clients.", message->tail, num_clients);
 	while (cindex < num_clients) {
 		/* send to all clients that macht the filter */
 		/* with error checking */
-		if (message->id & MESSAGE_ID_SYSTEM || filtermatch(message, &clients[cindex].info)) {
+		if ((message->id & MESSAGE_ID_SYSTEM) || filtermatch(message, &clients[cindex].info)) {
 			log_message(DEBUG, "  - to client %s", clients[cindex].info.name);
 			if (rocsmq_send(clients[cindex].sock, message, 0)) {
-				cindex++;
 			} else {
 				remove_client(cindex);
+				cindex--;
 			}
 		}
+
+		cindex++;
 	}
 }
 

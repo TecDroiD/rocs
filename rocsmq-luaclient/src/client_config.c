@@ -35,7 +35,7 @@ int custom_config (json_object *json, void * p_datastruct) {
 	get_objval(json, CONFIG_KEY_SCRIPTS, &scripts);
 	config->cntscripts = json_object_array_length(scripts);
 
-printf("got %d scripts", config->cntscripts);
+	log_message(DEBUG, "got %d scripts", config->cntscripts);
 
 	// allocate data for scripts
 	config->scripts = malloc(config->cntscripts * sizeof(t_script));

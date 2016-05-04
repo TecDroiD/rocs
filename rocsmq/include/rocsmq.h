@@ -22,6 +22,7 @@
 #define ROCS_MESSAGESIZE 	1000
 #define ROCS_CLIENTNAMESIZE 20
 
+#define EMPTY_MESSAGE		0xffffffff
 /**
  * data type for the standard message
  */

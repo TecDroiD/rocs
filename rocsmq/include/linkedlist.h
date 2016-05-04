@@ -50,6 +50,11 @@ p_linkedlist ll_getlast(p_linkedlist list);
  * adds an item to a linked list
  */
 p_linkedlist ll_add(p_linkedlist list, p_linkedlist items, int where, _ll_compare comparefunc);
+
+/** 
+ * sorts a linked list
+ */
+p_linkedlist ll_sort(p_linkedlist list, _ll_compare comparefunc);  
 /**
  * finds an item in a linked list
  */
