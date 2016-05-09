@@ -23,6 +23,7 @@
 #include "canbus.h"
 #include "customconfig.h"
 
+#define CLIENTNAME "can"
 #define PROGNAME "rocsmq-canbus"
 #define CONFIGFILE "conf/"PROGNAME".conf"
 #define PROG_FILTER (MESSAGE_ID_ACTOR | MESSAGE_CLIENT_CAN)
@@ -36,10 +37,10 @@ t_rocsmq_baseconfig baseconfig = {
 	.rundaemon = 0,
 	.loglevel = INFO,
 	.logfile = "",
-	.clientname = PROGNAME,
+	.clientname = CLIENTNAME,
 };
 	
-t_clientconfig customconfig = {
+t_clientconfig custom_config = {
 	.kbaud = 125,
 	.devicefile = "/dev/can0\0",
 };
@@ -57,49 +58,6 @@ void client_signal_handler(int sig) {
 	}
 }
 
-/*
- * print program usage
- */
-void print_usage (void) {
-	printf("rocsmq client - usage\n" );
-	printf(" rocsmq_client [options]\n" );
-	printf(" options\n --------\n" );
-	printf(" -D : Set output level to DEBUG\n" );
-	printf(" -I : Set output level to INFO\n" );
-	printf(" -W : Set output level to WARNING\n" );
-	printf(" -E : Set output level to ERROR\n" );
-	printf(" -S : Output log to console(standard)\n" );
-	printf(" -d : Run as daemon\n" );
-	printf(" -l [file] : Output log to file [file]\n" );
-	printf(" -p [port] : Set listener port\n" );
-	printf(" -c [file] : Set can bus device (std: /dev/can0)\n");
-	printf(" -b [baud] : Set baudrate in kbaud\n");
-}
-
-/**
- * get functional options
- */
-int getoptions (int argc, char **argv) {
-	int opt;
-	while((opt = getopt(argc, argv, "DIEWSl:dp:c:b:"))!= -1) {
-		switch(opt) {
-		case 'D': baseconfig.loglevel = DEBUG; break; /* Debug level DEBUG */
-		case 'I': baseconfig.loglevel = INFO; break; /* Debug level INFO */
-		case 'E': baseconfig.loglevel = ERROR; break; /* Debug level ERROR */
-		case 'W': baseconfig.loglevel = WARNING; break; /* Debug level WARNING */
-		case 'l': strncpy(baseconfig.logfile,optarg,255); break; /* log to file [filename] */
-		case 'd': baseconfig.rundaemon = 1; break;
-		case 'p': baseconfig.port = atoi(optarg); break;
-		case 'b': customconfig.kbaud = atoi(optarg); break;
-		case 'c': strncpy(customconfig.devicefile, optarg, 255); break;
-		default:
-			print_usage();
-			return -1;
-		}
-	}
-
-	return 0;
-}
 
 #define CAN_MESSAGE_ID 	"messageid"
 #define CAN_MESSAGE 	"message64"
@@ -149,11 +107,17 @@ int main(int argc, char **argv) {
 	SDL_Init(0);
 	
 	/* parse configuration file */
-	parseconfig(CONFIGFILE, &baseconfig, canbus_custom_config, &customconfig);
+//	parseconfig(CONFIGFILE, &baseconfig, CLIENTNAME, canbus_custom_config, &customconfig);
+	// parse configuration
+	if (argc <= 1) {
+		parseconfig(CONFIGFILE, &baseconfig, CLIENTNAME, canbus_custom_config, &custom_config);
+	} else if (argc == 2) {
+		parseconfig(argv[1], &baseconfig, CLIENTNAME, canbus_custom_config, &custom_config);
+	} else {
+		printf("Usage: %s [configfile]\n", argv[0]);
+		exit(EXIT_FAILURE);
+	}
 
-	/* get options */
-	if(getoptions(argc, argv))
-		exit(1);
 
 	/* daemonize if neccessary */
 	if(baseconfig.rundaemon) {
@@ -170,7 +134,7 @@ int main(int argc, char **argv) {
 	log_message(DEBUG, PROGNAME " starting..");
 
 	/* do initialization stuff */
-	can_init(customconfig.devicefile, customconfig.kbaud);
+	can_init(custom_config.devicefile, custom_config.kbaud);
 
 	sock = rocsmq_init(&baseconfig);
 	if(! sock) {

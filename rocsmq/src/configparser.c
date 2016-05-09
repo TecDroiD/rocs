@@ -84,14 +84,14 @@ int get_stringval	(json_object *json, char *key, char *val, int maxlen) {
 }
 	
 
-int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, custom_config_t customs, void *p_datastruct) {
+int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, char * custom_key, custom_config_t customs, void *p_datastruct) {
 	FILE *fp;
 	char *text;
 	char loglevel[20] = "";
 	
 	
 	size_t filesize;
-	json_object * json;
+	json_object * json,  * custom;
 	// open file
 	fp = fopen(filename, "r");
 	if (fp == 0) {
@@ -116,11 +116,8 @@ int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, custom_con
 	}
 	
 	// get config base data
-		get_stringval(json, KEY_CLIENTNAME, baseconfig->clientname,20);
 		get_stringval(json, KEY_SERVERIP, baseconfig->serverip, 15);
 		get_intval(json,KEY_PORT, &(baseconfig->port));
-		get_intval(json,KEY_FILTER, &(baseconfig->filter));
-		get_intval(json,KEY_MASK, &(baseconfig->mask));
 		get_boolval(json, KEY_DAEMON, &(baseconfig->rundaemon));
 		get_stringval(json,KEY_LOGLEVEL, loglevel, 20);
 		baseconfig->loglevel = log_getlevel(loglevel); 
@@ -129,8 +126,19 @@ int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, custom_con
 		 
 	// get custom data	 
 	if(customs != 0) {
-		customs(json, p_datastruct);
+		custom = json;
+		if (custom_key != 0) {
+			printf("getting custom key %s\n", custom_key);
+			get_objval(json, custom_key, &custom);
+		}
+		
+		customs(custom, p_datastruct);
 	}	 
+
+	// customized  standard data
+	get_stringval(custom, KEY_CLIENTNAME, baseconfig->clientname,20);
+	get_intval(custom,KEY_FILTER, &(baseconfig->filter));
+	get_intval(custom,KEY_MASK, &(baseconfig->mask));
 	
 	// release memory for file
 	json_object_put(json);

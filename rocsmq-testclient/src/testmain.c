@@ -21,6 +21,7 @@
 #include <SDL/SDL_timer.h>
 //#include <unistd.h>
 
+#define CLIENTNAME "console"	
 #define CONFIGFILE "conf/rocsmq-testclient.config"
 
 TCPsocket sock;
@@ -45,7 +46,7 @@ int main(int argc, char **argv) {
 	int x_it = 0;
 	
 	// parse config file 
-	parseconfig(CONFIGFILE, &baseconfig, 0 ,0);
+	parseconfig(CONFIGFILE, &baseconfig, 0, 0 ,0);
 	
 	
 	// open log
@@ -74,7 +75,7 @@ int main(int argc, char **argv) {
 				x_it = 1;
 				break;
 			case 'f':
-				parseconfig(optarg, &baseconfig,0,0);	
+				parseconfig(optarg, &baseconfig,0, 0,0);	
 			default:
 				printf("usage:\n %s [-i message-id] [-m message] [-x]\n", argv[0]);
 				printf(" -i - identifier of the message\n");

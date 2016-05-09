@@ -25,8 +25,11 @@
 
 #include "client_config.h"
 
+#define CLIENTNAME "tcl"
+
 #define CONFIGFILE "conf/rocsmq-tclclient.config"
 #define SCRIPTDIR "script/"
+
 
 TCPsocket sock;
 
@@ -39,7 +42,7 @@ t_rocsmq_baseconfig baseconfig = {
 	.rundaemon = 0,
 	.loglevel = INFO,
 	.logfile = "",
-	.clientname = "tclclient",
+	.clientname = CLIENTNAME,
 };
 
 t_tclclient_config clientconfig = {
@@ -96,9 +99,9 @@ int main(int argc, char **argv) {
 	
 	// parse configuration
 	if (argc <= 1) {
-		parseconfig(CONFIGFILE, &baseconfig, custom_config, &clientconfig);
+		parseconfig(CONFIGFILE, &baseconfig, CLIENTNAME, custom_config, &clientconfig);
 	} else if (argc == 2) {
-		parseconfig(argv[1], &baseconfig, custom_config, &clientconfig);
+		parseconfig(argv[1], &baseconfig, CLIENTNAME, custom_config, &clientconfig);
 	} else {
 		printf("Usage: %s [configfile]\n", argv[0]);
 		exit(EXIT_FAILURE);

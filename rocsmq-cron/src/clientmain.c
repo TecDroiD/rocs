@@ -25,8 +25,8 @@
 #include "client_config.h"
 #include "rocs_cron.h"
 
+#define CLIENTNAME "cron"
 #define CONFIGFILE "conf/rocsmq-cron.config"
-#define SCRIPTDIR "script/"
 
 TCPsocket sock;
 
@@ -39,7 +39,7 @@ t_rocsmq_baseconfig baseconfig = {
 	.rundaemon = 0,
 	.loglevel = DEBUG,
 	.logfile = "",
-	.clientname = "cron",
+	.clientname = CLIENTNAME,
 };
 
 t_cronconfig clientconfig = {
@@ -61,9 +61,9 @@ int main(int argc, char **argv) {
 	
 	// parse configuration
 	if (argc <= 1) {
-		parseconfig(CONFIGFILE, &baseconfig, custom_config, &clientconfig);
+		parseconfig(CONFIGFILE, &baseconfig, CLIENTNAME, custom_config, &clientconfig);
 	} else if (argc == 2) {
-		parseconfig(argv[1], &baseconfig, custom_config, &clientconfig);
+		parseconfig(argv[1], &baseconfig, CLIENTNAME, custom_config, &clientconfig);
 	} else {
 		printf("Usage: %s [configfile]\n", argv[0]);
 		exit(EXIT_FAILURE);
@@ -130,6 +130,9 @@ void handle_message(p_rocsmq_message message) {
 	char val[32];
 	int i;
 	char *result;
+
+	log_message(DEBUG, "message-id %d", message->id);
+	log_message(DEBUG, "  -> message-tail %s", message->tail);
 	
 	// react on system messages
 	if (message->id & MESSAGE_ID_SYSTEM) {
@@ -148,15 +151,15 @@ void handle_message(p_rocsmq_message message) {
 
 	switch (message->id) {
 		case CRONJOB_MESSAGE_ADD:
+			log_message(INFO, "adding cronjob %s", message->tail);
 			add_cronjob(&cronjob);
 			break;
 		case CRONJOB_MESSAGE_DEL:
+			log_message(INFO, "adding cronjob", message->tail);
 			del_cronjob(&cronjob);
 			break;
 
 	}
 	
-	log_message(DEBUG, "message-id %d", message->id);
-	log_message(DEBUG, "  -> message-tail %s", result);
 	
 }

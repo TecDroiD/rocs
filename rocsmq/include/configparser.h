@@ -82,6 +82,6 @@ int b64encode(char * in, char *out, int size);
  */ 
 int b64decode(char * in, char *out, int size);
 
-int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, custom_config_t customs, void *p_datastruct);
+int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, char *custom_key, custom_config_t customs, void *p_datastruct);
 
 #endif

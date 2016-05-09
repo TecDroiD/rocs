@@ -106,9 +106,9 @@ int main(int argc, char **argv) {
 
 	// parse options
 	switch (argc) {
-		case 1: parseconfig(CONFIGFILE, &baseconfig, 0 ,0);
+		case 1: parseconfig(CONFIGFILE, &baseconfig, 0, 0 ,0);
 			break;
-		case 2: parseconfig(argv[1], &baseconfig, 0 ,0);
+		case 2: parseconfig(argv[1], &baseconfig, 0, 0 ,0);
 			break;
 		default:
 			printf("Usage: %s [configfile]\n", argv[0]);

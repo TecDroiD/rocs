@@ -23,15 +23,16 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=3
-FILE_NAME_0=544;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-luaclient%2Finclude%2Fclient_config.h;0;4
-FILE_NAME_1=1337;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-luaclient%2Fsrc%2Fclient_config.c;0;4
-FILE_NAME_2=585;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-luaclient%2FCMakeLists.txt;0;4
-FILE_NAME_3=210;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-luaclient%2Fsrc%2Fclientmain.c;0;4
+current_page=8
+FILE_NAME_0=894;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-luaclient%2Finclude%2Fclient_config.h;0;4
+FILE_NAME_1=22;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-luaclient%2Fsrc%2Fclient_config.c;0;4
+FILE_NAME_2=1;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-luaclient%2FCMakeLists.txt;0;4
+FILE_NAME_3=5494;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-luaclient%2Fsrc%2Fclientmain.c;0;4
 FILE_NAME_4=1121;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Frocsmq.h;0;4
 FILE_NAME_5=30;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-luaclient%2Fconf%2Fconfig.in;0;4
-FILE_NAME_6=907;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmq.c;0;4
+FILE_NAME_6=2455;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmq.c;0;4
 FILE_NAME_7=1276;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Fconfigparser.c;0;4
+FILE_NAME_8=866;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
 
 [VTE]
 last_dir=/home/tecdroid

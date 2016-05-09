@@ -36,7 +36,7 @@
 #include "i2cbus.h"
 #include "customconfig.h"
 
-
+#define CLIENTNAME "i2c"
 #define PROGNAME "rocsmq-i2cbus"
 #define CONFIGFILE "conf/"PROGNAME".config"
 
@@ -77,61 +77,10 @@ void client_signal_handler(int sig) {
 		rocsmq_thread_set_running(0);
 	}
 }
-
-/**
- * print program usage
- */
-void print_usage (void) {
-	printf("rocsmq client - usage\n" );
-	printf(" rocsmq_client [options]\n" );
-	printf(" options\n --------\n" );
-	printf(" -D : Set output level to DEBUG\n" );
-	printf(" -I : Set output level to INFO\n" );
-	printf(" -W : Set output level to WARNING\n" );
-	printf(" -E : Set output level to ERROR\n" );
-	printf(" -S : Output log to console(standard)\n" );
-	printf(" -d : Run as daemon\n" );
-	printf(" -l [file] : Output log to file [file]\n" );
-	printf(" -p [port] : Set listener port\n" );
-	printf(" -f [file] : Set i2c bus device (std: /dev/i2c-0)\n");
-	printf(" -c [file] : Configuration file\n");
-	//printf(" -b [baud] : Set baudrate in kbaud\n");
-}
-
 /**
  * get functional options
  */
 int getoptions (int argc, char **argv) {
-	int opt;
-	while((opt = getopt(argc, argv, "DIEWSl:dp:c:"))!= -1) {
-		switch(opt) {
-		case 'D': baseconfig.loglevel = DEBUG; break; /* Debug level DEBUG */
-		case 'I': baseconfig.loglevel = INFO; break; /* Debug level INFO */
-		case 'E': baseconfig.loglevel = ERROR; break; /* Debug level ERROR */
-		case 'W': baseconfig.loglevel = WARNING; break; /* Debug level WARNING */
-		case 'l': strncpy(baseconfig.logfile,optarg,255); break; /* log to file [filename] */
-		case 'd': baseconfig.rundaemon = 1; break;
-		case 'p': baseconfig.port = atoi(optarg); break;
-		case 'c': strncpy(clientconfig.devicefile, optarg, 255); break;
-		default:
-			print_usage();
-			return 1;
-		}
-	}
-
-	/* daemonize if neccessary */
-	if(baseconfig.rundaemon) {
-		if(0 != daemonize("~", client_signal_handler))
-			return 1;
-	}
-
-	/*
-	 * initialize logging system
-	 */
-	openlog(PROGNAME, baseconfig.logfile);
-	log_setlevel(baseconfig.loglevel);
-
-	log_message(DEBUG, PROGNAME " starting..");
 
 	return 0;
 }
@@ -239,10 +188,29 @@ int main(int argc, char **argv) {
 	SDL_Init(0);
 	
 
-	/* get options */
-	parseconfig(CONFIGFILE, &baseconfig, i2cbus_custom_config, &clientconfig);
-	if(0 != getoptions(argc, argv))
-		exit(1);
+	// parse configuration
+	if (argc <= 1) {
+		parseconfig(CONFIGFILE, &baseconfig, CLIENTNAME, i2cbus_custom_config, &clientconfig);
+	} else if (argc == 2) {
+		parseconfig(argv[1], &baseconfig, CLIENTNAME, i2cbus_custom_config, &clientconfig);
+	} else {
+		printf("Usage: %s [configfile]\n", argv[0]);
+		exit(EXIT_FAILURE);
+	}
+
+	/* daemonize if neccessary */
+	if(baseconfig.rundaemon) {
+		if(0 != daemonize("~", client_signal_handler))
+			return 1;
+	}
+
+	/*
+	 * initialize logging system
+	 */
+	openlog(PROGNAME, baseconfig.logfile);
+	log_setlevel(baseconfig.loglevel);
+
+	log_message(DEBUG, PROGNAME " starting..");
 
 	/* initialize i2c */
 	if(0 > i2cbus_init(clientconfig.devicefile)) {

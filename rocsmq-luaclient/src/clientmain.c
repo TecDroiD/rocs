@@ -27,6 +27,7 @@
 
 #include "client_config.h"
 
+#define CLIENTNAME "lua"
 #define CONFIGFILE "conf/rocsmq-luaclient.config"
 #define SCRIPTDIR "script/"
 
@@ -35,13 +36,13 @@ TCPsocket sock;
 
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
-	.filter 	= MESSAGE_ID_INFRASTRUCTURE,
+	.filter 	= MESSAGE_ID_LOGIC,
 	.mask 		= MESSAGE_MASK_MAIN,
 	.port = 8389,
 	.rundaemon = 0,
 	.loglevel = DEBUG,
 	.logfile = "",
-	.clientname = "luaclient",
+	.clientname = CLIENTNAME,
 };
 
 t_luaclient_config clientconfig = {
@@ -98,9 +99,9 @@ int main(int argc, char **argv) {
 	
 	// parse configuration
 	if (argc <= 1) {
-		parseconfig(CONFIGFILE, &baseconfig, custom_config, &clientconfig);
+		parseconfig(CONFIGFILE, &baseconfig, CLIENTNAME, custom_config, &clientconfig);
 	} else if (argc == 2) {
-		parseconfig(argv[1], &baseconfig, custom_config, &clientconfig);
+		parseconfig(argv[1], &baseconfig, CLIENTNAME, custom_config, &clientconfig);
 	} else {
 		printf("Usage: %s [configfile]\n", argv[0]);
 		exit(EXIT_FAILURE);
@@ -187,7 +188,7 @@ void handle_message(p_rocsmq_message message) {
 	//json = rocsmq_get_message_json(message);
 	
 	log_message(DEBUG, "message-id %d", message->id);
-	log_message(DEBUG, "  -> message-tail %s", result);
+	log_message(DEBUG, "  -> message-tail %s", message->tail);
 	log_message(DEBUG, "have scripts %d", clientconfig.cntscripts);
 		
 	
