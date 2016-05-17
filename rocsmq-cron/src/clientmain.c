@@ -34,7 +34,6 @@ TCPsocket sock;
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
 	.filter 	= CRONJOB_MESSAGE_ID,
-	.mask 		= 0xfff0,
 	.port = 8389,
 	.rundaemon = 0,
 	.loglevel = DEBUG,

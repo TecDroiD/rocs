@@ -22,12 +22,11 @@ TCPsocket rocsmq_init(p_rocsmq_baseconfig server) {
 	
 	/* create client information */
 	t_rocsmq_message message;
-	message.id = 0;
+	message.id[0] = '\0';
 	strncpy(message.sender,server->clientname,ROCS_CLIENTNAMESIZE);
 
 		p_rocsmq_clientdata cdata = (p_rocsmq_clientdata) message.tail;
-		cdata->filter = server->filter;
-		cdata->mask= server->mask;
+		strncpy(cdata->filter,server->filter, ROCS_IDSIZE);
 		strncpy(cdata->name,server->clientname,ROCS_CLIENTNAMESIZE);
 
 

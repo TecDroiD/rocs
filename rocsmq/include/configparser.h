@@ -42,8 +42,7 @@
 typedef struct s_rocsmq_baseconfig {
 	char serverip[15];
 	int  port;
-	int  filter;
-	int  mask;
+	char  filter[256];
 	int  rundaemon;
 	int  loglevel;
 	int  logtofile; /** deprecated */

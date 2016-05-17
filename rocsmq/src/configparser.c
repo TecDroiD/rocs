@@ -137,8 +137,7 @@ int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, char * cus
 
 	// customized  standard data
 	get_stringval(custom, KEY_CLIENTNAME, baseconfig->clientname,20);
-	get_intval(custom,KEY_FILTER, &(baseconfig->filter));
-	get_intval(custom,KEY_MASK, &(baseconfig->mask));
+	get_stringval(custom,KEY_FILTER, baseconfig->filter,256);
 	
 	// release memory for file
 	json_object_put(json);

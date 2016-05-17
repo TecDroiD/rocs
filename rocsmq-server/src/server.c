@@ -23,6 +23,8 @@
 #include <daemonizer.h>
 //#include <unistd.h>
 
+#include "filterlist.h"
+
 #define CONFIGFILE "conf/rocsmq-server.config"
 
 t_rocsmq_baseconfig baseconfig = {
@@ -34,6 +36,7 @@ t_rocsmq_baseconfig baseconfig = {
 	.clientname = "rocsmq-server",
 	};
 
+  
 typedef struct {
 	TCPsocket sock;
 	t_rocsmq_clientdata info;
@@ -49,29 +52,11 @@ TCPsocket server;
  */
 SDLNet_SocketSet create_sockset();
 
-/**
- * match message filter
- */
-int filtermatch(p_rocsmq_message message, p_rocsmq_clientdata client);
-/**
- * send message to all clients which match the filter
- */
-void send_all(p_rocsmq_message message);
 
 /**
  * receive filter info from client
  */
 Uint32 read_clientdata(TCPsocket sock, p_rocsmq_clientdata client);
-
-/**
- * add a client into our array of clients
- */
-t_client *add_client(TCPsocket sock, p_rocsmq_clientdata info);
-
-/**
- * remove a client from our array of clients
- */
-void remove_client(int i);
 
 /**
  * print program usage
@@ -199,8 +184,8 @@ int main(int argc, char **argv) {
 				/*printf("Accepted...\n"); */
 				if ( 0 != read_clientdata(sock, &clientinfo)) {
 					log_message(DEBUG,"welcoming client %s",clientinfo.name);
-					log_message(DEBUG," filter : %d, filtermask : %d", clientinfo.filter, clientinfo.mask);
-					add_client(sock, &clientinfo);
+					log_message(DEBUG," filter : %s", clientinfo.filter);
+					add_client(&clientinfo, sock);
 				} else {
 					log_message(ERROR,"could not connect client: %s",rocsmq_error());
 					SDLNet_TCP_Close(sock);
@@ -210,69 +195,36 @@ int main(int argc, char **argv) {
 		/**
 		 * receive message and send it to all
 		 */
+		p_clientsocket cs = 0;
 		log_message(DEBUG,"clients: %d, numready: %d", num_clients,numready);
-		for (i = 0; numready && i < num_clients; i++) {
-			if (SDLNet_SocketReady(clients[i].sock)) {
+		while (0 != (cs = get_next_clientsocket(cs))) {
+			if (SDLNet_SocketReady(cs->socket)) {
 				// receive message
-				if (rocsmq_recv(clients[i].sock, (p_rocsmq_message) & message,
+				if (rocsmq_recv(cs->socket, (p_rocsmq_message) & message,
 						ROCSMQ_POLL)) {
 					numready--;
-					log_message(DEBUG,"received message\nid is %d\nsender is %s\ntail is %s\n",
+					log_message(DEBUG,"received message\nid is %s\nsender is %s\ntail is %s\n",
 								message.id, message.sender,message.tail);
 
 					// send message to all
 					send_all( & message);
 					
 					// handle message if it's for the infrastructure		
-					if(message.id & MESSAGE_ID_SYSTEM) {
+					if(0 == strcmp(message.id, MESSAGE_ID_SYSTEM)) {
 						handle_message(&message);
 					}
 				} else {
-					log_message(DEBUG,"removing client %s\n", clients[i].info.name);
-					remove_client(i);
+					log_message(DEBUG,"removing client %s\n", cs->name);
+					remove_client_by_sock(cs->socket);
 				}
 			}
 		}
 	}
 
+	clear_filterlist();
 	quit();
 }
 
-/**
- * add a client into our array of clients
- */
-t_client *add_client(TCPsocket sock, p_rocsmq_clientdata info) {
-	clients = (p_client) realloc(clients, (num_clients + 1) * sizeof(t_client));
-	memcpy((void *) &clients[num_clients].info, info,
-			sizeof(t_rocsmq_clientdata));
-	clients[num_clients].sock = sock;
-	num_clients++;
-	/* server side info */
-	//printf("--> %s\n",name);
-	return (&clients[num_clients - 1]);
-}
-
-
-/**
- * remove a client from our array of clients
- */
-void remove_client(int i) {
-	char *name = clients[i].info.name;
-
-	if (i < 0 && i >= num_clients)
-		return;
-
-	/* close the old socket, even if it's dead... */
-	SDLNet_TCP_Close(clients[i].sock);
-
-	num_clients--;
-	if (num_clients > i)
-		memmove(&clients[i], &clients[i + 1],
-				(num_clients - i) * sizeof(t_client));
-	clients = (t_client*) realloc(clients, num_clients * sizeof(t_client));
-	/* server side info */
-	/* inform all clients, excluding the old one, of the disconnected user */
-}
 
 /**
  * create a socket set that has the server socket and all the client sockets
@@ -292,36 +244,6 @@ SDLNet_SocketSet create_sockset() {
 	for (i = 0; i < num_clients; i++)
 		SDLNet_TCP_AddSocket(set, clients[i].sock);
 	return (set);
-}
-
-/**
- * match message filter
- */
-int filtermatch(p_rocsmq_message message, p_rocsmq_clientdata client) {
-	return (message->id & client->mask)==(client->filter & client->mask);
-}
-/**
- *  send a buffer to all clients
- */
-void send_all(p_rocsmq_message message) {
-	int cindex;
-	if (!message || !num_clients) return;
-	cindex = 0;
-	log_message(DEBUG, "Sending message '%s', possibly to %d clients.", message->tail, num_clients);
-	while (cindex < num_clients) {
-		/* send to all clients that macht the filter */
-		/* with error checking */
-		if ((message->id & MESSAGE_ID_SYSTEM) || filtermatch(message, &clients[cindex].info)) {
-			log_message(DEBUG, "  - to client %s", clients[cindex].info.name);
-			if (rocsmq_send(clients[cindex].sock, message, 0)) {
-			} else {
-				remove_client(cindex);
-				cindex--;
-			}
-		}
-
-		cindex++;
-	}
 }
 
 /**

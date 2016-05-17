@@ -17,7 +17,7 @@
 #define MESSAGE_ID_SENSOR			0x2000 /* data from sensors */
 #define MESSAGE_ID_LOGIC			0x3000 /* information for logic unis */
 #define MESSAGE_ID_INFRASTRUCTURE	0x4000 /* information for infrastructure */
-#define MESSAGE_ID_SYSTEM			0x8000 /* control information for system */
+#define MESSAGE_ID_SYSTEM			"system" /* control information for system */
 #define MESSAGE_ID_QUEUE			0xf000 /* all messages */
 
 #define MESSAGE_CLIENT_CAN			0x0100

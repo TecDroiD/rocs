@@ -19,6 +19,7 @@
 #define ROCSMQ_POLL		0x01
 #define ROCSMQ_IP		"127.0.0.1"
 
+#define ROCS_IDSIZE		256
 #define ROCS_MESSAGESIZE 	1000
 #define ROCS_CLIENTNAMESIZE 20
 
@@ -27,7 +28,7 @@
  * data type for the standard message
  */
 typedef struct s_rocsmq_message {
-	Uint32 id;
+	char id[ROCS_IDSIZE];
 	char sender[ROCS_CLIENTNAMESIZE];
 	char tail[ROCS_MESSAGESIZE];
 } t_rocsmq_message, *p_rocsmq_message;
@@ -38,8 +39,7 @@ typedef struct s_rocsmq_message {
  */
 typedef struct s_rocsmq_clientdata {
 	char   name[ROCS_CLIENTNAMESIZE];
-	Uint32 filter;
-	Uint32 mask;
+	char filter[ROCS_IDSIZE];
 } t_rocsmq_clientdata, *p_rocsmq_clientdata;
 
 
