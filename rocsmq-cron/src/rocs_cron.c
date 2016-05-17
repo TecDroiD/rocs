@@ -6,7 +6,7 @@ t_cronjob searchjob = {
 	.timestamp = 0,
 	.period = 0,
 	.repetitions = 0,
-	.message = EMPTY_MESSAGE,
+	.message = "",
 };
 t_linkedlist cronitem = {
 	.last = 0,
@@ -31,7 +31,7 @@ int jobsort (p_linkedlist a, p_linkedlist b) {
 int jobequal (p_linkedlist a, p_linkedlist b) {
 	p_cronjob ca = (p_cronjob) a->data;
 	p_cronjob cb = (p_cronjob) b->data;
-	return (ca->timestamp == cb->timestamp) && (cb->message == EMPTY_MESSAGE || (ca->message == cb->message));
+	return (ca->timestamp == cb->timestamp) && (0 == strcmp(ca->message, cb->message));
 	
 	return 0;
 }
@@ -46,7 +46,7 @@ int parse_cronjob(json_object * json, p_cronjob job) {
 	get_intval(json, CRONJOB_TAG_PERIOD, &job->period);
 	get_intval(json, CRONJOB_TAG_COUNT, &job->repetitions);
 
-	get_intval(json, CRONJOB_TAG_MESSAGE, &job->message);
+	get_stringval(json, CRONJOB_TAG_MESSAGE, job->message, 512);
 
 	get_objval(json, CRONJOB_TAG_DATA, &message);
 	strcpy (job->data, json_object_to_json_string(message));
@@ -94,7 +94,7 @@ int32_t tick (TCPsocket sock, uint32_t add) {
 			/*
 			 * set message data
 			 */
-			cronmessage.id = job->message;
+			strncpy(cronmessage.id, job->message, ROCS_IDSIZE);
 			strcpy(cronmessage.tail, job->data);  
 			rocsmq_send(sock, &cronmessage, 0);
 			

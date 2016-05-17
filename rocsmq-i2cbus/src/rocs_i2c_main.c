@@ -50,13 +50,12 @@ TCPsocket sock;
 
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
-	.filter 	= MESSAGE_ID_INFRASTRUCTURE,
-	.mask 		= MESSAGE_MASK_MAIN,
+	.filter 	= MESSAGE_CLIENT_I2C,
 	.port = 8389,
 	.rundaemon = 0,
 	.loglevel = DEBUG,
 	.logfile = "",
-	.clientname = "i2cbus",
+	.clientname = CLIENTNAME,
 };
 
 t_clientconfig clientconfig = {
@@ -124,7 +123,7 @@ int handle_message(p_rocsmq_message message) {
 		b64encode(i2c.data,buf,255);
 		
 		// prepare message and send 
-		message->id = MESSAGE_ID_SENSOR | MESSAGE_CLIENT_I2C;
+		strncpy (message->id, CREATE_CLIENTORDER(MESSAGE_ID_SENSOR, MESSAGE_CLIENT_I2C), ROCS_IDSIZE);
 		sprintf(answer,"{\""JSON_KEY_SLAVE"\":%d,\""JSON_KEY_ADDR"\":%d,\""JSON_KEY_LENGTH"\":\"%s\",}"
 				,i2c.slave, i2c.addr, i2c.length,buf);
 		rocsmq_send(sock,message,0);

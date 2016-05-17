@@ -25,7 +25,9 @@
 #include "client_config.h"
 #include "rocs_cron.h"
 
-#define CLIENTNAME "cron"
+#define CLIENTNAME MESSAGE_CLIENT_CRON
+#define CLIENTFILTER MESSAGE_FILTER_CRON
+
 #define CONFIGFILE "conf/rocsmq-cron.config"
 
 TCPsocket sock;
@@ -33,7 +35,7 @@ TCPsocket sock;
 
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
-	.filter 	= CRONJOB_MESSAGE_ID,
+	.filter 	= CLIENTFILTER,
 	.port = 8389,
 	.rundaemon = 0,
 	.loglevel = DEBUG,
@@ -82,7 +84,7 @@ int main(int argc, char **argv) {
 	t_rocsmq_message message;
 	strncpy (message.sender, baseconfig.clientname, 20);
 	memset  (message.tail, 0, 1000);
-	message.id = 0;
+	strncpy (message.id, "\0", 256);
 
 	sock = rocsmq_init(&baseconfig);
 	if (!sock) {
@@ -132,33 +134,31 @@ void handle_message(p_rocsmq_message message) {
 
 	log_message(DEBUG, "message-id %d", message->id);
 	log_message(DEBUG, "  -> message-tail %s", message->tail);
+
+	char mesgid[ROCS_IDSIZE];
+	strncpy(mesgid, message->id, ROCS_IDSIZE);
+	
 	
 	// react on system messages
-	if (message->id & MESSAGE_ID_SYSTEM) {
-		switch (message->id & ~MESSAGE_MASK_SUB) {		
-			 
-		case MESSAGE_ID_SHUTDOWN: /* shutdown message, stop system */
-			rocsmq_thread_set_running(0);
-			break;
-		}
-		
+	if(rocsmq_check_system_message(message->id)){
+		log_message(INFO, "system message handled.");
 		return;
-	} 
+	}
+	
+	char *order = strtok(mesgid, ".");
+	order = strtok(0,".");
+
 	// copy json content from message
 	json = rocsmq_get_message_json(message);
 	parse_cronjob(json, &cronjob);
 
-	switch (message->id) {
-		case CRONJOB_MESSAGE_ADD:
-			log_message(INFO, "adding cronjob %s", message->tail);
-			add_cronjob(&cronjob);
-			break;
-		case CRONJOB_MESSAGE_DEL:
-			log_message(INFO, "adding cronjob", message->tail);
-			del_cronjob(&cronjob);
-			break;
-
+	if (0 == strcmp(order, CRONJOB_MESSAGE_ADD)) {
+		log_message(INFO, "adding cronjob %s", message->tail);
+		add_cronjob(&cronjob);
+	} else if (0 == strcmp(order, CRONJOB_MESSAGE_DEL)) {
+		log_message(INFO, "adding cronjob", message->tail);
+		del_cronjob(&cronjob);
 	}
-	
-	
+
+	return;
 }

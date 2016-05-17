@@ -46,7 +46,7 @@ int custom_config (json_object *json, void * p_datastruct) {
 		log_message(DEBUG, "script %d: %s", i, config->scripts[i]);
 		p_script ps = &(config->scripts[i]);
 		script = json_object_array_get_idx(scripts, i);
-		get_intval(script,CONFIG_KEY_MESSAGE_ID, &(ps->filter));
+		get_stringval(script,CONFIG_KEY_MESSAGE_ID, ps->filter, ROCS_IDSIZE);
 		get_stringval(script,CONFIG_KEY_SCRIPTFILE, ps->filename,255);
 
 		printf("script %d: %d, %s\n", i, config->scripts[i].filter, config->scripts[i].filename);

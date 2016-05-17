@@ -32,8 +32,7 @@
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
 	.port = ROCSMQ_PORT,
-	.filter = 0,
-	.mask = 0,
+	.filter = MESSAGE_CLIENT_CAN,
 	.rundaemon = 0,
 	.loglevel = INFO,
 	.logfile = "",
@@ -84,7 +83,7 @@ void create_rocs_message(canmsg_t * can, p_rocsmq_message message) {
 	json_object *json;
 	char b64data[250];
 
-	message->id = MESSAGE_ID_SENSOR | MESSAGE_CLIENT_CAN;
+	strncpy (message->id, CREATE_CLIENTORDER(MESSAGE_ID_SENSOR, MESSAGE_CLIENT_CAN), ROCS_IDSIZE);
 	b64encode(can->data,b64data,250);
 	memset(message->tail,'\0',ROCS_MESSAGESIZE);
 	sprintf(message->tail, "{\""CAN_MESSAGE_ID"\":%d,\""CAN_MESSAGE"\":\"%s\"}",can->id,b64data);

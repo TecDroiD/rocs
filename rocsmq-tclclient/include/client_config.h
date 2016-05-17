@@ -14,7 +14,7 @@
 
 
 typedef struct s_script {
-		int filter;
+		char filter[ROCS_IDSIZE];
 		char filename[255];
 		char *script;
 } t_script, *p_script;

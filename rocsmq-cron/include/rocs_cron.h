@@ -5,10 +5,10 @@
 #include <log.h>
 #include <linkedlist.h>
 
-#define CRONJOB_MESSAGE_ID	MESSAGE_ID_INFRASTRUCTURE | MESSAGE_CLIENT_CRON
+#define CRONJOB_MESSAGE_ID	"cron"
 
-#define CRONJOB_MESSAGE_ADD	CRONJOB_MESSAGE_ID | 0x0001
-#define CRONJOB_MESSAGE_DEL	CRONJOB_MESSAGE_ID | 0x0000
+#define CRONJOB_MESSAGE_ADD	CRONJOB_MESSAGE_ID ".add"
+#define CRONJOB_MESSAGE_DEL	CRONJOB_MESSAGE_ID ".del"
 
 #define CRONJOB_MESSAGE_SENDER	"cron"
 
@@ -24,7 +24,7 @@ typedef struct s_cronjob {
 	uint32_t timestamp;
 	uint32_t period;
 	int32_t repetitions;
-	uint32_t message;
+	char message[ROCS_IDSIZE];
 	char data[512];
 } t_cronjob, *p_cronjob;
 

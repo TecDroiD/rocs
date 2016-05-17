@@ -36,8 +36,7 @@ TCPsocket sock;
 
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
-	.filter 	= MESSAGE_ID_INFRASTRUCTURE,
-	.mask 		= MESSAGE_MASK_MAIN,
+	.filter 	= MESSAGE_ID_LOGIC,
 	.port = 8389,
 	.rundaemon = 0,
 	.loglevel = INFO,
@@ -120,7 +119,7 @@ int main(int argc, char **argv) {
 	t_rocsmq_message message;
 	strncpy (message.sender, baseconfig.clientname, 20);
 	memset  (message.tail, 0, 1000);
-	message.id = 0;
+	strcpy (message.id, "");
 
 	sock = rocsmq_init(&baseconfig);
 	if (!sock) {
@@ -172,16 +171,8 @@ void handle_message(p_rocsmq_message message) {
 	char *result;
 	
 	// react on system messages
-	if (message->id & MESSAGE_ID_SYSTEM) {
-		switch (message->id & ~MESSAGE_MASK_SUB) {		
-			 
-		case MESSAGE_ID_SHUTDOWN: /* shutdown message, stop system */
-			rocsmq_thread_set_running(0);
-			break;
-		}
-		
-		return;
-	} 
+	rocsmq_check_system_message(message->id);
+	
 	// copy json content from message
 
 	json = rocsmq_get_message_json(message);
@@ -194,10 +185,12 @@ void handle_message(p_rocsmq_message message) {
 	log_message(DEBUG, "message-id %d", message->id);
 	log_message(DEBUG, "  -> message-tail %s", result);
 	log_message(DEBUG, "have scripts %d", clientconfig.cntscripts);
-		
+	
+	char *order = strtok(message->id, ".");
+	order = strtok(order, 0);	
 	
 	for(i = 0; i < clientconfig.cntscripts; i++) {
-		if (clientconfig.scripts[i].filter == message->id) {
+		if (0 == strcmp(clientconfig.scripts[i].filter,order)) {
 			log_message(DEBUG, "calling script %s", clientconfig.scripts[i].filename);
 			if (TCL_OK != Tcl_EvalFile(tcl.interpreter, clientconfig.scripts[i].filename)) {
 				log_message(ERROR, "Error calling script %s: %s",
@@ -306,7 +299,7 @@ int tcl_send_message(ClientData cdata, Tcl_Interp *interpreter, int argc, const 
 		return TCL_ERROR;
 	}
 	
-	message.id = atoi(argv[1]);
+	strncpy (message.id, argv[1], ROCS_IDSIZE);
 	strncpy (message.tail,argv[2],ROCS_MESSAGESIZE);
 	rocsmq_send(sock,&message,0);
 	return TCL_OK;

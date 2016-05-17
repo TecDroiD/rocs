@@ -116,4 +116,55 @@ int rocsmq_set_message_json(p_rocsmq_message mesg, json_object *object) {
 }
 
 
+int rocsmq_message_match(char *subject, char *pattern) {
+	char *s;
+	char *p;
+
+    for (p = pattern; *p != '\0'; p++) {
+        switch (*p) {
+          case '*':
+            if (*(p + 1) == '\0') {
+                /* This wildcard appears at the end of the pattern.
+                   If we made it this far already, the match succeeds
+                   regardless of what the rest of the subject looks like. */
+                return 1;
+            }
+            for (s = subject; *s != '\0' ; s++) {
+                if (rocsmq_message_match(s, p + 1)) {
+                    return 1;
+                }
+            }
+            return 0;
+
+          case '?':
+            if (*(s++) == '\0') {
+                return 0;
+            }
+            break;
+
+          default:
+            if (*s == '\0' || *p != *(s++)) {
+                return 0;
+            }
+        }
+    }
+
+    /* End of pattern reached.  If this also the end of the subject, then
+       match succeeds. */
+    return *s == '\0';
+} 
+
+int rocsmq_check_system_message(char *messageid) {
+	if (rocsmq_message_match(messageid, MESSAGE_FILTER_SYSTEM)) {
+		
+		if(0 == strcmp(messageid, CREATE_CLIENTORDER(MESSAGE_ID_SYSTEM, MESSAGE_ID_SHUTDOWN))) {		
+			rocsmq_thread_set_running(0);
+		}
+		
+		return 1;
+	} 
+	
+	return 0;
+}
+
 #endif

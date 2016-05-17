@@ -37,7 +37,6 @@ TCPsocket sock;
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
 	.filter 	= MESSAGE_ID_LOGIC,
-	.mask 		= MESSAGE_MASK_MAIN,
 	.port = 8389,
 	.rundaemon = 0,
 	.loglevel = DEBUG,
@@ -120,7 +119,7 @@ int main(int argc, char **argv) {
 	t_rocsmq_message message;
 	strncpy (message.sender, baseconfig.clientname, 20);
 	memset  (message.tail, 0, 1000);
-	message.id = 0;
+	strcpy (message.id, "");
 
 	sock = rocsmq_init(&baseconfig);
 	if (!sock) {
@@ -173,16 +172,8 @@ void handle_message(p_rocsmq_message message) {
 	char *result;
 	
 	// react on system messages
-	if (message->id & MESSAGE_ID_SYSTEM) {
-		switch (message->id & ~MESSAGE_MASK_SUB) {		
-			 
-		case MESSAGE_ID_SHUTDOWN: /* shutdown message, stop system */
-			rocsmq_thread_set_running(0);
-			break;
-		}
-		
-		return;
-	} 
+	rocsmq_check_system_message(message->id);
+	 
 	// copy json content from message
 
 	//json = rocsmq_get_message_json(message);
@@ -193,7 +184,7 @@ void handle_message(p_rocsmq_message message) {
 		
 	
 	for(i = 0; i < clientconfig.cntscripts; i++) {
-		if (clientconfig.scripts[i].filter == message->id) {
+		if (strncmp(clientconfig.scripts[i].filter, message->id, ROCS_IDSIZE)) {
 			log_message(DEBUG, "calling script %s", clientconfig.scripts[i].filename);
 			
 			// load script file
@@ -282,7 +273,7 @@ int lua_b64_decode(lua_State *interpreter) {
 int lua_send_message(lua_State *interpreter) {
 	t_rocsmq_message message;
 	
-	message.id = luaL_checknumber(interpreter, 1);
+	strncpy(message.id, luaL_checkstring(interpreter, 1), ROCS_IDSIZE);
 	char * tail = luaL_checkstring(interpreter, 2);
 	
 	strncpy (message.tail,tail,ROCS_MESSAGESIZE);

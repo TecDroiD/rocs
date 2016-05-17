@@ -60,13 +60,13 @@ int main(int argc, char **argv) {
 	log_message(DEBUG, "clientname: %s", baseconfig.clientname);
 	strncpy (message.sender, baseconfig.clientname, 20);
 	memset  (message.tail, 0, 1000);
-	message.id = 0;
+	strncpy (message.id, "", ROCS_IDSIZE);
 
 	// get command line options
 	while ((opt = getopt(argc, argv, "i:m:f:x")) != -1) {
 		switch(opt) {
 			case 'i':
-				message.id = atoi(optarg);
+				strncpy(message.id,optarg, ROCS_IDSIZE);
 				break;
 			case 'm': 
 				strncpy(message.tail,optarg, 1000);

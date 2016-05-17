@@ -7,15 +7,15 @@
 	"logfile" : "",
 	"scripts" : [
 		{
-			"message" : 0, 
+			"message" : "hello", 
 			"scriptfile": "script/helloworld.tcl"
 		},
 		{
-			"message" : 1, 
+			"message" : "foo", 
 			"scriptfile": "script/foobar.tcl"
 		},
 		{
-			"message" : 4096,
+			"message" : "leds",
 			"scriptfile": "script/set_leds.tcl"
 		},
 	],

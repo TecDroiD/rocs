@@ -12,6 +12,7 @@
 #include <SDL/SDL_net.h>
 #include <json-c/json.h>
 
+#include "messages.h"
 #include "linkedlist.h"
 #include "configparser.h"
 
@@ -51,5 +52,11 @@ char *rocsmq_error();
 
 json_object * rocsmq_get_message_json(p_rocsmq_message mesg);
 int rocsmq_set_message_json(p_rocsmq_message mesg, json_object *object);
+
+int rocsmq_message_match(char *subject, char *pattern);
+/**
+ * react on all system messages
+ */ 
+int rocsmq_check_system_message(char *messageid);
 
 #endif /* ROCSMQ_H_ */

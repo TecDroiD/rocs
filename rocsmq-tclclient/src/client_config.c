@@ -47,7 +47,7 @@ int custom_config (json_object *json, void * p_datastruct) {
 	for (i = 0; i < config->cntscripts; i++) {
 		p_script ps = &(config->scripts[i]);
 		script = json_object_array_get_idx(scripts, i);
-		get_intval(script,CONFIG_KEY_MESSAGE_ID, &(ps->filter));
+		get_stringval(script,CONFIG_KEY_MESSAGE_ID, ps->filter,256);
 		get_stringval(script,CONFIG_KEY_SCRIPTFILE, ps->filename,255);
 		
 	}
