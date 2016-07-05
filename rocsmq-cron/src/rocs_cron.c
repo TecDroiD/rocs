@@ -34,9 +34,10 @@ int jobsort (p_linkedlist a, p_linkedlist b) {
 int jobequal (p_linkedlist a, p_linkedlist b) {
 	p_cronjob ca = (p_cronjob) a->data;
 	p_cronjob cb = (p_cronjob) b->data;
-	return (ca->timestamp == cb->timestamp) && (0 == strcmp(ca->message, cb->message));
 	
-	return 0;
+	//int ts = ca->timestamp - cb->timestamp;	
+	//return (0 == ts % ca->period) && (0 == strcmp(ca->message, cb->message));
+	return (0 == strcmp(ca->message, cb->message));
 }
 
 /**
@@ -70,9 +71,18 @@ int add_cronjob(p_cronjob job) {
 	log_message(DEBUG, "..");
 }
 
+/**
+ * remove all jobs matching the name..
+ */ 
 int del_cronjob(p_cronjob job){
 	p_linkedlist item = ll_create(job, sizeof(t_cronjob));
-	cronlist = ll_remove(cronlist,item);
+	p_linkedlist remove	= ll_find(cronlist, item, jobequal);
+	while(remove != 0) {
+		cronlist = ll_remove(cronlist,remove);
+		ll_destroy(remove);
+		remove	= ll_find(cronlist, item, jobequal);
+	} 
+
 	ll_destroy(item);
 }
 
@@ -122,7 +132,9 @@ int32_t tick (TCPsocket sock, uint32_t add) {
 			// after the last repitition, remove job
 			} else  if (job->repetitions == 0){
 				log_message(DEBUG, "removing item");
-				del_cronjob (job);
+				p_linkedlist item = ll_create(job, sizeof(t_cronjob));
+				cronlist = ll_remove(cronlist,item);
+				ll_destroy(item);
 			}
 		
 		}

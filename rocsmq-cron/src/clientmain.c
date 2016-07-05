@@ -156,7 +156,7 @@ void handle_message(p_rocsmq_message message) {
 		log_message(INFO, "adding cronjob %s", message->tail);
 		add_cronjob(&cronjob);
 	} else if (0 == strcmp(mesgid, CRONJOB_MESSAGE_DEL)) {
-		log_message(INFO, "adding cronjob", message->tail);
+		log_message(INFO, "deleting cronjob %s", message->tail);
 		del_cronjob(&cronjob);
 	}
 
