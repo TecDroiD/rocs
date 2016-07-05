@@ -147,6 +147,7 @@ void handle_message(p_rocsmq_message message) {
 	// copy json content from message
 	log_message(DEBUG, "  -> message-tail (%s)", message->tail);
 	json = rocsmq_get_message_json(message);
+	cronjob.timestamp = 0;
 	parse_cronjob(json, &cronjob);
 	
 	log_message(DEBUG,"checking order '%s'", CRONJOB_MESSAGE_ADD);

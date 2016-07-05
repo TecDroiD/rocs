@@ -2,12 +2,15 @@
 
 p_linkedlist cronlist = 0;
 
+// only the timestamp is used
 t_cronjob searchjob = {
 	.timestamp = 0,
 	.period = 0,
 	.repetitions = 0,
 	.message = "",
 };
+
+// a complete cronitem, just to search.
 t_linkedlist cronitem = {
 	.last = 0,
 	.next = 0,
@@ -42,8 +45,8 @@ int jobequal (p_linkedlist a, p_linkedlist b) {
 int parse_cronjob(json_object * json, p_cronjob job) {
 	json_object *message;
 	
-	get_intval(json, CRONJOB_TAG_TIMESTAMP, &job->timestamp);
 	get_intval(json, CRONJOB_TAG_PERIOD, &job->period);
+	get_intval(json, CRONJOB_TAG_TIMESTAMP, &job->timestamp);
 	get_intval(json, CRONJOB_TAG_COUNT, &job->repetitions);
 
 	get_stringval(json, CRONJOB_TAG_MESSAGE, job->message, 512);
@@ -54,10 +57,16 @@ int parse_cronjob(json_object * json, p_cronjob job) {
 }
 
 int add_cronjob(p_cronjob job) {
+	// watch that the job will really be called..
+	while (job->timestamp <= get_timestamp()) {
+		job->timestamp += get_timestamp() + job->period;
+	}
+	
 	log_message(INFO,"Adding job for timestamp %d, cronlist %d", job->timestamp, cronlist);
 	p_linkedlist item = ll_create(job, sizeof(t_cronjob));
 	log_message(DEBUG, ".");
-	cronlist = ll_add(cronlist,item, LL_BACK, jobsort);
+	
+	cronlist = ll_add(cronlist,item, LL_BACK, 0);
 	log_message(DEBUG, "..");
 }
 
@@ -68,18 +77,21 @@ int del_cronjob(p_cronjob job){
 }
 
 int32_t tick (TCPsocket sock, uint32_t add) {
-	p_linkedlist item, next;
-	p_cronjob job = (p_cronjob)cronitem.data;
-
-	uint32_t timestamp = job->timestamp + add;
-	job->timestamp = timestamp;
 	
-	item = cronlist;
+	p_linkedlist item, next;
+	p_cronjob job;
+	
+	// increment timestamp
+	searchjob.timestamp += add;
+	uint32_t timestamp = searchjob.timestamp;
+	
 
 	log_message(DEBUG,"Tick : %d, cronlist: %d", timestamp, cronlist);
 	/*
 	 * handle cron call
 	 */ 
+	 
+	item = cronlist;
 	while(item) {
 		next = item->next;
 
@@ -98,22 +110,19 @@ int32_t tick (TCPsocket sock, uint32_t add) {
 			strcpy(cronmessage.tail, job->data);  
 			rocsmq_send(sock, &cronmessage, 0);
 			
-			log_message(DEBUG, "Data sent!");
-			/* 
-			 * re-add or delete item
-			 * if repetititons == -1, repeat infinitel
-			 */ 
-			if (job->repetitions != 0) {
-				if (job->repetitions != REPEAT_INFINITE)
-					job->repetitions--;	
-				job->timestamp += job->period;
-				//ll_sort(cronlist, jobsort);
+			log_message(DEBUG, "message '%s' sent!", cronmessage.id);
+
+			// put new timestamp 
+			job->timestamp += job->period;
+
+			// repeat until all repititions done
+			if (job->repetitions > 0) {
+				job->repetitions --;
 		
-			} else {
+			// after the last repitition, remove job
+			} else  if (job->repetitions == 0){
 				log_message(DEBUG, "removing item");
-				cronlist = ll_remove(cronlist, item);
-				log_message(DEBUG, "removed, destroying");
-				ll_destroy(item);
+				del_cronjob (job);
 			}
 		
 		}
@@ -122,4 +131,8 @@ int32_t tick (TCPsocket sock, uint32_t add) {
 		 */ 
 		item = next; 
 	}
+}
+
+int get_timestamp() {
+	return searchjob.timestamp;
 }

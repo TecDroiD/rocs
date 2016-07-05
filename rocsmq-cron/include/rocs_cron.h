@@ -36,4 +36,5 @@ int del_cronjob(p_cronjob job);
 
 int32_t tick (TCPsocket sock, uint32_t add);
 
+int get_timestamp();
 #endif
