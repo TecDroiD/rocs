@@ -14,7 +14,7 @@ indent_mode=2
 
 [project]
 name=rocsmq-tclclient
-base_path=/home/tecdroid/projects/dummy/rocsmq-tclclient/
+base_path=/home/tecdroid/projects/projects/rocsmq-tclclient/
 description=
 file_patterns=
 
@@ -24,19 +24,19 @@ long_line_column=72
 
 [files]
 current_page=1
-FILE_NAME_0=10;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclient_config.c;0;4
-FILE_NAME_1=295;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclientmain.c;0;4
-FILE_NAME_2=362;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-tclclient%2Finclude%2Fclient_config.h;0;4
-FILE_NAME_3=652;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-tclclient%2FCMakeLists.txt;0;4
-FILE_NAME_4=9;Sh;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-tclclient%2Fconf%2Finit.d.in;0;4
-FILE_NAME_5=530;Tcl;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-tclclient%2Fscript%2Fhelloworld.tcl;0;4
-FILE_NAME_6=467;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
-FILE_NAME_7=0;Tcl;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-tclclient%2Fscript%2Ffoobar.tcl;0;4
-FILE_NAME_8=323;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-tclclient%2Fconf%2Fconfig.in;0;4
-FILE_NAME_9=125;Tcl;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-tclclient%2Fscript%2Fset_leds.tcl;0;4
-FILE_NAME_10=1339;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq%2Finclude%2Frocsmq.h;0;4
-FILE_NAME_11=225;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4
-FILE_NAME_12=3347;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq%2Fsrc%2Fconfigparser.c;0;4
+FILE_NAME_0=10;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclient_config.c;0;4
+FILE_NAME_1=295;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclientmain.c;0;4
+FILE_NAME_2=362;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Finclude%2Fclient_config.h;0;4
+FILE_NAME_3=652;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2FCMakeLists.txt;0;4
+FILE_NAME_4=9;Sh;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fconf%2Finit.d.in;0;4
+FILE_NAME_5=530;Tcl;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fscript%2Fhelloworld.tcl;0;4
+FILE_NAME_6=467;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
+FILE_NAME_7=0;Tcl;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fscript%2Ffoobar.tcl;0;4
+FILE_NAME_8=323;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fconf%2Fconfig.in;0;4
+FILE_NAME_9=125;Tcl;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fscript%2Fset_leds.tcl;0;4
+FILE_NAME_10=1339;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Frocsmq.h;0;4
+FILE_NAME_11=225;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4
+FILE_NAME_12=3347;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Fconfigparser.c;0;4
 
 [VTE]
 last_dir=/home/tecdroid

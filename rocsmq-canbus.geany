@@ -14,7 +14,7 @@ indent_mode=2
 
 [project]
 name=rocsmq-canbus
-base_path=/home/tecdroid/projects/dummy/rocsmq-canbus/
+base_path=/home/tecdroid/projects/rocs/rocsmq-canbus/
 description=
 file_patterns=
 
@@ -24,16 +24,16 @@ long_line_column=72
 
 [files]
 current_page=9
-FILE_NAME_0=230;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-canbus%2FCMakeLists.txt;0;4
-FILE_NAME_1=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-canbus%2Fsrc%2Fcanbus.c;0;4
-FILE_NAME_2=1810;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-canbus%2Fsrc%2Frocs_can_main.c;0;4
-FILE_NAME_3=2343;C;0;EISO-8859-1;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-canbus%2Finclude%2Fcan4linux.h;0;4
-FILE_NAME_4=278;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-canbus%2Finclude%2Fcanbus.h;0;4
-FILE_NAME_5=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq%2Finclude%2Flinkedlist.h;0;4
-FILE_NAME_6=1398;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
-FILE_NAME_7=1822;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4
-FILE_NAME_8=22;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Ftest%2Fledmessages.txt;0;4
-FILE_NAME_9=0;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-canbus%2Fconf%2Fconfig.in;0;4
+FILE_NAME_0=230;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojectss%2Frocs%2Frocsmq-canbus%2FCMakeLists.txt;0;4
+FILE_NAME_1=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojectss%2Frocs%2Frocsmq-canbus%2Fsrc%2Fcanbus.c;0;4
+FILE_NAME_2=1810;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojectss%2Frocs%2Frocsmq-canbus%2Fsrc%2Frocs_can_main.c;0;4
+FILE_NAME_3=2343;C;0;EISO-8859-1;1;1;0;%2Fhome%2Ftecdroid%2Fprojectss%2Frocs%2Frocsmq-canbus%2Finclude%2Fcan4linux.h;0;4
+FILE_NAME_4=278;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojectss%2Frocs%2Frocsmq-canbus%2Finclude%2Fcanbus.h;0;4
+FILE_NAME_5=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojectss%2Frocs%2Frocsmq%2Finclude%2Flinkedlist.h;0;4
+FILE_NAME_6=1398;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojectss%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
+FILE_NAME_7=1822;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojectss%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4
+FILE_NAME_8=22;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojectss%2Frocs%2Ftest%2Fledmessages.txt;0;4
+FILE_NAME_9=0;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojectss%2Frocs%2Frocsmq-canbus%2Fconf%2Fconfig.in;0;4
 
 [VTE]
 last_dir=/home/tecdroid
