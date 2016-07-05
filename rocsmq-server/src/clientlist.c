@@ -7,13 +7,41 @@ p_client clients = NULL;
  * add a client into our array of clients
  */
 t_client *add_client(TCPsocket sock, p_rocsmq_clientdata info) {
+	char *tok;
+	char filter[ROCS_IDSIZE];
+	
+	p_client client = 0;
+	
+	
+	// resize list
 	clients = (p_client) realloc(clients, (num_clients + 1) * sizeof(t_client));
-	memcpy((void *) &clients[num_clients].info, info,
-			sizeof(t_rocsmq_clientdata));
-	clients[num_clients].sock = sock;
-	num_clients++;
 
-	return (&clients[num_clients - 1]);
+	client = &clients[num_clients];
+
+	// copy name
+	strcpy((void *) client->name, info->name);
+	// copy socket
+	client->sock = sock;
+	
+	// create filter list
+	client->filters = 0;
+	tok = strtok(info->filter, MESSAGE_SEPARATOR);
+	memset(filter,'\0',ROCS_IDSIZE);
+	while(tok) {
+		// add filter
+		log_message(DEBUG, "Adding filter %s [%d] to client %s.", tok, strlen(tok)+1, client->name);
+		strcpy(filter,tok);
+		p_linkedlist item = ll_create(filter, ROCS_IDSIZE);
+		client->filters = ll_add(client->filters,item,LL_BACK, 0);
+		
+		// get next filter
+		tok = strtok(0,MESSAGE_SEPARATOR);
+	}
+
+	// add client number
+	num_clients++;
+	// return client
+	return client;
 }
 
 
@@ -21,14 +49,13 @@ t_client *add_client(TCPsocket sock, p_rocsmq_clientdata info) {
  * remove a client from our array of clients
  */
 void remove_client_idx(int i) {
-	char *name = clients[i].info.name;
-
 	if (i < 0 && i >= num_clients)
 		return;
 
 	/* close the old socket, even if it's dead... */
 	SDLNet_TCP_Close(clients[i].sock);
 
+	ll_destroy(clients[i].filters);
 	num_clients--;
 	if (num_clients > i)
 		memmove(&clients[i], &clients[i + 1],
@@ -93,6 +120,23 @@ int find_client_idx(p_client client) {
  * match the filters of a client
  */ 
 int filter_match(p_client client, char *message) {
+	p_linkedlist item = client->filters;
+	if(!item) {
+		log_message(WARNING, "Client %s has no filters.",client->name);
+		return 0;
+	}
+	while (item != 0) {
+		char *filter = item->data;
+		log_message(DEBUG, "checking filter %s on message %s for client %s.", filter, message, client->name);
+		if(rocsmq_message_match(message, filter)) {
+			log_message(DEBUG, "  match %s on message %s for client %s.", item->data, message, client->name);
+			
+			return 1;
+		}
+		
+		log_message(DEBUG, "next item %d", item->next);
+		item = item->next;
+	}
 	
 	return 0;
 }

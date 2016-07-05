@@ -1,17 +1,37 @@
 #ifndef CLIENTLIST_H
 #define CLIENTLIST_H
 
+#include <string.h>
+
 #include <SDL/SDL.h>
 #include <SDL/SDL_endian.h>
 #include <SDL/SDL_error.h>
 #include <SDL/SDL_net.h>
 #include <SDL/SDL_stdinc.h>
 
+#include <linkedlist.h>
+#include <log.h>
+
 #include <rocsmq.h>
 
+
 typedef struct {
+	/**
+	 * here, you connect with the client
+	 */ 
 	TCPsocket sock;
-	t_rocsmq_clientdata info;
+	/**
+	 * here is all client data you need
+	 */ 
+	//t_rocsmq_clientdata info;
+	/**
+	 *  the clients name
+	 */ 
+	char name[ROCS_CLIENTNAMESIZE];
+	/**
+	 * here is the list of filters..
+	 */ 
+	p_linkedlist filters;
 } t_client, *p_client;
 
 

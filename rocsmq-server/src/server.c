@@ -229,7 +229,7 @@ int main(int argc, char **argv) {
 						handle_message(&message);
 					}
 				} else {
-					log_message(DEBUG,"removing client %s\n", client->info.name);
+					log_message(DEBUG,"removing client %s\n", client->name);
 					remove_client(client);
 				}
 			}
@@ -286,7 +286,7 @@ void send_all(p_rocsmq_message message) {
 	log_message(DEBUG, "Sending message '%s', possibly to %d clients.", message->tail, count_clients());
 	while((client = next_client_by_message(client,message->id)) != 0) {
 
-		log_message(DEBUG, "  - to client %s",  client->info.name);
+		log_message(DEBUG, "  - to client %s",  client->name);
 		if (rocsmq_send(client->sock, message, 0)) {
 		} else {
 			remove_client(client);

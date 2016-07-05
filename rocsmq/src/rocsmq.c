@@ -117,8 +117,8 @@ int rocsmq_set_message_json(p_rocsmq_message mesg, json_object *object) {
 
 
 int rocsmq_message_match(char *subject, char *pattern) {
-	char *s;
-	char *p;
+	char *s = subject;
+	char *p = pattern;
 
     for (p = pattern; *p != '\0'; p++) {
 //		log_message(DEBUG, "pattern : %c", *p);

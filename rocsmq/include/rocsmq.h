@@ -25,6 +25,9 @@
 #define ROCS_CLIENTNAMESIZE 20
 
 #define EMPTY_MESSAGE		0xffffffff
+
+#define MESSAGE_SEPARATOR ","
+
 /**
  * data type for the standard message
  */
