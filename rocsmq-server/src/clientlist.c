@@ -146,12 +146,17 @@ int filter_match(p_client client, char *message) {
 p_client next_client_by_message(p_client client, char *message) {
 	
 	static int oldclient = 0;
-	p_client check = get_client_idx(oldclient);
 	
+	// return to start if client is null
+	if (client == 0) {
+		oldclient =0;
+	}
+	
+	p_client check = get_client_idx(oldclient);
 	// if some unknown client is given, find it.
 	if (client != check) {
 		oldclient = find_client_idx(client);
-	}
+	} 
 	
 	// check next client
 	oldclient++;

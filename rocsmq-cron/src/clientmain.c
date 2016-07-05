@@ -131,8 +131,7 @@ void handle_message(p_rocsmq_message message) {
 	int i;
 	char *result;
 
-	log_message(DEBUG, "message-id %s", message->id);
-	log_message(DEBUG, "  -> message-tail %s", message->tail);
+	log_message(DEBUG, "message-id '%s'", message->id);
 
 	char mesgid[ROCS_IDSIZE];
 	strncpy(mesgid, message->id, ROCS_IDSIZE);
@@ -144,17 +143,18 @@ void handle_message(p_rocsmq_message message) {
 		return;
 	}
 	
-	char *order = strtok(mesgid, ".");
-	order = strtok(0,".");
 
 	// copy json content from message
+	log_message(DEBUG, "  -> message-tail (%s)", message->tail);
 	json = rocsmq_get_message_json(message);
 	parse_cronjob(json, &cronjob);
-
-	if (0 == strcmp(order, CRONJOB_MESSAGE_ADD)) {
+	
+	log_message(DEBUG,"checking order '%s'", CRONJOB_MESSAGE_ADD);
+	
+	if (0 == strcmp(mesgid, CRONJOB_MESSAGE_ADD)) {
 		log_message(INFO, "adding cronjob %s", message->tail);
 		add_cronjob(&cronjob);
-	} else if (0 == strcmp(order, CRONJOB_MESSAGE_DEL)) {
+	} else if (0 == strcmp(mesgid, CRONJOB_MESSAGE_DEL)) {
 		log_message(INFO, "adding cronjob", message->tail);
 		del_cronjob(&cronjob);
 	}

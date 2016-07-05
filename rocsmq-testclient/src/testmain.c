@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
 	while ((opt = getopt(argc, argv, "n:i:m:f:x")) != -1) {
 		switch(opt) {
 			case 'n':
-				ctrcpy(baseconfig.clientname, optarg);
+				strcpy(baseconfig.clientname, optarg);
 				break;
 			case 'i':
 				strncpy(message.id,optarg, ROCS_IDSIZE);

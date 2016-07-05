@@ -108,7 +108,12 @@ int rocsmq_send (TCPsocket sock,p_rocsmq_message mesg, int flags) {
 
 
 json_object * rocsmq_get_message_json(p_rocsmq_message mesg) {
-	return json_tokener_parse(mesg->tail);
+	enum json_tokener_error error;
+	json_object * obj = json_tokener_parse_verbose(mesg->tail, &error);
+	if (error != json_tokener_success) {
+		log_message(ERROR,"Json Parse: %s", json_tokener_error_desc(error));
+	}
+	return obj; 
 }
 
 int rocsmq_set_message_json(p_rocsmq_message mesg, json_object *object) {
