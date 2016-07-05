@@ -63,8 +63,11 @@ int main(int argc, char **argv) {
 	strncpy (message.id, "", ROCS_IDSIZE);
 
 	// get command line options
-	while ((opt = getopt(argc, argv, "i:m:f:x")) != -1) {
+	while ((opt = getopt(argc, argv, "n:i:m:f:x")) != -1) {
 		switch(opt) {
+			case 'n':
+				ctrcpy(baseconfig.clientname, optarg);
+				break;
 			case 'i':
 				strncpy(message.id,optarg, ROCS_IDSIZE);
 				break;
@@ -77,7 +80,8 @@ int main(int argc, char **argv) {
 			case 'f':
 				parseconfig(optarg, &baseconfig,0, 0,0);	
 			default:
-				printf("usage:\n %s [-i message-id] [-m message] [-x]\n", argv[0]);
+				printf("usage:\n %s [-n name] [-i message-id] [-m message] [-x]\n", argv[0]);
+				printf(" -n - name of the client\n");
 				printf(" -i - identifier of the message\n");
 				printf(" -m - body of the message\n");
 				printf(" -x - exit after sending, goes into listening mode else.\n");

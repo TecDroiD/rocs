@@ -54,7 +54,7 @@ int parse_cronjob(json_object * json, p_cronjob job) {
 }
 
 int add_cronjob(p_cronjob job) {
-	log_message(ERROR,"Adding job for timestamp %d, cronlist %d", job->timestamp, cronlist);
+	log_message(INFO,"Adding job for timestamp %d, cronlist %d", job->timestamp, cronlist);
 	p_linkedlist item = ll_create(job, sizeof(t_cronjob));
 	log_message(DEBUG, ".");
 	cronlist = ll_add(cronlist,item, LL_BACK, jobsort);

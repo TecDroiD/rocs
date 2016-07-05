@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <getopt.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_net.h>
 #include <SDL/SDL_thread.h>
@@ -95,16 +96,31 @@ int main(int argc, char **argv) {
 	SDL_Thread *thread;
 	int i;
 	char buffer[32];
+
+	char clientname[32];
 	
-	// parse configuration
-	if (argc <= 1) {
-		parseconfig(CONFIGFILE, &baseconfig, CLIENTNAME, custom_config, &clientconfig);
-	} else if (argc == 2) {
-		parseconfig(argv[1], &baseconfig, CLIENTNAME, custom_config, &clientconfig);
-	} else {
-		printf("Usage: %s [configfile]\n", argv[0]);
-		exit(EXIT_FAILURE);
+	// initialize whatever neccesssary
+	strcpy(clientname, CLIENTNAME);
+	
+	int c;
+	// get config name if neccessary
+	while ((c = getopt(argc, argv, "n:")) != -1) {
+		switch(c) {
+			case 'n':
+				strcpy(clientname, optarg);
+				break;
+			default:
+				break;
+		}
 	}
+
+	// parse configuration
+	// load file or not..
+	if (optind >= argc) {
+		parseconfig(CONFIGFILE, &baseconfig, clientname, custom_config, &clientconfig);
+	} else {
+		parseconfig(argv[optind], &baseconfig, clientname, custom_config, &clientconfig);
+	} 
 	
 	// open log
 	printf("logging to file.. '%s'\n", baseconfig.logfile);
