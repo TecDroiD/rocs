@@ -14,13 +14,17 @@
 typedef struct {
 	char name[ROCS_CLIENTNAMESIZE];
 	TCPsocket socket;
-} t_clientsocket, * p_clientsocket;
+} t_clientsocket, * p_clientsocket, **pp_clientsocket;
 
 /**
  * add a client socket to socket list
  */ 
-int add_clientsocket(p_rocsmq_clientdata clientdata, TCPsocket sock);
+p_clientsocket add_clientsocket(p_rocsmq_clientdata clientdata, TCPsocket sock);
 
+/**
+ * remove a clientsocket
+ */ 
+int remove_clientsocket(TCPsocket sock); 
 /**
  * compare function to find socket in clientsockets 
  */
@@ -31,6 +35,16 @@ int cmp_clientsocket_match_name (p_linkedlist a, p_linkedlist b);
  */
 int cmp_clientsocket_match_socket (p_linkedlist a, p_linkedlist b);
 
+/**
+ * compare function to find socket in clientsocket list
+ */ 
+int cmp_clientsocket_match_addr (p_linkedlist a, p_linkedlist b);
+
+
+/**
+ * used to iterate through socket list
+ */ 
 p_clientsocket get_next_clientsocket(p_clientsocket sock);
 
+int num_clients();
 #endif

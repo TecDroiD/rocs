@@ -22,12 +22,12 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=9
+current_page=4
 FILE_NAME_0=1046;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-cron%2Fsrc%2Frocs_cron.c;0;4
 FILE_NAME_1=594;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-cron%2Finclude%2Frocs_cron.h;0;4
 FILE_NAME_2=916;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-cron%2FCMakeLists.txt;0;4
 FILE_NAME_3=807;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-cron%2Fsrc%2Fclient_config.c;0;4
-FILE_NAME_4=3493;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-cron%2Fsrc%2Fclientmain.c;0;4
+FILE_NAME_4=2751;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-cron%2Fsrc%2Fclientmain.c;0;4
 FILE_NAME_5=196;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-cron%2Finclude%2Fclient_config.h;0;4
 FILE_NAME_6=683;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4
 FILE_NAME_7=2709;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq%2Fsrc%2Flinkedlist.c;0;4

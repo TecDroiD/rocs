@@ -38,7 +38,7 @@ p_linkedlist ll_getlast(p_linkedlist list) {
 	if (list->next == 0) {
 		return list;
 	}
-	log_message(DEBUG,"list->next : %d", list->next);
+//	log_message(DEBUG,"list->next : %d", list->next);
 	return ll_getlast(list->next);
 }
 
@@ -61,10 +61,16 @@ p_linkedlist ll_add(p_linkedlist list, p_linkedlist items, int where,
 			return list;
 		}
 	case LL_SORT:
+//		log_message(DEBUG, "adding item");
 		iterator = ll_getlast(items);
 		iterator->next = list;
-		list->last = iterator;
+		if (list != 0)
+			list->last = iterator;
+//		log_message(DEBUG, "sorting");
+
 		iterator = ll_sort(items, comparefunc);
+//		log_message(DEBUG, "done");
+
 		return iterator;
 	default:
 		return items;
@@ -86,10 +92,13 @@ p_linkedlist ll_sort(p_linkedlist list, _ll_compare comparefunc) {
 	start = list;
 	cmp = list;
 
+//	log_message(DEBUG, "tets");
+
 	/*
 	 * iteratively sort a bubble
 	 */ 
 	while (cmp->next != 0) {
+//		log_message(DEBUG, "ta");
 		cmp = cmp->next;
 		
 		if (comparefunc(start, cmp) < 0) {
@@ -102,14 +111,21 @@ p_linkedlist ll_sort(p_linkedlist list, _ll_compare comparefunc) {
 	 * recursively bubble up
 	 */ 
 	if (start->next != 0) {
+//		log_message(DEBUG, "iterating down");
+
 		start->next = ll_sort(start->next,comparefunc);
 		start->next->last = start;
 	}
 	
+//	log_message(DEBUG, "sorted");
+
 	return start;
 }
 
 p_linkedlist ll_find(p_linkedlist list, p_linkedlist item, _ll_compare comparefunc) {
+	if (0 == list) {
+		return 0;
+	}
 	if (0 == comparefunc(list, item)) {
 		return list;
 	}

@@ -101,8 +101,7 @@ int main(int argc, char **argv) {
 		tick(sock, clientconfig.tick);
 		
 		while(rocsmq_has_messages()) {
-
-			rocsmq_get_message(&message);
+ 			rocsmq_get_message(&message);
 			log_message( DEBUG, "incoming:%s\n",message.tail);
 			handle_message(&message);
 		}
@@ -132,7 +131,7 @@ void handle_message(p_rocsmq_message message) {
 	int i;
 	char *result;
 
-	log_message(DEBUG, "message-id %d", message->id);
+	log_message(DEBUG, "message-id %s", message->id);
 	log_message(DEBUG, "  -> message-tail %s", message->tail);
 
 	char mesgid[ROCS_IDSIZE];

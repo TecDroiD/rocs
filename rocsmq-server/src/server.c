@@ -42,8 +42,8 @@ typedef struct {
 	t_rocsmq_clientdata info;
 } t_client, *p_client;
 
-p_client clients = NULL;
-int num_clients = 0;
+//p_client clients = NULL;
+
 TCPsocket server;
 
 
@@ -162,18 +162,27 @@ int main(int argc, char **argv) {
 		exit(4);
 	}
 
+	/**
+	 * infinite main loop
+	 */ 
 	log_message(INFO,"Server started. waiting for clients");
 	while (1) {
+		/* check for data from sockets */
 		int numready, i;
-
-		set = create_sockset();
+		set = create_sockset(0);
 		numready = SDLNet_CheckSockets(set, (Uint32) -1);
+		
+		/* on error break */
 		if (numready == -1) {
 			log_message(ERROR,"SDLNet_CheckSockets: %s\n", SDLNet_GetError());
 			break;
 		}
+		
+		/* when there is nothing to do, do it.. */
 		if (!numready)
 			continue;
+		
+		/* a new client has come */
 		if (SDLNet_SocketReady(server)) {
 			numready--;
 			/*printf("Connection...\n"); */
@@ -186,19 +195,54 @@ int main(int argc, char **argv) {
 					log_message(DEBUG,"welcoming client %s",clientinfo.name);
 					log_message(DEBUG," filter : %s", clientinfo.filter);
 					add_client(&clientinfo, sock);
+					log_message(DEBUG," client created");
 				} else {
 					log_message(ERROR,"could not connect client: %s",rocsmq_error());
 					SDLNet_TCP_Close(sock);
 				}
 			}
+
+			list_clients(0);
 		}
+
 		/**
-		 * receive message and send it to all
+		 * receive message and send it to all interested clients
 		 */
-		p_clientsocket cs = 0;
-		log_message(DEBUG,"clients: %d, numready: %d", num_clients,numready);
-		while (0 != (cs = get_next_clientsocket(cs))) {
+		log_message(DEBUG,"clients: %d, numready: %d", num_clients(),numready);
+		p_clientsocket cs = get_next_clientsocket(0);
+		for (i = 0; numready && cs != 0; i++) {
 			if (SDLNet_SocketReady(cs->socket)) {
+				// receive message
+				if (rocsmq_recv(cs->socket, (p_rocsmq_message) & message,
+						ROCSMQ_POLL)) {
+					numready--;
+					log_message(DEBUG,"received message");
+					log_message(DEBUG," id is '%s', sender is '%s'",
+								message.id, message.sender);
+					log_message(DEBUG,"	tail is %s",message.tail);
+
+					// send message to all
+					send_all( & message);
+					
+					list_clients(0);
+					// handle message if it's for the infrastructure		
+					if(0 == strcmp(message.id, MESSAGE_ID_SYSTEM)) {
+						handle_message(&message);
+					}
+				} else {
+					log_message(DEBUG,"removing client %s\n", cs->name);
+					remove_clientsocket(cs->socket);
+				}
+			}
+			cs = get_next_clientsocket(cs);
+		}
+/*		 
+		log_message(DEBUG,"checking client sockets for data");
+		p_clientsocket cs = get_next_clientsocket(0);
+		while (cs != 0) {
+			log_message(DEBUG,"testing socket %d", cs);
+			if (SDLNet_SocketReady(cs->socket)) {
+				log_message(DEBUG, "data recv");
 				// receive message
 				if (rocsmq_recv(cs->socket, (p_rocsmq_message) & message,
 						ROCSMQ_POLL)) {
@@ -218,9 +262,13 @@ int main(int argc, char **argv) {
 					remove_client_by_sock(cs->socket);
 				}
 			}
-		}
-	}
+			log_message(DEBUG, "socket tested");
+			cs = get_next_clientsocket(cs);
+			log_message(DEBUG, "next socket %s", cs);
 
+		}
+*/
+	}
 	clear_filterlist();
 	quit();
 }
@@ -229,20 +277,33 @@ int main(int argc, char **argv) {
 /**
  * create a socket set that has the server socket and all the client sockets
  */
-SDLNet_SocketSet create_sockset() {
-	static SDLNet_SocketSet set = NULL;
+SDLNet_SocketSet create_sockset(SDLNet_SocketSet set) {
 	int i;
 
-	if (set)
+	// clear set if neccessary
+	if (set) {
 		SDLNet_FreeSocketSet(set);
-	set = SDLNet_AllocSocketSet(num_clients + 1);
+	}
+	
+	// allocate memory for set
+	log_message(DEBUG, "Having %d clients", num_clients());
+	set = SDLNet_AllocSocketSet(num_clients() + 1);
+	
+	// die if not allocated
 	if (!set) {
-		printf("SDLNet_AllocSocketSet: %s\n", SDLNet_GetError());
+		log_message(ERROR, "SDLNet_AllocSocketSet: %s\n", SDLNet_GetError());
 		exit(1); /*most of the time this is a major error, but do what you want. */
 	}
 	SDLNet_TCP_AddSocket(set, server);
-	for (i = 0; i < num_clients; i++)
-		SDLNet_TCP_AddSocket(set, clients[i].sock);
+
+	// add sockets
+	p_clientsocket cs = get_next_clientsocket(0);
+	while (0 != cs) {
+		log_message(DEBUG, "Adding socket at addr %d", cs);
+		SDLNet_TCP_AddSocket(set, cs->socket);
+		cs = get_next_clientsocket(cs);
+	}
+	
 	return (set);
 }
 
@@ -301,7 +362,6 @@ void server_signal_handler(int sig) {
  * handle rocsmq message
  */
 int handle_message(p_rocsmq_message message) {
-	
 	return 0;
 }
 

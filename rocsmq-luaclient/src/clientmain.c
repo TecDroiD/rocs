@@ -36,7 +36,7 @@ TCPsocket sock;
 
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
-	.filter 	= MESSAGE_ID_LOGIC,
+	.filter 	= CLIENTNAME,
 	.port = 8389,
 	.rundaemon = 0,
 	.loglevel = DEBUG,
@@ -118,8 +118,8 @@ int main(int argc, char **argv) {
 	
 	t_rocsmq_message message;
 	strncpy (message.sender, baseconfig.clientname, 20);
-	memset  (message.tail, 0, 1000);
-	strcpy (message.id, "");
+	memset  (message.tail, 0, ROCS_MESSAGESIZE);
+	memset (message.id, 0, ROCS_IDSIZE);
 
 	sock = rocsmq_init(&baseconfig);
 	if (!sock) {
@@ -170,7 +170,6 @@ void handle_message(p_rocsmq_message message) {
 	char val[32];
 	int i;
 	char *result;
-	
 	// react on system messages
 	rocsmq_check_system_message(message->id);
 	 
@@ -178,13 +177,13 @@ void handle_message(p_rocsmq_message message) {
 
 	//json = rocsmq_get_message_json(message);
 	
-	log_message(DEBUG, "message-id %d", message->id);
+	log_message(DEBUG, "message-id %s", message->id);
 	log_message(DEBUG, "  -> message-tail %s", message->tail);
 	log_message(DEBUG, "have scripts %d", clientconfig.cntscripts);
 		
 	
 	for(i = 0; i < clientconfig.cntscripts; i++) {
-		if (strncmp(clientconfig.scripts[i].filter, message->id, ROCS_IDSIZE)) {
+		if (0 ==  strncmp(clientconfig.scripts[i].filter, message->id, ROCS_IDSIZE)) {
 			log_message(DEBUG, "calling script %s", clientconfig.scripts[i].filename);
 			
 			// load script file
@@ -274,6 +273,7 @@ int lua_send_message(lua_State *interpreter) {
 	t_rocsmq_message message;
 	
 	strncpy(message.id, luaL_checkstring(interpreter, 1), ROCS_IDSIZE);
+	strncpy (message.sender, baseconfig.clientname, 20);
 	char * tail = luaL_checkstring(interpreter, 2);
 	
 	strncpy (message.tail,tail,ROCS_MESSAGESIZE);

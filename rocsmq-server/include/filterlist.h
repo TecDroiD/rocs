@@ -21,7 +21,8 @@
  */ 
 typedef struct {
 	char filter[ROCS_IDSIZE];
-	p_linkedlist sockets;
+	// list of pp_clientsocket
+	p_linkedlist clients;
 } t_filter, * p_filter;
 
 /**
@@ -40,32 +41,35 @@ int remove_filter(char *id);
 int clear_filterlist();
     
 /**
- * find a filter in filter list 
+ * find a filter in filter list by comparison
  */
 p_filter find_filter(char *id);
-  
+
+/**
+ * find a filter in filter list by expression
+ */
+p_filter match_filter(char *id);  
 /**
  * add a socket to a filter
  */   
-int filter_add_socket(p_filter filter, TCPsocket socket);
+int filter_add_client(p_filter filter, pp_clientsocket client);
 /**
  * add a socket to a filter
  */   
-int filter_remove_socket(p_filter filter, TCPsocket socket);
+int filter_remove_client(p_filter filter, p_clientsocket client);
 /**
  * add a socket to a filter
  */   
 int filter_clear_socketlist(p_filter filter);
  
 /** 
- * compare function to find filter object by id
+ * compare function to find filter object by regular expression id
  */ 
 int cmp_filter_match_id(p_linkedlist a, p_linkedlist b);
-
-/**
- * compare function to find socket in filter
+/** 
+ * compare function to find filter object by comparing id
  */ 
-int cmp_socket_match(p_linkedlist a, p_linkedlist b);
+int cmp_filter_cmp_id(p_linkedlist a, p_linkedlist b);
 
 /**
  * add a client
@@ -85,4 +89,7 @@ int send_message_to_filter(p_filter, p_rocsmq_message);
  * send message to all clients
  */ 
 int send_all(p_rocsmq_message message);
+
+
+void list_clients(char *dest);
 #endif
