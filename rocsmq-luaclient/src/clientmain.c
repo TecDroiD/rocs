@@ -204,7 +204,7 @@ void handle_message(p_rocsmq_message message) {
 			
 			// load script file
 			if (luaL_loadfile(lua.interpreter,clientconfig.scripts[i].filename)) {
-				printf( "Error loading script: %s\n", lua_tostring(lua.interpreter, -1));
+				log_message(ERROR, "Error loading script: %s\n", lua_tostring(lua.interpreter, -1));
 			}
 
 			// call programm

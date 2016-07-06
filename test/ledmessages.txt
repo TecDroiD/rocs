@@ -1,2 +1,0 @@
-// activate all leds 
-{"messageid":577,"message64":"////AAAAAAA="}
