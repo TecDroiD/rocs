@@ -4,9 +4,9 @@ p_linkedlist cronlist = 0;
 
 // only the timestamp is used
 t_cronjob searchjob = {
-	.timestamp = 0,
-	.period = 0,
-	.repetitions = 0,
+	.timestamp = 1,
+	.period = 1,
+	.repetitions = 1,
 	.message = "",
 };
 
@@ -130,9 +130,10 @@ int32_t tick (TCPsocket sock, uint32_t add) {
 				job->repetitions --;
 		
 			// after the last repitition, remove job
-			} else  if (job->repetitions == 0){
+			} 
+			
+			if (job->repetitions == 0){
 				log_message(DEBUG, "removing item");
-				p_linkedlist item = ll_create(job, sizeof(t_cronjob));
 				cronlist = ll_remove(cronlist,item);
 				ll_destroy(item);
 			}
