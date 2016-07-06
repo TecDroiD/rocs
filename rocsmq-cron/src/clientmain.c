@@ -7,6 +7,7 @@
 
 //#include <linkedlist.h>
 #include <rocsmq.h>
+#include <daemonizer.h>
 #include <rocsmqthread.h>
 #include <configparser.h>
 #include <messages.h> 
@@ -49,6 +50,11 @@ t_cronconfig clientconfig = {
 };
 
 
+/**
+ * signal handler function for signals to handle ;-p
+ */
+void client_signal_handler(int sig);
+
 void handle_message(p_rocsmq_message message);
 
 /**
@@ -68,6 +74,12 @@ int main(int argc, char **argv) {
 	} else {
 		printf("Usage: %s [configfile]\n", argv[0]);
 		exit(EXIT_FAILURE);
+	}
+	
+	/* daemonize if neccessary */
+	if(baseconfig.rundaemon) {
+		if(0 != daemonize("~", client_signal_handler))
+			return 1;
 	}
 	
 	// open log
@@ -161,4 +173,16 @@ void handle_message(p_rocsmq_message message) {
 	}
 
 	return;
+}
+
+/**
+ * signal handler function for signals to handle ;-p
+ */
+void client_signal_handler(int sig) {
+//	simple_signal_handler(sig);
+
+	if (sig == SIGTERM) {
+		log_message(INFO, "quitting..\n");
+		rocsmq_thread_set_running(0);
+	}
 }
