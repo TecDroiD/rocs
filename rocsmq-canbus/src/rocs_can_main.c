@@ -57,7 +57,7 @@ void client_signal_handler(int sig) {
 	}
 }
 
-
+#define ORDER_SEND		"can.send"
 #define CAN_MESSAGE_ID 	"messageid"
 #define CAN_MESSAGE 	"message64"
 /*
@@ -68,15 +68,18 @@ int handle_message(p_rocsmq_message message) {
 	char decoded[250];
 	int id;
 	canmsg_t can;
-	json_object *json = rocsmq_get_message_json(message);
-	get_intval(json, CAN_MESSAGE_ID, &id);
-	can.id = id;
-	get_stringval(json, CAN_MESSAGE, data, 250);
-	b64decode(data,decoded,250);
-	strncpy(can.data,decoded, CAN_MSG_LENGTH);
-	can_send(&can);
+	if(0 == strcmp(message->id, ORDER_SEND)) {
+		json_object *json = rocsmq_get_message_json(message);
+		get_intval(json, CAN_MESSAGE_ID, &id);
+		can.id = id;
+		get_stringval(json, CAN_MESSAGE, data, 250);
+		b64decode(data,decoded,250);
+		strncpy(can.data,decoded, CAN_MSG_LENGTH);
+		can_send(&can);
 
-	return 0;
+		return 0;
+	}
+	return 1;
 }
 
 void create_rocs_message(canmsg_t * can, p_rocsmq_message message) {

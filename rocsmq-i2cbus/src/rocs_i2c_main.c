@@ -45,6 +45,10 @@
 
 #define MOTORS_PER_DEVICE	16
 
+#define ORDER_READ	"i2c.read"
+#define ORDER_WRITE	"i2c.write"
+
+#define MESSAGE_RESPONSE "sensor.i2c"
 TCPsocket sock;
 
 
@@ -104,7 +108,6 @@ int handle_message(p_rocsmq_message message) {
 	};
 	
 	get_intval(json, JSON_KEY_READ, &read);
-	get_intval(json, JSON_KEY_SLAVE, &d);
 	i2c.slave = d;
 	get_intval(json, JSON_KEY_ADDR, &d);
 	i2c.addr = d;
@@ -113,17 +116,17 @@ int handle_message(p_rocsmq_message message) {
 	get_stringval(json, JSON_KEY_DATA, buf, I2C_MAXLEN);
 
 	i2cbus_setslave(i2c.slave);
-	if(read) {
+	if(0 == strcmp(message->id, ORDER_WRITE)) {
 		// write data to i2c
 		b64decode(buf,i2c.data,I2C_MAXLEN);	
 		i2cbus_write(i2c.addr, i2c.data,strlen(i2c.data));
-	} else {
+	} else if(0 == strcmp(message->id, ORDER_READ)) {
 		// read data from i2c
 		i2cbus_read(i2c.addr, i2c.data, i2c.length);
 		b64encode(i2c.data,buf,255);
 		
 		// prepare message and send 
-		strncpy (message->id, CREATE_CLIENTORDER(MESSAGE_ID_SENSOR, MESSAGE_CLIENT_I2C), ROCS_IDSIZE);
+		strncpy (message->id, "sensor.i2c", ROCS_IDSIZE);
 		sprintf(answer,"{\""JSON_KEY_SLAVE"\":%d,\""JSON_KEY_ADDR"\":%d,\""JSON_KEY_LENGTH"\":\"%s\",}"
 				,i2c.slave, i2c.addr, i2c.length,buf);
 		rocsmq_send(sock,message,0);

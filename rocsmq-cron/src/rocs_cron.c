@@ -58,10 +58,7 @@ int parse_cronjob(json_object * json, p_cronjob job) {
 }
 
 int add_cronjob(p_cronjob job) {
-	// watch that the job will really be called..
-	while (job->timestamp <= get_timestamp()) {
-		job->timestamp += get_timestamp() + job->period;
-	}
+	job->timestamp += get_timestamp() + 1;
 	
 	log_message(INFO,"Adding job for timestamp %d, cronlist %d", job->timestamp, cronlist);
 	p_linkedlist item = ll_create(job, sizeof(t_cronjob));

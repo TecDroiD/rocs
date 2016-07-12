@@ -15,21 +15,23 @@ indent_mode=2
 [project]
 name=rocsmq-speech
 base_path=/home/tecdroid/projects/rocs/rocsmq-speech/
+description=
 
 [long line marker]
 long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=1
+current_page=2
 FILE_NAME_0=756;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2FCMakeLists.txt;0;4
-FILE_NAME_1=3304;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Ftestmain.c;0;4
+FILE_NAME_1=985;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Ftestmain.c;0;4
 FILE_NAME_2=27;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fclient_config.c;0;4
-FILE_NAME_3=364;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Finclude%2Fclient_config.h;0;4
+FILE_NAME_3=335;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Finclude%2Fclient_config.h;0;4
 FILE_NAME_4=199;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Finclude%2Fspeech_output.h;0;4
-FILE_NAME_5=2084;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fspeech_output.c;0;4
+FILE_NAME_5=1837;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fspeech_output.c;0;4
 FILE_NAME_6=212;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2Fsrc%2Frocs_i2c_main.c;0;4
 FILE_NAME_7=723;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2FCMakeLists.txt;0;4
+FILE_NAME_8=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fdummy%2Frocs%2Frocsmq-speech%2Fsrc%2Ftestmain.c;0;4
 
 [VTE]
 last_dir=/home/tecdroid

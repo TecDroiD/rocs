@@ -22,18 +22,16 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=11
-FILE_NAME_0=1733;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2Fsrc%2Frocs_cron.c;0;4
-FILE_NAME_1=857;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2Finclude%2Frocs_cron.h;0;4
-FILE_NAME_2=3476;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2Fsrc%2Fclientmain.c;0;4
-FILE_NAME_3=916;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2FCMakeLists.txt;0;4
+current_page=0
+FILE_NAME_0=1376;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2Fsrc%2Frocs_cron.c;0;4
+FILE_NAME_1=285;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2Finclude%2Frocs_cron.h;0;4
+FILE_NAME_2=260;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2Fsrc%2Fclientmain.c;0;4
+FILE_NAME_3=543;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2FCMakeLists.txt;0;4
 FILE_NAME_4=455;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2Fsrc%2Fclient_config.c;0;4
 FILE_NAME_5=196;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2Finclude%2Fclient_config.h;0;4
 FILE_NAME_6=683;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4
-FILE_NAME_7=2709;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Flinkedlist.c;0;4
-FILE_NAME_8=2978;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Fconfigparser.c;0;4
-FILE_NAME_9=1426;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
-FILE_NAME_10=12;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frobodog%2Fbandid_config%2Fbandid.config;0;4
+FILE_NAME_7=1426;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
+FILE_NAME_8=1348;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2Fsrc%2Frocs_i2c_main.c;0;4
 
 [VTE]
 last_dir=/home/tecdroid

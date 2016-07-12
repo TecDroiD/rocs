@@ -100,7 +100,7 @@ int rocsmq_send (TCPsocket sock,p_rocsmq_message mesg, int flags) {
 	result=SDLNet_TCP_Send(sock,mesg,sizeof(t_rocsmq_message));
 		if(result<sizeof(t_rocsmq_message)) {
 			if(SDLNet_GetError() && strlen(SDLNet_GetError())) /* sometimes blank! */
-				log_message(DEBUG, "SDLNet_TCP_Send: %s\n", SDLNet_GetError());
+				log_message(ERROR, "SDLNet_TCP_Send: %s\n", SDLNet_GetError());
 		}
 	
 	return result;
@@ -110,8 +110,10 @@ int rocsmq_send (TCPsocket sock,p_rocsmq_message mesg, int flags) {
 json_object * rocsmq_get_message_json(p_rocsmq_message mesg) {
 	enum json_tokener_error error;
 	json_object * obj = json_tokener_parse_verbose(mesg->tail, &error);
+	int i;
 	if (error != json_tokener_success) {
 		log_message(ERROR,"Json Parse: %s", json_tokener_error_desc(error));
+		return 0;
 	}
 	return obj; 
 }

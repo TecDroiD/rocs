@@ -287,12 +287,16 @@ int lua_b64_decode(lua_State *interpreter) {
  */
 int lua_send_message(lua_State *interpreter) {
 	t_rocsmq_message message;
+	memset(message.id, '\0', ROCS_IDSIZE);
+	memset(message.tail, '\0', ROCS_MESSAGESIZE);
+	memset(message.sender, '\0', ROCS_CLIENTNAMESIZE);
 	
 	strncpy(message.id, luaL_checkstring(interpreter, 1), ROCS_IDSIZE);
 	strncpy (message.sender, baseconfig.clientname, 20);
 	char * tail = luaL_checkstring(interpreter, 2);
-	
 	strncpy (message.tail,tail,ROCS_MESSAGESIZE);
+	
+	log_message(DEBUG, "sending message '%s' with tail '%s' from '%s'", message.id, message.tail,message.sender);
 	rocsmq_send(sock,&message,0);
 	return lua_OK;
 }  
