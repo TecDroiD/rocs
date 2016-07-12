@@ -1,0 +1,84 @@
+cron message frames
+===================
+
+"cron.add" - adds a job to the queue
+{
+	"timestamp" : 20, 			- how many ticks until it starts, must be > 0
+	"period" : 10,	  			- when to repeat
+	"count" : 1,	  			- how often to repeat. < 0 means, forever
+	"message" : "message.id",	- message id to send
+	"data" : {					- message tail to send
+		"this": "is a json structure",
+	},
+},
+
+"cron.del" - deletes a job from queue
+{
+	"message" : "message.id",	- message id to delete
+},
+
+speech message frames
+=====================
+
+"speech.speak" - speak text
+{
+	"text"  : "text to speak",
+}
+
+"speech.cancel" - cancel speech
+{}
+
+speech recognition frames
+=========================
+
+"sphinx.start" - start recognition
+{}
+
+"sphinx.stop" - stop recognition
+{}
+
+
+i2c message frames
+==================
+
+"i2c.read" - read from address, responses in sensor.i2c
+{
+	"slave" :	10,		- slave address
+	"addr" :	120,	- register to read
+	"length" :	2,		- number of bytes to read
+}
+
+
+"i2c.read" - read from address
+{
+	"slave" :	10,		- slave address
+	"addr" :	120,	- register to start
+	"data" : 	"b64",	- b64 encoded data
+}
+
+
+can message frames
+==================
+"can.send"	- send data to can
+{
+	"messageid" : 20 	- id of the can message
+	"message64" : "b64" - b64 encoded data
+}
+
+
+sensor data frames
+==================
+
+"sensor.i2c" - having data from i2c
+{
+	"slave" :	10,		- slave address
+	"addr" :	120,	- register read
+	"length" :	2,		- number of bytes read
+	"data" : 	"b64",	- b64 encoded data
+} 
+
+"sensor.can" - having data from can
+{
+	"messageid" : 20 	- id of the can message
+	"message64" : "b64" - b64 encoded data
+}

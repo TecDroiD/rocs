@@ -1,0 +1,7 @@
+bandit sit/1e-8/
+bandit stand/1e-8/
+bandit go/1e-8/
+bandit stop/1e-8/
+bandit revision/1e-14/
+bandit dance/1e-8/
+bandit check/1e-8/
