@@ -23,6 +23,10 @@
 #include <lua5.1/lua.h>
 #include <lua5.1/lualib.h>
 #include <lua5.1/lauxlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <cdb.h>
 
 //#include <unistd.h>
 
@@ -48,6 +52,8 @@ t_rocsmq_baseconfig baseconfig = {
 t_luaclient_config clientconfig = {
 	.cntscripts = 0,
 	.scripts = 0,
+	.libpath = "",
+	.dbpath = "lua.db",
 };
 
 t_lua lua = {
@@ -88,6 +94,16 @@ int lua_b64_encode(lua_State *interpreter);
  */ 
 int lua_b64_decode(lua_State *interpreter);  
 
+/**
+ * lua command for persisting data
+ */
+int lua_persist(lua_State *interpreter);  
+
+/**
+ * lua command for retrieving persisted data
+ */ 
+int lua_retrieve(lua_State *interpreter);  
+ 
 /**
  * main function
  */ 
@@ -149,7 +165,6 @@ int main(int argc, char **argv) {
 		exit(1);
 	};
 
-	printf("Test");
 	// start network listener
 	thread = rocsmq_start_thread(sock);
 
@@ -248,6 +263,12 @@ int init_interpreter() {
 	lua_pushcfunction(lua.interpreter, lua_b64_encode);
 	lua_setglobal(lua.interpreter, "b64_encode");
 
+	lua_pushcfunction(lua.interpreter, lua_persist);
+	lua_setglobal(lua.interpreter, "persist");
+	
+	lua_pushcfunction(lua.interpreter, lua_retrieve);
+	lua_setglobal(lua.interpreter, "retrieve");
+
 	return 0;	
 }
 
@@ -312,3 +333,66 @@ int lua_log_message(lua_State *interpreter) {
 	 
 	return lua_OK;
 }  
+
+
+/**
+ * lua command for persisting data
+ */
+int lua_persist(lua_State *interpreter) {
+	struct cdb_make cdbm;
+	
+	char *key = luaL_checkstring(interpreter,1);
+	char *val = luaL_checkstring(interpreter,2);
+	int keylen = strlen(key);
+	int vallen = strlen(val);
+	
+	// init db file
+	int fp = open(clientconfig.dbpath, O_RDWR|O_CREAT);
+	cdb_make_start(&cdbm, fp); 
+	
+	// add or replace data
+	if (cdb_make_exists(&cdbm, key, keylen)) {
+		cdb_make_put( &cdbm, key, keylen, val, vallen, CDB_PUT_REPLACE);
+	} else {
+		cdb_make_put( &cdbm, key, keylen, val, vallen, CDB_PUT_ADD);		
+	}
+	
+	// deinit db file
+	cdb_make_finish(&cdbm);
+	close(fp);
+	return lua_OK;
+}
+
+/**
+ * lua command for retrieving persisted data
+ */ 
+int lua_retrieve(lua_State *interpreter) {
+	struct cdb cdb;
+	char *key = luaL_checkstring(interpreter,1);
+	char *val;
+	int vlen, vpos;
+	
+	// init db file
+	int fp = open(clientconfig.dbpath, O_RDWR|O_CREAT);
+	if (fp == 0) {
+		return lua_ERROR;
+	}
+	
+	cdb_init(&cdb, fp); 
+	
+	// find entry
+	if(cdb_find(&cdb,key,strlen(key))) {
+		// and retrieve it
+		vpos = cdb_datapos(&cdb);
+		vlen = cdb_datalen(&cdb);
+		val = malloc(vlen);
+		cdb_read(&cdb,val,vlen,vpos);
+		lua_pushstring(interpreter,val);
+		free(val);
+	}
+	
+	// deinit db file
+	close(fp);
+	
+	return lua_OK;	
+}

@@ -15,6 +15,9 @@
 #include "linkedlist.h"
 #include "rocsmq.h"
 
+#define ROCSMQ_THREAD_RUN	1
+#define ROCSMQ_THREAD_STOP	0
+
 /**
  * data for a process
  */

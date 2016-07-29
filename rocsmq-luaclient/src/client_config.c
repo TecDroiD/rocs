@@ -1,4 +1,8 @@
 #include "client_config.h"
+
+/**
+ * load a script file
+ */ 
 int load_scriptfile(p_script script ) {
 	FILE *fp;
 	int size = 0;
@@ -26,11 +30,19 @@ int load_scriptfile(p_script script ) {
 		
 }
 
+/**
+ * read custom configuration
+ */ 
 int custom_config (json_object *json, void * p_datastruct) {
 	json_object *scripts,*script;
 	int i;
 	p_luaclient_config config = (p_luaclient_config)p_datastruct;
-		
+	
+	// get the library path for additional helper scripts
+	get_stringval(json, CONFIG_KEY_LIBPATH,	config->libpath,255);
+	// get the database path for persistence
+	get_stringval(json, CONFIG_KEY_DBFILE,	config->dbpath,255);
+	
 	// get size of scripts
 	get_objval(json, CONFIG_KEY_SCRIPTS, &scripts);
 	config->cntscripts = json_object_array_length(scripts);
@@ -56,11 +68,16 @@ int custom_config (json_object *json, void * p_datastruct) {
 	
 }
 
+/**
+ * cleanup configuration
+ */ 
 void clear_custom_config(p_luaclient_config config) {
 	int i;
+	// free all scripts
 	for (i = 0; i < config->cntscripts; i++) {
 		free(config->scripts[i].script);
 	}
+	// free script array
 	free (config->scripts);
 	config->scripts = 0;
 }
