@@ -133,11 +133,13 @@ int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, char * cus
 		}
 		
 		customs(custom, p_datastruct);
+
+		// customized  standard data
+		get_stringval(custom, KEY_CLIENTNAME, baseconfig->clientname,20);
+		get_stringval(custom,KEY_FILTER, baseconfig->filter,256);
+
 	}	 
 
-	// customized  standard data
-	get_stringval(custom, KEY_CLIENTNAME, baseconfig->clientname,20);
-	get_stringval(custom,KEY_FILTER, baseconfig->filter,256);
 	
 	// release memory for file
 	json_object_put(json);

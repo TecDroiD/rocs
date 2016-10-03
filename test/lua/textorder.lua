@@ -13,7 +13,7 @@ function speaktext(text)
    persist("lastorder",text);
 end
 
-function run(json)
+function run(order,json)
 	log_message("debug", "textorder triggered.")
 	-- parse json tree
 	local luatree = JSON.decode(json)

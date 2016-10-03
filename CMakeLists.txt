@@ -16,6 +16,7 @@ add_subdirectory(rocsmq-luaclient)
 add_subdirectory(rocsmq-cli)
 add_subdirectory(rocsmq-canbus)
 add_subdirectory(rocsmq-i2cbus)
+add_subdirectory(rocsmq-gpio)
 
 SET(CPACK_GENERATOR "RPM")
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Jens Rapp")

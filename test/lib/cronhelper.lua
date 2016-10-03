@@ -16,7 +16,7 @@ function cron.start(id, data, timestamp, period, count)
 	-- get message
 	mesg = cronorders["start"]
 	message = mesg["id"]
-	tail = string.format(message["tail"],message,timestamp,period,count,data)
+	tail = string.format(mesg["tail"],message,timestamp,period,count,data)
 	log_message("debug","message: "..message.." with data "..data);
 	send_message(id,tail)
 end

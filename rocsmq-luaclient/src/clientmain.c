@@ -229,7 +229,9 @@ void handle_message(p_rocsmq_message message) {
 
 			// prepare variable stack
 			lua_getglobal(lua.interpreter, "run");
+			lua_pushstring(lua.interpreter,message->id);
 			lua_pushstring(lua.interpreter,message->tail);
+			
 			// call programm
 			if (lua_pcall(lua.interpreter, 1, 0, 0)) {
 				printf( "Error running script: %s\n", lua_tostring(lua.interpreter, -1));

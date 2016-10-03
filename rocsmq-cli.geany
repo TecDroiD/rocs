@@ -24,16 +24,18 @@ long_line_column=72
 
 [files]
 current_page=9
-FILE_NAME_0=1330;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Fsrc%2Ftestmain.c;0;4
-FILE_NAME_1=104;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Fconf%2Fconfig.in;0;4
-FILE_NAME_2=2;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmq.c;0;4
-FILE_NAME_3=789;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Frocsmq.h;0;4
-FILE_NAME_4=818;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Flog.h;0;4
-FILE_NAME_5=660;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
-FILE_NAME_6=568;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2FCMakeLists.txt;0;4
-FILE_NAME_7=2027;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Fconfigparser.c;0;4
-FILE_NAME_8=199;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4
-FILE_NAME_9=932;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2Fsrc%2Fserver.c;0;4
+FILE_NAME_0=104;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Fconf%2Fconfig.in;0;4
+FILE_NAME_1=3815;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmq.c;0;4
+FILE_NAME_2=545;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Frocsmq.h;0;4
+FILE_NAME_3=818;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Flog.h;0;4
+FILE_NAME_4=660;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
+FILE_NAME_5=568;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2FCMakeLists.txt;0;4
+FILE_NAME_6=932;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2Fsrc%2Fserver.c;0;4
+FILE_NAME_7=4426;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Fsrc%2Fclimain.c;0;4
+FILE_NAME_8=316;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Finclude%2Fcli_functions.h;0;4
+FILE_NAME_9=222;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Fsrc%2Fcli_functions.c;0;4
+FILE_NAME_10=182;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Finclude%2Fcli_config.h;0;4
+FILE_NAME_11=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmqthread.c;0;4
 
 [VTE]
 last_dir=/home/tecdroid
