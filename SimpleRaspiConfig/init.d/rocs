@@ -1,0 +1,71 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          rocs
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Switch Speaker
+# Description:       Switch Speaker
+### END INIT INFO
+# description: startup script for gpio config
+#
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
+SUUSER=tecdroid
+USERHOME=/home/$SUUSER
+PIDPATH=$USERHOME/pid/
+CONFIGFILE=$USERHOME/config/rocs.conf
+
+function killjob() {
+   if [ "$(ls -A $PIDPATH)" ]
+   then
+      echo "killing rocs processes"
+      for PIDFILE in $PIDPATH*
+      do
+         echo "cat $PIDFILE | xargs kill"
+         rm  $PIDFILE
+      done
+   fi
+}
+
+function runjob() {
+	
+   program=$1
+   name=$2
+   PIDFILE=$PIDPATH$name
+	if [ "$USER" = "$SUUSER" ]
+	then
+		$program $CONFIGFILE
+		echo $! >$PIDFILE
+	else
+		su - $SUUSER -c "$program $CONFIGFILE"
+		echo $! >$PIDFILE
+	fi	
+}
+
+case "$1" in
+ 'start')
+   # just in case, it still runs...
+   killjob
+
+   # run server
+   runjob "rocsmq-server" "server"
+   runjob "rocsmq-cron" "cron"
+   runjob "rocsmq-i2cbus" "i2c"
+   runjob "rocsmq-speech" "speech"
+   runjob "rocsmq-sphinx" "sphinx"
+   # runjob "rocsmq-canbus" "can"
+   runjob "rocsmq-luaclient -n interpreter" "interpreter" 
+   runjob "rocsmq-luaclient -n logic" "logic"
+   runjob "rocsmq-luaclient -n planner" "planner"
+
+   #runjob "rocsmq-tclclient -n interpreter" "interpreter"
+   #runjob "rocsmq-tclclient -n logic" "logic"
+   #runjob "rocsmq-tclclient -n planner" "planner"
+
+   ;;
+ 'stop')
+   killjob
+   ;;
+esac
+
