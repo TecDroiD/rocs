@@ -34,7 +34,7 @@ int gpio_custom_config (json_object *json, void * p_datastruct) {
 		
 		get_intval(pinconfig, CONFIG_KEY_NUMBER, &(pin->number));
 		get_intval(pinconfig, CONFIG_KEY_DIRECTION, &(pin->direction));
-		get_stringval(pinconfig, CONFIG_KEY_MAPNAME, pin->mapname);
+		get_stringval(pinconfig, CONFIG_KEY_MAPNAME, pin->mapname,20);
 		
 		log_message(DEBUG, " - Having Pin %d with direction %d mapped to '%s'", 
 			pin->number, pin->direction, pin->mapname);
