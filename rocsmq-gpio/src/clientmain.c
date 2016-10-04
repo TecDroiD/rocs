@@ -48,7 +48,7 @@
 #define ORDER_READ	"gpio.read"
 #define ORDER_WRITE	"gpio.set"
 
-#define MESSAGE_KEY_PINS	"pin"
+#define MESSAGE_KEY_PINS	"pins"
 #define MESSAGE_KEY_NAME	"name"
 #define MESSAGE_KEY_VALUES	"value"
 
@@ -239,11 +239,11 @@ int handle_message(p_rocsmq_message message) {
 			// look for changed or questioned pins and read them
 			for (a = 0; a < clientconfig.num_pins; a++) {
 				pin = &(clientconfig.pins[a]);
-				if(0 == match_pin(pin, name)) {
+				if(match_pin(pin, name)) {
 					read = gpio_read(pin->number);
-					changed = 1;
 					if ((value == -1) || (value == read)) {
 						sprintf(tail, MESSAGE_PINVAL, tail, pin->mapname, read); 
+						changed = 1;
 					}	
 					
 				}
@@ -264,7 +264,7 @@ int handle_message(p_rocsmq_message message) {
 			// set pins where neccessary
 			for (a = 0; a < clientconfig.num_pins; a++) {
 				pin = &(clientconfig.pins[a]);
-				if(0 == match_pin(pin, name)) {
+				if(match_pin(pin, name)) {
 					gpio_write(pin->number, value);
 				}
 			}

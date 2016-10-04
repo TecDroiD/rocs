@@ -35,7 +35,7 @@
 
 #define GPIO_SYS "/sys/class/gpio/gpio%d/"
 #define GPIO_EXPORT "/sys/class/gpio/export"
-#define GPIO_UNEXPORT "/sys/class/gpio/export"
+#define GPIO_UNEXPORT "/sys/class/gpio/unexport"
 #define GPIO_DIRECTION "direction"
 #define GPIO_VALUE "value"
 

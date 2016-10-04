@@ -132,6 +132,10 @@ int init_pin(int pin, int inout) {
 		return(1);
 	}
 
+	/*wait for system acting..*/
+	
+	int i;
+	for(i = 0; i < 100000; i++); 
 	/*
 	 * Set GPIO directions
 	 */
