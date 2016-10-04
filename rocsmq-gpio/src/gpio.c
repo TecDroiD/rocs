@@ -72,7 +72,7 @@ static int GPIODirection(int pin, int dir)
 	return(0);
 }
  
-static int GPIORead(int pin)
+int gpio_read(int pin)
 {
 	char path[30];
 	char value_str[3];
@@ -95,7 +95,7 @@ static int GPIORead(int pin)
 	return(atoi(value_str));
 }
  
-static int GPIOWrite(int pin, int value)
+int gpio_write(int pin, int value)
 {
 	static const char s_values_str[] = "01";
  
@@ -125,6 +125,8 @@ int init_pin(int pin, int inout) {
 	/*
 	 * enable io port
 	 */ 
+
+	log_message(DEBUG, "Trying to enable Pin %d.",pin);
 	if (-1 == GPIOExport(pin)) {
 		log_message(ERROR, "could not enable GPIO-%d",pin);
 		return(1);
@@ -133,6 +135,7 @@ int init_pin(int pin, int inout) {
 	/*
 	 * Set GPIO directions
 	 */
+	log_message(DEBUG, "Setting direction %d for Pin %d.",inout, pin);
 	if (-1 == GPIODirection(pin, inout)) {
 		log_message(ERROR, "could set direction pin on %x", pin);
 		return(2);
@@ -143,18 +146,16 @@ int init_pin(int pin, int inout) {
  * init gpios
  */ 
 int gpio_init(p_clientconfig conf) {
-	config = conf;
+	p_pin pin;
 	int i;
+
+	// set local config
+	config = conf;
 	
-	for (i = 0; i < config->num_inputs; i++) {
-		if(init_pin(config->inputs[i], IN)) 
-			return -1;
-		
-	}
-	 
-	for (i = 0; i < config->num_outputs; i++) {
-		if(init_pin(config->outputs[i], OUT))
-			return -2;
+	// initialize pin
+	for (i = 0; i < config->num_pins; i++) {
+		pin = &(config->pins[i]);
+		init_pin(pin->number, pin->direction);
 	}
 	
 	return 0;
@@ -165,57 +166,19 @@ int gpio_init(p_clientconfig conf) {
  * deinit gpios 
  */ 
 int gpio_deinit() {
+	p_pin pin;
 	int i;
 	
-	for (i = 0; i < config->num_inputs; i++) {
-		if(-1 == GPIOUnexport(config->inputs[i]))  {
-			log_message(ERROR, "could not disable GPIO %d", config->inputs[i]);
-		}
-		
-	}
-	 
-	for (i = 0; i < config->num_outputs; i++) {
-		if(-1 == GPIOUnexport(config->outputs[i])) {
-			log_message(ERROR, "could not disable GPIO %d", config->outputs[i]);
+
+	// initialize pin
+	for (i = 0; i < config->num_pins; i++) {
+		pin = &(config->pins[i]);
+		if(-1 == GPIOUnexport(pin->number))  {
+			log_message(ERROR, "could not disable GPIO %s", pin->mapname);
 		}
 	}
+
 	
 	return 0;
 }
 
-/**
- * set gpio
- * @param outputs the pins to set
- * @param values the pins values to set
- */ 
-void gpio_set(int32_t outputs, int32_t values) {
-	int i;
-	int val = 0;
-	for (i = 0; i < 32; i++) {
-		val = 1 & values >> i;
-		if ((outputs >> i) % 2) { 
-			   // output has to be set
-			GPIOWrite(i,val);
-		}
-	}
-	
-}
-
-
-/**
- * get gpio values
- * @param mask the values to read
- * @return the read value
- */ 
-int32_t gpio_read(int32_t mask) {
-	int i;
-	int val = 0;
-	for (i = 0; i < 32; i++) {
-		if ((mask >> i) % 2) { 
-			   // input has to be read
-			val += GPIORead(i);
-		}
-		val <= 1;
-	}
-	return val;
-}

@@ -5,12 +5,12 @@
  *      Author: tecdroid
  * 
  * message 
- * {
- * 	"read":1|0,
- *  "slave":10,
- *  "addr":120,
- *  "length":2,
- *  "data": "b64",
+ * { "pins" : [
+ * 	   {
+ *        "name": "%s",
+ *        "value": %d,
+ *     },
+ *  ]
  * }
  */
 
@@ -48,11 +48,13 @@
 #define ORDER_READ	"gpio.read"
 #define ORDER_WRITE	"gpio.set"
 
-#define MESSAGE_KEY_MASK "mask"
-#define MESSAGE_KEY_VALUES "values"
+#define MESSAGE_KEY_PINS	"pin"
+#define MESSAGE_KEY_NAME	"name"
+#define MESSAGE_KEY_VALUES	"value"
 
 #define MESSAGE_RESPONSE "sensor.gpio"
-#define MESSAGE_TAIL "{\"values\":%d,\"changes\":%d,}"
+#define MESSAGE_PINVAL "%s{\"name\":\"%s\",\"value\":%d,},"
+#define MESSAGE_HEAD "{ \"pins\" : [ %s ], }"
 TCPsocket sock;
 
 int32_t lastread = 0;
@@ -68,57 +70,14 @@ t_rocsmq_baseconfig baseconfig = {
 };
 
 t_clientconfig clientconfig = {
-	.num_inputs = 0,
-	.inputs = 0,
-	.num_outputs = 0,
-	.outputs = 0,
+	.num_pins = 0,
+	.pins = 0,
 };
 
-/**
- * signal handler function for signals to handle ;-p
- */
-void client_signal_handler(int sig) {
-//	simple_signal_handler(sig);
 
-	if (sig == SIGTERM) {
-		log_message(INFO, "quitting..\n");
-		rocsmq_thread_set_running(0);
-	}
-}
-
-
-/*
- * handle rocsmq message
- */
-int handle_message(p_rocsmq_message message) {
-	// parse message into json object
-	json_object *json = rocsmq_get_message_json(message);
-	int32_t mask;
-	int32_t values;
-	int32_t changes;
-	
-	t_rocsmq_message response = {
-		.id = MESSAGE_RESPONSE,
-		.sender = CLIENTNAME,
-	};
-	
-	if (0 == strcmp(message->id, ORDER_READ)) {
-		// read data
-		get_intval(json, MESSAGE_KEY_MASK, &mask);
-		values = gpio_read(mask);
-		changes = ~((mask & lastread) & values);
-		sprintf(response.tail, MESSAGE_TAIL, values, changes);
-		rocsmq_send(sock, &response, 0);
-		
-	} else 	if (0 == strcmp(message->id, ORDER_WRITE)) {
-		// write data
-		get_intval(json, MESSAGE_KEY_MASK, &mask);
-		get_intval(json, MESSAGE_KEY_VALUES, &values);
-		gpio_set(mask,values);
-	} 
-
-	return 0;
-}
+int match_pin(p_pin pin, char *name);
+void client_signal_handler(int sig);
+int handle_message(p_rocsmq_message message);
 
 /**
  * main function
@@ -209,3 +168,108 @@ int main(int argc, char **argv) {
 
 
 
+/**
+ * match pin by name
+ */
+  
+int match_pin(p_pin pin, char *name) {
+	return (rocsmq_message_match(pin->mapname, name));
+}
+
+
+/**
+ * signal handler function for signals to handle ;-p
+ */
+void client_signal_handler(int sig) {
+//	simple_signal_handler(sig);
+
+	if (sig == SIGTERM) {
+		log_message(INFO, "quitting..\n");
+		rocsmq_thread_set_running(0);
+	}
+}
+
+
+
+
+/*
+ * handle rocsmq message
+ */
+int handle_message(p_rocsmq_message message) {
+	// parse message into json object
+	json_object *json = rocsmq_get_message_json(message);
+	json_object *pinlist = 0;
+	json_object *pindesc = 0;
+	
+	p_pin pin;
+	
+	char name[32];
+	int value;
+	int read;
+	
+	int size;
+	int i,a;
+	
+	char tail[ROCS_MESSAGESIZE];
+	tail[0] = '\0';
+	
+	t_rocsmq_message response = {
+		.id = MESSAGE_RESPONSE,
+		.sender = CLIENTNAME,
+	};
+
+
+	get_objval(json, MESSAGE_KEY_PINS, &pinlist);
+	if (! pinlist) {
+		log_message(ERROR, "json string has no pins.");
+		return -1;
+	}
+	
+	size = json_object_array_length(pinlist);
+	
+	int changed = 0;
+	
+	if (0 == strcmp(message->id, ORDER_READ)) {
+		// iterate through array
+		for (i = 0; i < size; i++) {
+			pindesc = json_object_array_get_idx(pinlist, i);
+			get_stringval(pindesc, MESSAGE_KEY_NAME, name, 20);
+			get_intval(pindesc, MESSAGE_KEY_VALUES, &value);
+
+			// look for changed or questioned pins and read them
+			for (a = 0; a < clientconfig.num_pins; a++) {
+				pin = &(clientconfig.pins[a]);
+				if(0 == match_pin(pin, name)) {
+					read = gpio_read(pin->number);
+					changed = 1;
+					if ((value == -1) || (value == read)) {
+						sprintf(tail, MESSAGE_PINVAL, tail, pin->mapname, read); 
+					}	
+					
+				}
+			}
+			// send data if neccessary
+			if(changed) {
+				sprintf(response.tail, MESSAGE_HEAD, tail);
+				rocsmq_send(sock, &response, 0);
+			}
+		}
+	} else 	if (0 == strcmp(message->id, ORDER_WRITE)) {
+		// iterate through array
+		for (i = 0; i < size; i++) {
+			pindesc = json_object_array_get_idx(pinlist, i);
+			get_stringval(pindesc, MESSAGE_KEY_NAME, name, 20);
+			get_intval(pindesc, MESSAGE_KEY_VALUES, &value);
+			
+			// set pins where neccessary
+			for (a = 0; a < clientconfig.num_pins; a++) {
+				pin = &(clientconfig.pins[a]);
+				if(0 == match_pin(pin, name)) {
+					gpio_write(pin->number, value);
+				}
+			}
+		}
+	} 
+
+	return 0;
+}

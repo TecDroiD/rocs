@@ -19,6 +19,8 @@
 #include <fcntl.h>
 #include <log.h>
 
+#include <rocsmq.h>
+
 #include "customconfig.h"
 
 #define JSON_KEY_READ	"get"
@@ -39,6 +41,7 @@
 
 int gpio_init(p_clientconfig config);
 int gpio_deinit();
-void gpio_set(int32_t outputs, int32_t values);
-int gpio_read(int32_t mask);
+
+int gpio_read(int pin);
+int gpio_write(int pin, int value);
 #endif /* GPIO_H_ */
