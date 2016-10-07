@@ -1,6 +1,6 @@
 
 CRON = require "cronhelper"
-JSON = require "JSON"
+JSON = require "json"
 MOTOR = require "gpio_motor"
 
 -- lua planner to surround without responding hardware

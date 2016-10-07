@@ -1,4 +1,4 @@
-JSON = require "JSON"
+JSON = require "json"
 
 -- lua script to react on a bump
 -- we suppose, that message is "input.bump"

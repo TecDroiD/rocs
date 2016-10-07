@@ -52,7 +52,7 @@ t_rocsmq_baseconfig baseconfig = {
 t_luaclient_config clientconfig = {
 	.cntscripts = 0,
 	.scripts = 0,
-	.libpath = "",
+	.libpath = "lib/",
 	.dbpath = "lua.db",
 };
 
@@ -233,7 +233,7 @@ void handle_message(p_rocsmq_message message) {
 			lua_pushstring(lua.interpreter,message->tail);
 			
 			// call programm
-			if (lua_pcall(lua.interpreter, 1, 0, 0)) {
+			if (lua_pcall(lua.interpreter, 2, 0, 0)) {
 				printf( "Error running script: %s\n", lua_tostring(lua.interpreter, -1));
 			}
 		}
