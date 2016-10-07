@@ -229,6 +229,9 @@ int handle_message(p_rocsmq_message message) {
 	
 	int changed = 0;
 	
+	log_message(DEBUG, "reading pin list %s", json_object_to_json_string(pinlist));
+	log_message(DEBUG, "order is %s", message->id);
+
 	if (0 == strcmp(message->id, ORDER_READ)) {
 		// iterate through array
 		for (i = 0; i < size; i++) {
@@ -236,10 +239,14 @@ int handle_message(p_rocsmq_message message) {
 			get_stringval(pindesc, MESSAGE_KEY_NAME, name, 20);
 			get_intval(pindesc, MESSAGE_KEY_VALUES, &value);
 
+	log_message(DEBUG, "Pinnane is %s, expected Val is %d", name, value);
+
 			// look for changed or questioned pins and read them
 			for (a = 0; a < clientconfig.num_pins; a++) {
 				pin = &(clientconfig.pins[a]);
 				if(match_pin(pin, name)) {
+					log_message(DEBUG, "Checking Pin %s", pin->mapname);
+
 					read = gpio_read(pin->number);
 					if ((value == -1) || (value == read)) {
 						sprintf(tail, MESSAGE_PINVAL, tail, pin->mapname, read); 
@@ -261,10 +268,15 @@ int handle_message(p_rocsmq_message message) {
 			get_stringval(pindesc, MESSAGE_KEY_NAME, name, 20);
 			get_intval(pindesc, MESSAGE_KEY_VALUES, &value);
 			
+			log_message(DEBUG, "Pinnane is %s, desired Val is %d", name, value);
 			// set pins where neccessary
 			for (a = 0; a < clientconfig.num_pins; a++) {
 				pin = &(clientconfig.pins[a]);
+				
+				log_message(DEBUG, "Checking Pin %s", pin->mapname);
+
 				if(match_pin(pin, name)) {
+					log_message(DEBUG, " --> Setting value %d", value);
 					gpio_write(pin->number, value);
 				}
 			}

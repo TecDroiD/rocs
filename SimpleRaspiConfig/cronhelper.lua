@@ -1,4 +1,4 @@
-[[-- a cron object to use after require --]]
+--[[ a cron object to use after require --]]
 global cron={}
 
 --[[

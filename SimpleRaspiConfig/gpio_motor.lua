@@ -1,3 +1,6 @@
+--[[ 
+  a global motor object to require
+--]]
 global gpio_motor = {}
 
 global sendstr = "{\"pins\" : [{\"name\" : \"motor_a_left\", \"value\" : %d},{\"name\" : \"motor_a_right\", \"value\" : %d}{\"name\" : \"motor_b_left\", \"value\" : %d}{\"name\" : \"motor_b_right\", \"value\" : %d}]}"

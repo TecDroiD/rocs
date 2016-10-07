@@ -1,0 +1,10 @@
+Der Hardware-Layer dient der Erfassung von Daten aus und dem Senden von Steuerinformationen in die reale Welt.
+
+Das Weltbild besteht aus Objekten im Raum. Sie besitzen eine Position, eine Ausrichtung und einen Bewegungs- bzw. Rotationsvektor.
+Diese werden über Odometrische Daten aktualisiert.
+ 
+Die Objekte können darüber hinaus mit Informationen "dekoriert" werden. Dies betrifft Farbe, Gesten, gesprochenes, etc.
+Objekte werden identifiziert und können über Anfragen gesucht werden. 
+
+
+ 
