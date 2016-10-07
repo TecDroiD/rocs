@@ -273,10 +273,10 @@ int handle_message(p_rocsmq_message message) {
 			for (a = 0; a < clientconfig.num_pins; a++) {
 				pin = &(clientconfig.pins[a]);
 				
-				log_message(DEBUG, "Checking Pin %s", pin->mapname);
+				log_message(DEBUG, " -> Checking Pin %s", pin->mapname);
 
 				if(match_pin(pin, name)) {
-					log_message(DEBUG, " --> Setting value %d", value);
+					log_message(DEBUG, " ---> Setting value %d", value);
 					gpio_write(pin->number, value);
 				}
 			}

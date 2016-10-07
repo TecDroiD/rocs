@@ -7,14 +7,16 @@ function run (message, json)
 
 	local pins = jsonTree["pins"]
 	data = 0
+	
+	log_message("debug", "checking buttons")
 
 	-- iterate through pins
         for i,pin in ipairs(pins) do
-	    if pin[name] == "button_left" then
-		log_message(DEBUG, "left button hit")
+	    if pin["name"] == "button_left" and pin["value"] == 1 then
+		log_message("debug", "left button hit")
                data = data + 1
-            elseif pin[name] == "button_right" then 
-		log_message(DEBUG, "right button hit")
+            elseif pin["name"] == "button_right" and pin["value"] == 1 then 
+		log_message("debug", "right button hit")
                data = data + 2
             end
         end

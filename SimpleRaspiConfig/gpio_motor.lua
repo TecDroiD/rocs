@@ -1,9 +1,9 @@
 --[[ 
   a global motor object to require
 --]]
-global gpio_motor = {}
+local gpio_motor = {}
 
-global sendstr = "{\"pins\" : [{\"name\" : \"motor_a_left\", \"value\" : %d},{\"name\" : \"motor_a_right\", \"value\" : %d}{\"name\" : \"motor_b_left\", \"value\" : %d}{\"name\" : \"motor_b_right\", \"value\" : %d}]}"
+local sendstr = "{\"pins\" : [{\"name\" : \"motor_a_left\", \"value\" : %d},{\"name\" : \"motor_a_right\", \"value\" : %d}{\"name\" : \"motor_b_left\", \"value\" : %d}{\"name\" : \"motor_b_right\", \"value\" : %d}]}"
 
 --[[
  -- set motors
@@ -23,6 +23,7 @@ function gpio_motor.set(motora, motorb)
 		vala[0] = 1
 		vala[1] = 0
 	else if (motora < 0) 
+	then	
 		vala[0] = 0
 		vala[1] = 1
 	end
@@ -33,6 +34,7 @@ function gpio_motor.set(motora, motorb)
 		valb[0] = 1
 		valb[1] = 0
 	else if (motorb < 0) 
+	then
 		valb[0] = 0
 		valb[1] = 1
 	end
@@ -45,8 +47,9 @@ end
 --[[
  -- stop motors
 --]]
-function gpio_motor.stop() {
+function gpio_motor.stop() 
 	sendstr = string.format(sendstr, 0, 0, 0, 0)
         send_message("gpio.set", sendstr)
-}	
+end
+	
 return gpio_motor

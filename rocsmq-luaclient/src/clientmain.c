@@ -214,7 +214,7 @@ void handle_message(p_rocsmq_message message) {
 		
 	
 	for(i = 0; i < clientconfig.cntscripts; i++) {
-		if (0 ==  strncmp(clientconfig.scripts[i].filter, message->id, ROCS_IDSIZE)) {
+		if (0 ==  rocsmq_message_match(message->id, clientconfig.scripts[i].filter)) {
 			log_message(DEBUG, "calling script %s", clientconfig.scripts[i].filename);
 			
 			// load script file
