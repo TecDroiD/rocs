@@ -1,12 +1,12 @@
 --[[ a cron object to use after require --]]
-global cron={}
+local cron={}
 
 --[[
  the orders that can be sent 
 --]]
-global cronorders = {
-	"stop" = { "id" = "cron.stop", "tail" = "{\"message\" : \"%s\",}"},
-	"start" = { "id" = "cron.stop", "tail" = "{\"message\" : \"%s\",\"timestamp\" : %d,\"period\" : %d,\"count\" : %d,\"data\" : \"%s\",}"},
+local cronorders = {
+	["stop"] = { ["id"] = "cron.stop", ["tail"] = "{\"message\" : \"%s\",}"},
+	["start"] = { ["id"] = "cron.add", ["tail"] = "{\"message\" : \"%s\",\"timestamp\" : %d,\"period\" : %d,\"count\" : %d,\"data\" : \"%s\",}"},
 }
 
 --[[
@@ -15,8 +15,9 @@ global cronorders = {
 function cron.start(id, timestamp, period, count, tail)
 	-- get message
 	message = cronorders["start"]
-	id = message["id"]
-	tail = string.format(message["tail"],id,timestamp,period,count,tail)
+	mid = message["id"]
+	mtail = string.format(message["tail"],id,timestamp,period,count,oldtail)
+	send_message(mid, mtail)
 end
 
 --[[
@@ -25,10 +26,11 @@ end
 function cron.stop(order, id)
 	-- get message
 	message = cronorders["stop"]
-	id = message["id"]
-	tail = string.format(message["tail"],id)
+	mid = message["id"]
+	mtail = string.format(message["tail"],id)
+	send_message(mid, mtail)
 end
 
 
-[[-- return the cron object --]]
+--[[ return the cron object --]]
 return cron

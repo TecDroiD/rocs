@@ -21,9 +21,10 @@ function run(message, json)
       -- move backward for 2 s
       MOTOR.set(-1,-1)
       -- set cron to stop motors
-      CRON.start("move.surround.turn",20,1, "{}")
+      CRON.start("move.surround.turn",20,1,1, "{}")
 
-   else if message == "move.surround.turn"
+   elseif message == "move.surround.turn"
+   then
       log_message("debug","turning"..direction)
       -- now turn
       if direction == "left"
@@ -35,8 +36,9 @@ function run(message, json)
          MOTOR.set(1,-1)
       end
       -- wait 2 seconds
-      CRON.start("move.surround.stop",20,1, "{}")
-  else if message == "move.surround.stop"
+      CRON.start("move.surround.stop",20,1,1, "{}")
+  elseif message == "move.surround.stop"
+  then
 	 log_message("debug","stop")
          -- stop motors
          MOTOR.set(0,0)

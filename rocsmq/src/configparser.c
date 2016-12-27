@@ -26,6 +26,24 @@ int get_intval	(json_object *json, char *key, int *val) {
 	
 	return 0;	
 }
+
+int get_boolval	(json_object *json, char *key, int *val) {
+	json_object *object;
+	enum json_type type;
+	
+	if(0 != get_objval(json, key, &object))
+		return -1;
+	
+	type = json_object_get_type(object);
+	if (type != json_type_boolean) {
+		printf(  "Not a boolean (%s)\n", key);
+		return -2;
+	}
+	
+	*val = (int)json_object_get_boolean(object);
+	
+	return 0;	
+}
 	
 int get_doubleval	(json_object *json, char *key, double *val) {
 	json_object *object;
@@ -45,23 +63,6 @@ int get_doubleval	(json_object *json, char *key, double *val) {
 	return 0;	
 }
 	
-int get_boolval(json_object *json, char *key, json_bool *val) {
-	json_object *object;
-	enum json_type type;
-	
-	if(0 != get_objval(json, key, &object))
-		return -1;
-	
-	type = json_object_get_type(object);
-	if (type != json_type_boolean) {
-		printf(  "Not a boolean (%s)\n", key);
-		return -2;
-	}
-	
-	*val = json_object_get_boolean(object);
-	
-	return 0;	
-}
 int get_stringval	(json_object *json, char *key, char *val, int maxlen) {
 	json_object *object;
 	enum json_type type;

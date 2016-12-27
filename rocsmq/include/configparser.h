@@ -65,6 +65,10 @@ int get_objval		(json_object *json, char *key, json_object **val);
  */ 
 int get_intval		(json_object *json, char *key, int *val);
 /**
+ * get an integer by name from json config
+ */ 
+int get_boolval		(json_object *json, char *key, int *val);
+/**
  * get a double value from json config 
  */ 
 int get_doubleval		(json_object *json, char *key, double *val); 

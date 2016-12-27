@@ -44,7 +44,6 @@ t_clientconfig custom_config = {
 	.devicefile = "/dev/can0\0",
 };
 
-
 /**
  * signal handler function for signals to handle ;-p
  */
@@ -187,6 +186,3 @@ int main(int argc, char **argv) {
 
 	return 0;
 }
-
-
-

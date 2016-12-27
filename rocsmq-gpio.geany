@@ -23,18 +23,19 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=2
+current_page=3
 FILE_NAME_0=65;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2FCMakeLists.txt;0;4
-FILE_NAME_1=3872;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Fsrc%2Fgpio.c;0;4
-FILE_NAME_2=806;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Finclude%2Fgpio.h;0;4
-FILE_NAME_3=1024;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Fsrc%2Fclientmain.c;0;4
-FILE_NAME_4=697;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Fsrc%2Fcustomconfig.c;0;4
-FILE_NAME_5=378;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Finclude%2Fcustomconfig.h;0;4
+FILE_NAME_1=2461;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Fsrc%2Fgpio.c;0;4
+FILE_NAME_2=242;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Finclude%2Fgpio.h;0;4
+FILE_NAME_3=4437;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Fsrc%2Fclientmain.c;0;4
+FILE_NAME_4=1136;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Fsrc%2Fcustomconfig.c;0;4
+FILE_NAME_5=167;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Finclude%2Fcustomconfig.h;0;4
 FILE_NAME_6=914;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4
 FILE_NAME_7=225;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
 FILE_NAME_8=183;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Fconf%2Fconfig.in;0;4
 FILE_NAME_9=27;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Fconfigparser.c;0;4
-FILE_NAME_10=593;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Frocsmq.h;0;4
+FILE_NAME_10=183;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Frocsmq.h;0;4
+FILE_NAME_11=2652;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmq.c;0;4
 
 [VTE]
 last_dir=/home/tecdroid

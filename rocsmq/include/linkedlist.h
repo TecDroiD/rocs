@@ -27,8 +27,9 @@ typedef struct s_linkedlist {
 
 /**
  * sort function if neccessary
+ * matching item returns 0.
  */
-typedef int (*_ll_compare) (p_linkedlist a, p_linkedlist b);
+typedef int (*_ll_compare) (p_linkedlist listitem, p_linkedlist searchitem);
 
 /**
  * creates a liked list item
