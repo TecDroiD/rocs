@@ -42,6 +42,7 @@ t_rocsmq_baseconfig baseconfig = {
 t_clientconfig custom_config = {
 	.kbaud = 125,
 	.devicefile = "/dev/can0\0",
+	.messagemap = 0,
 };
 
 /**
@@ -57,6 +58,8 @@ void client_signal_handler(int sig) {
 }
 
 #define ORDER_SEND		"can.send"
+#define ORDER_ADDMAP	"can.addmap"
+#define ORDER_DELMAP	"can.delmap"
 #define CAN_MESSAGE_ID 	"messageid"
 #define CAN_MESSAGE 	"message64"
 /*
@@ -67,16 +70,37 @@ int handle_message(p_rocsmq_message message) {
 	char decoded[250];
 	int id;
 	canmsg_t can;
+	json_object *json = rocsmq_get_message_json(message);
+
 	if(0 == strcmp(message->id, ORDER_SEND)) {
-		json_object *json = rocsmq_get_message_json(message);
+		// get can bus message id
 		get_intval(json, CAN_MESSAGE_ID, &id);
 		can.id = id;
+		// get can message data
 		get_stringval(json, CAN_MESSAGE, data, 250);
+		// decode data
 		b64decode(data,decoded,250);
 		strncpy(can.data,decoded, CAN_MSG_LENGTH);
+		// send data via can bus
 		can_send(&can);
 
 		return 0;
+	} else if (0 == strcmp(message->id, ORDER_ADDMAP)) {
+		// create map entry item
+		t_messagemap map;
+		memset(&map, 0, sizeof(t_messagemap));
+		// parse map entry
+		parse_mapentry(json, &map);
+		add_messagemap(&custom_config,&map);
+		
+	} else if (0 == strcmp(message->id, ORDER_DELMAP)) {
+		// create map entry item
+		t_messagemap map;
+		memset(&map, 0, sizeof(t_messagemap));
+		// parse map entry
+		parse_mapentry(json, &map);
+		del_messagemap(&custom_config,&map);
+		
 	}
 	return 1;
 }
@@ -84,12 +108,19 @@ int handle_message(p_rocsmq_message message) {
 void create_rocs_message(canmsg_t * can, p_rocsmq_message message) {
 	json_object *json;
 	char b64data[250];
-
-	strncpy (message->id, CREATE_CLIENTORDER(MESSAGE_ID_SENSOR, MESSAGE_CLIENT_CAN), ROCS_IDSIZE);
+	// get message id from map or generate id
+	t_messagemap map;
+	if (get_message(&custom_config, can->id, 0, &map, 0)) {
+		strncpy (message->id, map.message, ROCS_IDSIZE);
+	} else {
+		strncpy (message->id, CREATE_CLIENTORDER(MESSAGE_ID_SENSOR, MESSAGE_CLIENT_CAN), ROCS_IDSIZE);
+	}
+	
+	// encode binary data for 
 	b64encode(can->data,b64data,250);
 	memset(message->tail,'\0',ROCS_MESSAGESIZE);
 	sprintf(message->tail, "{\""CAN_MESSAGE_ID"\":%d,\""CAN_MESSAGE"\":\"%s\"}",can->id,b64data);
-	log_message(DEBUG,"sending received can message %s", message->tail);
+	log_message(DEBUG,"sending received can message %s, %s", message->id, message->tail);
 }
 
 /**
@@ -162,8 +193,10 @@ int main(int argc, char **argv) {
 
 		}
 
+		// if can bus has something to say
 		recv = can_recv(&canmessage);
 		if (recv) {
+			// send a new rocs message
 			create_rocs_message(&canmessage, &message);
 			rocsmq_send(sock,&message,0);
 		}

@@ -41,9 +41,10 @@ typedef struct s_messagemap {
  * add an entry to the message map
  */ 
 int add_message(p_clientconfig config, int can_id, char *message, int permanent);
+int get_message(p_clientconfig config, int can_id, char *message, p_messagemap result, int keep);
+
 int add_messagemap(p_clientconfig config, p_messagemap map);
-p_messagemap get_message(p_clientconfig config, int can_id, char *message);
-int del_message(p_clientconfig config, p_messagemap message);
+int del_messagemap(p_clientconfig config, p_messagemap message);
 
 
 #endif
