@@ -127,9 +127,9 @@ int init_pin(char * pin, int inout) {
 	 */ 
 
 	#ifndef ORANGEPI
-	log_message(DEBUG, "Trying to enable Pin %d.",pin);
+	log_message(DEBUG, "Trying to enable Pin %s.",pin);
 	if (-1 == GPIOExport(pin)) {
-		log_message(ERROR, "could not enable GPIO-%d",pin);
+		log_message(ERROR, "could not enable GPIO-%s",pin);
 		return(1);
 	}
 	
@@ -143,9 +143,9 @@ int init_pin(char * pin, int inout) {
 	/*
 	 * Set GPIO directions
 	 */
-	log_message(DEBUG, "Setting direction %d for Pin %d.",inout, pin);
+	log_message(DEBUG, "Setting direction %d for Pin %s.",inout, pin);
 	if (-1 == GPIODirection(pin, inout)) {
-		log_message(ERROR, "could set direction pin on %x", pin);
+		log_message(ERROR, "could set direction pin on %s", pin);
 		return(2);
 	}	
 }	
