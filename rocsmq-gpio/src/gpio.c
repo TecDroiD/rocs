@@ -13,7 +13,7 @@
 
 static p_clientconfig config;
 
-static int GPIOExport(int pin)
+static int GPIOExport(char * pin)
 {
 	char buffer[3];
 	ssize_t bytes_written;
@@ -49,7 +49,7 @@ static int GPIOUnexport(int pin)
 	return(0);
 }
  
-static int GPIODirection(int pin, int dir)
+static int GPIODirection(char * pin, int dir)
 {
 	static const char s_directions_str[]  = "in\0out";
  
@@ -72,7 +72,7 @@ static int GPIODirection(int pin, int dir)
 	return(0);
 }
  
-int gpio_read(int pin)
+int gpio_read(int char *)
 {
 	char path[30];
 	char value_str[3];
@@ -95,7 +95,7 @@ int gpio_read(int pin)
 	return(atoi(value_str));
 }
  
-int gpio_write(int pin, int value)
+int gpio_write(char * pin, int value)
 {
 	static const char s_values_str[] = "01";
  
@@ -121,22 +121,24 @@ int gpio_write(int pin, int value)
 /**
  * init pin
  */ 
-int init_pin(int pin, int inout) {
+int init_pin(char * pin, int inout) {
 	/*
 	 * enable io port
 	 */ 
 
+	#ifndef ORANGEPI
 	log_message(DEBUG, "Trying to enable Pin %d.",pin);
 	if (-1 == GPIOExport(pin)) {
 		log_message(ERROR, "could not enable GPIO-%d",pin);
 		return(1);
 	}
-
+	
 	/*wait for system acting..*/
 	struct timespec ts;
 	ts.tv_sec = 0;
 	ts.tv_nsec = 50 * 1000000;
 	nanosleep(&ts,0);
+	#endif
 	
 	/*
 	 * Set GPIO directions
@@ -176,6 +178,7 @@ int gpio_deinit() {
 	int i;
 	
 
+	#ifndef ORANGEPI
 	// initialize pin
 	for (i = 0; i < config->num_pins; i++) {
 		pin = &(config->pins[i]);
@@ -183,7 +186,7 @@ int gpio_deinit() {
 			log_message(ERROR, "could not disable GPIO %s", pin->mapname);
 		}
 	}
-
+	#endif
 	
 	return 0;
 }

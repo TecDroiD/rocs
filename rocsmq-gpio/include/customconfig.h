@@ -23,7 +23,7 @@
 #define CONFIG_KEY_MAPNAME 		"mapname"
 
 typedef struct s_pin {
-	int8_t number;
+	char number[8];
 	int8_t direction;
 	char mapname[20];
 } t_pin, *p_pin;
