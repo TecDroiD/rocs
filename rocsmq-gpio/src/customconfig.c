@@ -32,7 +32,7 @@ int gpio_custom_config (json_object *json, void * p_datastruct) {
 		pinconfig = json_object_array_get_idx(pinlist, i);
 		pin = &config->pins[i];
 		
-		get_intval(pinconfig, CONFIG_KEY_NUMBER, &(pin->number));
+		get_stringval(pinconfig, CONFIG_KEY_NUMBER,pin->number, 8);
 		get_intval(pinconfig, CONFIG_KEY_DIRECTION, &(pin->direction));
 		get_stringval(pinconfig, CONFIG_KEY_MAPNAME, pin->mapname,20);
 		

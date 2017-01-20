@@ -31,7 +31,7 @@ static int GPIOExport(char * pin)
 	return(0);
 }
  
-static int GPIOUnexport(int pin)
+static int GPIOUnexport(char * pin)
 {
 	char buffer[3];
 	ssize_t bytes_written;
@@ -72,7 +72,7 @@ static int GPIODirection(char * pin, int dir)
 	return(0);
 }
  
-int gpio_read(int char *)
+int gpio_read(char * pin )
 {
 	char path[30];
 	char value_str[3];
