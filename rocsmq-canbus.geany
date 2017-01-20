@@ -23,17 +23,16 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=2
-FILE_NAME_0=0;C;0;EISO-8859-1;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Finclude%2Fcan4linux.h;0;4
-FILE_NAME_1=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Finclude%2Fcanbus.h;0;4
-FILE_NAME_2=394;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Finclude%2Fcustomconfig.h;0;4
-FILE_NAME_3=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Fsrc%2Fcanbus.c;0;4
-FILE_NAME_4=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Fsrc%2Fcustomconfig.c;0;4
-FILE_NAME_5=884;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Fsrc%2Frocs_can_main.c;0;4
-FILE_NAME_6=582;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2FCMakeLists.txt;0;4
+current_page=3
+FILE_NAME_0=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Finclude%2Fcanbus.h;0;4
+FILE_NAME_1=929;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Finclude%2Fcustomconfig.h;0;4
+FILE_NAME_2=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Fsrc%2Fcanbus.c;0;4
+FILE_NAME_3=3319;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Fsrc%2Fcustomconfig.c;0;4
+FILE_NAME_4=2625;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Fsrc%2Frocs_can_main.c;0;4
+FILE_NAME_5=582;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2FCMakeLists.txt;0;4
 
 [VTE]
-last_dir=/home/tecdroid
+last_dir=/home/tecdroid/projects/schnitzer/enlightment/base/include
 
 [build-menu]
 NF_00_LB=_Make
