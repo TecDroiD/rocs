@@ -13,41 +13,6 @@
 
 static p_clientconfig config;
 
-static int GPIOExport(char * pin)
-{
-	char buffer[3];
-	ssize_t bytes_written;
-	int fd;
- 
-	fd = open(GPIO_EXPORT, O_WRONLY);
-	if (-1 == fd) {
-		fprintf(stderr, "Failed to open export for writing!\n");
-		return(-1);
-	}
- 
-	bytes_written = snprintf(buffer, 3, "%d", pin);
-	write(fd, buffer, bytes_written);
-	close(fd);
-	return(0);
-}
- 
-static int GPIOUnexport(char * pin)
-{
-	char buffer[3];
-	ssize_t bytes_written;
-	int fd;
- 
-	fd = open(GPIO_UNEXPORT, O_WRONLY);
-	if (-1 == fd) {
-		fprintf(stderr, "Failed to open unexport for writing!\n");
-		return(-1);
-	}
- 
-	bytes_written = snprintf(buffer, 3, "%d", pin);
-	write(fd, buffer, bytes_written);
-	close(fd);
-	return(0);
-}
  
 static int GPIODirection(char * pin, int dir)
 {
@@ -123,24 +88,6 @@ int gpio_write(char * pin, int value)
  */ 
 int init_pin(char * pin, int inout) {
 	/*
-	 * enable io port
-	 */ 
-
-	#ifndef ORANGEPI
-	log_message(DEBUG, "Trying to enable Pin %s.",pin);
-	if (-1 == GPIOExport(pin)) {
-		log_message(ERROR, "could not enable GPIO-%s",pin);
-		return(1);
-	}
-	
-	/*wait for system acting..*/
-	struct timespec ts;
-	ts.tv_sec = 0;
-	ts.tv_nsec = 50 * 1000000;
-	nanosleep(&ts,0);
-	#endif
-	
-	/*
 	 * Set GPIO directions
 	 */
 	log_message(DEBUG, "Setting direction %d for Pin %s.",inout, pin);
@@ -176,18 +123,7 @@ int gpio_init(p_clientconfig conf) {
 int gpio_deinit() {
 	p_pin pin;
 	int i;
-	
-
-	#ifndef ORANGEPI
-	// initialize pin
-	for (i = 0; i < config->num_pins; i++) {
-		pin = &(config->pins[i]);
-		if(-1 == GPIOUnexport(pin->number))  {
-			log_message(ERROR, "could not disable GPIO %s", pin->mapname);
-		}
-	}
-	#endif
-	
+		
 	return 0;
 }
 
