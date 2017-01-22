@@ -4,10 +4,9 @@ local cron={}
 --[[
  the orders that can be sent 
 --]]
-local cronorders = {
-	["stop"] = { ["id"] = "cron.stop", ["tail"] = "{\"message\" : \"%s\",}"},
-	["start"] = { ["id"] = "cron.add", ["tail"] = "{\"message\" : \"%s\",\"timestamp\" : %d,\"period\" : %d,\"count\" : %d,\"data\" : \"%s\",}"},
-}
+local cronorders = {}
+cronorders["stop"] = { ["id"] = "cron.stop", ["tail"] = "{\"message\" : \"%s\",}"}
+cronorders["start"] = { ["id"] = "cron.add", ["tail"] = "{\"message\" : \"%s\",\"timestamp\" : %d,\"period\" : %d,\"count\" : %d,\"data\" : \"%s\",}"}
 
 --[[
  sends a start message to cron
@@ -16,8 +15,8 @@ function cron.start(id, timestamp, period, count, tail)
 	-- get message
 	message = cronorders["start"]
 	mid = message["id"]
-	mtail = string.format(message["tail"],id,timestamp,period,count,oldtail)
-	send_message(mid, mtail)
+	mtail = string.format(message["tail"],id,timestamp,period,count,tail)
+        send_message(mid, mtail)
 end
 
 --[[
@@ -28,7 +27,7 @@ function cron.stop(order, id)
 	message = cronorders["stop"]
 	mid = message["id"]
 	mtail = string.format(message["tail"],id)
-	send_message(mid, mtail)
+        send_message(mid,mtail)
 end
 
 

@@ -12,8 +12,7 @@ function run(message, json)
  
    if message == "move.surround" 
    then
-      log_message("debug","start surrounding")
-
+log_message("debug","start surrounding")
       -- start movement process
       persist("action", message)
       persist("direction", jsonTree["direction"])
@@ -25,7 +24,7 @@ function run(message, json)
 
    elseif message == "move.surround.turn"
    then
-      log_message("debug","turning"..direction)
+log_message("debug","surrounding")
       -- now turn
       if direction == "left"
       then
@@ -39,7 +38,7 @@ function run(message, json)
       CRON.start("move.surround.stop",20,1,1, "{}")
   elseif message == "move.surround.stop"
   then
-	 log_message("debug","stop")
+log_message("debug","end surrounding")
          -- stop motors
          MOTOR.set(0,0)
          -- set idle

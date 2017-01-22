@@ -23,7 +23,7 @@ function gpio_motor.set(motora, motorb)
 		vala[0] = 1
 		vala[1] = 0
 	elseif (motora < 0) 
-	then	
+	then
 		vala[0] = 0
 		vala[1] = 1
 	end

@@ -14,7 +14,7 @@ function run (message, json)
    elseif jsonTree["direction"] == "front-right"
    then
          send_message("move.surround","{\"direction\":\"left\"}")
-   end	
+   end 
 
 end -- run
 
