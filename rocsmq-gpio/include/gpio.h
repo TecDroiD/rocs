@@ -34,17 +34,11 @@
 #define LOW  0
 #define HIGH 1
 
-#ifdef ORANGEPI
-#define GPIO_SYS "/sys/class/gpio_sw/%s/"
-#define GPIO_DIRECTION "cfg"
-#define GPIO_VALUE "data"
-#else
-#define GPIO_SYS "/sys/class/gpio/gpio%d/"
+#define GPIO_SYS "/sys/class/gpio/gpio%s/"
 #define GPIO_EXPORT "/sys/class/gpio/export"
 #define GPIO_UNEXPORT "/sys/class/gpio/unexport"
 #define GPIO_DIRECTION "direction"
 #define GPIO_VALUE "value"
-#endif
 
 int gpio_init(p_clientconfig config);
 int gpio_deinit();

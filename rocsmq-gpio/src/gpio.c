@@ -25,7 +25,7 @@ static int GPIOExport(char * pin)
 		return(-1);
 	}
  
-	bytes_written = snprintf(buffer, 3, "%d", pin);
+	bytes_written = snprintf(buffer, 3, "%s", pin);
 	write(fd, buffer, bytes_written);
 	close(fd);
 	return(0);
@@ -43,7 +43,7 @@ static int GPIOUnexport(char * pin)
 		return(-1);
 	}
  
-	bytes_written = snprintf(buffer, 3, "%d", pin);
+	bytes_written = snprintf(buffer, 3, "%s", pin);
 	write(fd, buffer, bytes_written);
 	close(fd);
 	return(0);
