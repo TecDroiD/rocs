@@ -122,7 +122,9 @@ int rocsmq_set_message_json(p_rocsmq_message mesg, json_object *object) {
 	strncpy (mesg->tail, json_object_to_json_string(object), ROCS_MESSAGESIZE);
 }
 
-
+/**
+ * returns true if message matches pattern 
+ */ 
 int rocsmq_message_match(char *subject, char *pattern) {
 	char *s = subject;
 	char *p = pattern;

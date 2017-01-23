@@ -245,10 +245,11 @@ int handle_message(p_rocsmq_message message) {
 			for (a = 0; a < clientconfig.num_pins; a++) {
 				pin = &(clientconfig.pins[a]);
 				if(match_pin(pin, name)) {
-					log_message(DEBUG, "Checking Pin %s", pin->mapname);
+					log_message(DEBUG, "Checking Pin %s, number %d", pin->mapname, pin->number);
 
 					read = gpio_read(pin->number);
 					if ((value == -1) || (value == read)) {
+						log_message(DEBUG, "  --> Pin %s has expected value %d.", pin->mapname, value);
 						sprintf(tail, MESSAGE_PINVAL, tail, pin->mapname, read); 
 						changed = 1;
 					}	
