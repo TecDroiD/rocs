@@ -103,6 +103,11 @@ int lua_persist(lua_State *interpreter);
  * lua command for retrieving persisted data
  */ 
 int lua_retrieve(lua_State *interpreter);  
+
+/**
+ * lua command for checking persisted data
+ */ 
+int lua_exists(lua_State *interpreter);
  
 /**
  * main function
@@ -272,6 +277,9 @@ int init_interpreter() {
 	lua_pushcfunction(lua.interpreter, lua_retrieve);
 	lua_setglobal(lua.interpreter, "retrieve");
 
+	lua_pushcfunction(lua.interpreter, lua_exists);
+	lua_setglobal(lua.interpreter, "exists");
+
 	return 0;	
 }
 
@@ -366,6 +374,30 @@ int lua_persist(lua_State *interpreter) {
 	return lua_OK;
 }
 
+
+/**
+ * lua command for checking persisted data
+ */ 
+int lua_exists(lua_State *interpreter) {
+	struct cdb cdb;
+	char *key = luaL_checkstring(interpreter,1);
+	
+	// init db file
+	int fp = open(clientconfig.dbpath, O_RDWR|O_CREAT);
+	if (fp == 0) {
+		return lua_ERROR;
+	}
+
+	cdb_init(&cdb, fp); 
+	
+	// find entry
+	if(cdb_find(&cdb,key,strlen(key))) {
+		// and retrieve it
+		lua_pushboolean(interpreter,1);
+	} else {
+		lua_pushboolean(interpreter, 0);
+	}
+}
 /**
  * lua command for retrieving persisted data
  */ 
@@ -392,6 +424,8 @@ int lua_retrieve(lua_State *interpreter) {
 		cdb_read(&cdb,val,vlen,vpos);
 		lua_pushstring(interpreter,val);
 		free(val);
+	} else {
+		lua_pushstring(interpreter, "");
 	}
 	
 	// deinit db file
