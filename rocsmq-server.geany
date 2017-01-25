@@ -23,7 +23,7 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=1
+current_page=0
 FILE_NAME_0=3324;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2Fsrc%2Fserver.c;0;4
 FILE_NAME_1=117;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
 FILE_NAME_2=495;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Frocsmq.h;0;4
@@ -56,3 +56,8 @@ NF_03_WD=%p/build
 EX_00_LB=_Ausführen
 EX_00_CM="%p/build/rocsmq-server"
 EX_00_WD=%p/build
+
+[editor]
+line_wrapping=false
+line_break_column=80
+auto_continue_multiline=true

@@ -419,9 +419,10 @@ int lua_retrieve(lua_State *interpreter) {
 	if(cdb_find(&cdb,key,strlen(key))) {
 		// and retrieve it
 		vpos = cdb_datapos(&cdb);
-		vlen = cdb_datalen(&cdb);
+		vlen = cdb_datalen(&cdb)+1;
 		val = malloc(vlen);
-		cdb_read(&cdb,val,vlen,vpos);
+		memset(val,0,vlen);
+		cdb_read(&cdb,val,vlen-1,vpos);
 		lua_pushstring(interpreter,val);
 		free(val);
 	} else {

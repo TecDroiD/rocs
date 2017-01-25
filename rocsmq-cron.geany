@@ -22,7 +22,7 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=1
+current_page=10
 FILE_NAME_0=10;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2Fsrc%2Frocs_cron.c;0;4
 FILE_NAME_1=328;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2Finclude%2Frocs_cron.h;0;4
 FILE_NAME_2=260;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cron%2Fsrc%2Fclientmain.c;0;4
@@ -32,6 +32,13 @@ FILE_NAME_5=196;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-c
 FILE_NAME_6=683;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4
 FILE_NAME_7=1426;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
 FILE_NAME_8=1348;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2Fsrc%2Frocs_i2c_main.c;0;4
+FILE_NAME_9=0;C;0;EUTF-8;1;1;0;%2Fmedia%2Ftecdroid%2F3598ef8e-09be-47ef-9d01-f24cf61dff1d%2Fhome%2Fpi%2Frocs%2Frocsmq-cron%2Fsrc%2Frocs_cron.c;0;4
+FILE_NAME_10=0;C;0;EUTF-8;1;1;0;%2Fmedia%2Ftecdroid%2F3598ef8e-09be-47ef-9d01-f24cf61dff1d%2Fhome%2Fpi%2Frocs%2Frocsmq-cron%2Fsrc%2Fclientmain.c;0;4
 
 [VTE]
 last_dir=/home/tecdroid
+
+[editor]
+line_wrapping=false
+line_break_column=80
+auto_continue_multiline=true
