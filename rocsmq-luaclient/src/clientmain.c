@@ -182,7 +182,7 @@ int main(int argc, char **argv) {
 			handle_message(&message);
 		}
 
-			SDL_Delay(100);
+			SDL_Delay(50);
 	}
 
 	/*
