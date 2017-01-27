@@ -245,11 +245,12 @@ int handle_message(p_rocsmq_message message) {
 			for (a = 0; a < clientconfig.num_pins; a++) {
 				pin = &(clientconfig.pins[a]);
 				if(match_pin(pin, name)) {
-					log_message(DEBUG, "Checking Pin %s, number %d", pin->mapname, pin->number);
 					// check inhibition rate
 					// this inhibits measurement for some cycles
 					if (pin->countdown-- == 0) {
 						pin->countdown = pin->inhibition;
+
+						log_message(DEBUG, "Checking Pin %s, number %d", pin->mapname, pin->number);
 						
 						read = gpio_read(pin->number);
 						if ((value == -1) || (value == read)) {
@@ -257,7 +258,9 @@ int handle_message(p_rocsmq_message message) {
 							sprintf(tail, MESSAGE_PINVAL, tail, pin->mapname, read); 
 							changed = 1;
 						}
-					}	
+					} else {
+						log_message(DEBUG, "Inhibiting Pin %s", pin->mapname);
+					}
 					
 				}
 			}
