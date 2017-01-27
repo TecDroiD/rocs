@@ -19,6 +19,7 @@ int gpio_custom_config (json_object *json, void * p_datastruct) {
 	
 	// get number of list items and create list memory
 	size = json_object_array_length(pinlist); 
+	
 	log_message(DEBUG, "Reading %d Pins.", size);
 	config->num_pins = size;
 	config->pins = malloc(sizeof(t_pin) * size);
@@ -26,15 +27,27 @@ int gpio_custom_config (json_object *json, void * p_datastruct) {
 		log_message(ERROR, "could not allocate memory for pinlist.");
 		return -2;
 	}
-	
+
+	// for mapping direction
+	char dir[8];
+
 	// read pin data
 	for(i = 0; i < size; i++) {
 		pinconfig = json_object_array_get_idx(pinlist, i);
 		pin = &config->pins[i];
 		
+		pin->countdown = 0;
 		get_stringval(pinconfig, CONFIG_KEY_NUMBER,pin->number, 8);
-		get_intval(pinconfig, CONFIG_KEY_DIRECTION, &(pin->direction));
+		
+		get_stringval(pinconfig, CONFIG_KEY_DIRECTION,dir, 8);
+		if (0 == strcmp(dir, GPIO_DIRECTION_IN)) {
+			pin->direction = 0;
+		} else if (0 == strcmp(dir, GPIO_DIRECTION_OUT)) {
+			pin->direction = 1;
+		} 
+		
 		get_stringval(pinconfig, CONFIG_KEY_MAPNAME, pin->mapname,20);
+		get_intval(pinconfig, CONFIG_KEY_INHIBIT, pin->inhibition, 0);
 		
 		log_message(DEBUG, " - Having Pin %d with direction %d mapped to '%s'", 
 			pin->number, pin->direction, pin->mapname);
