@@ -41,15 +41,17 @@ int gpio_custom_config (json_object *json, void * p_datastruct) {
 		
 		get_stringval(pinconfig, CONFIG_KEY_DIRECTION,dir, 8);
 		if (0 == strcmp(dir, GPIO_DIRECTION_IN)) {
+			log_message(DEBUG, "Input");
 			pin->direction = 0;
 		} else if (0 == strcmp(dir, GPIO_DIRECTION_OUT)) {
+			log_message(DEBUG, "Output");
 			pin->direction = 1;
 		} 
 		
 		get_stringval(pinconfig, CONFIG_KEY_MAPNAME, pin->mapname,20);
 		get_intval(pinconfig, CONFIG_KEY_INHIBIT, pin->inhibition, 0);
 		
-		log_message(DEBUG, " - Having Pin %d with direction %d mapped to '%s'", 
+		log_message(INFO, " - Having Pin %d with direction %d mapped to '%s'", 
 			pin->number, pin->direction, pin->mapname);
 	}	
 } 
