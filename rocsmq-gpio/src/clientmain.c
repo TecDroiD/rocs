@@ -40,11 +40,6 @@
 #define PROGNAME "rocsmq-gpio"
 #define CONFIGFILE "conf/"PROGNAME".config"
 
-#define PROG_FILTER 0x0000
-#define PROG_MASK	0x0000
-
-#define MOTORS_PER_DEVICE	16
-
 #define ORDER_READ	"gpio.read"
 #define ORDER_WRITE	"gpio.set"
 
@@ -56,8 +51,6 @@
 #define MESSAGE_PINVAL "%s{\"name\":\"%s\",\"value\":%d,},"
 #define MESSAGE_HEAD "{ \"pins\" : [ %s ], }"
 TCPsocket sock;
-
-int32_t lastread = 0;
 
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
@@ -114,7 +107,7 @@ int main(int argc, char **argv) {
 
 	log_message(DEBUG, PROGNAME " starting..");
 
-	/* initialize i2c */
+	/* initialize gpio */
 	if(0 > gpio_init(&clientconfig)) {
 		log_message(ERROR, "could not init gpio ");		
 		exit(1);
