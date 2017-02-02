@@ -8,6 +8,11 @@
 #ifndef DAEMONIZER_H_
 #define DAEMONIZER_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -26,5 +31,9 @@ typedef void (*t_sighandler)(int);
 void simple_signal_handler(int sig);
 
 int daemonize(const char *runningdir, t_sighandler sig_handler);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* DAEMONIZER_H_ */

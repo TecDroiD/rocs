@@ -8,6 +8,11 @@
 #ifndef ROCSMQ_H_
 #define ROCSMQ_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <SDL/SDL.h>
 #include <SDL/SDL_net.h>
 #include <json-c/json.h>
@@ -61,5 +66,9 @@ int rocsmq_message_match(char *subject, char *pattern);
  * react on all system messages
  */ 
 int rocsmq_check_system_message(char *messageid);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ROCSMQ_H_ */

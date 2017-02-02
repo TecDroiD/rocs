@@ -8,6 +8,11 @@
 #ifndef LOG_H_
 #define LOG_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -61,4 +66,9 @@ void log_setlevel(int level);
  * gets the loglevel by string
  */ 
 int log_getlevel(char *level);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* LOG_H_ */

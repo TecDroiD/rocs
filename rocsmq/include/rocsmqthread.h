@@ -8,6 +8,11 @@
 #ifndef ROCSMQTHREAD_H_
 #define ROCSMQTHREAD_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <SDL/SDL_mutex.h>
 #include <SDL/SDL_net.h>
 #include <SDL/SDL_thread.h>
@@ -57,5 +62,9 @@ void rocsmq_thread_set_running(int run);
  * is thread still running?
  */
 int rocsmq_thread_is_running();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* ROCSMQTHREAD_H_ */

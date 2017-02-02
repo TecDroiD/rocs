@@ -69,6 +69,8 @@ int tty_read ( char *data, int max) {
 		len = max;
 	}
 	strncpy (data, recvdata, len );
+	memset(recvdata,0,255);
+	
 	return len;
 }
 

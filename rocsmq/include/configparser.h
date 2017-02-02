@@ -7,6 +7,11 @@
 #ifndef CONFIGPARSER_H_
 #define CONFIGPARSER_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <SDL/SDL.h>
 #include <json-c/json.h>
 #include <b64/cencode.h>
@@ -86,5 +91,9 @@ int b64encode(char * in, char *out, int size);
 int b64decode(char * in, char *out, int size);
 
 int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, char *custom_key, custom_config_t customs, void *p_datastruct);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

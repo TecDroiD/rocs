@@ -15,12 +15,9 @@
  */
 
 #include <daemonizer.h>
-#include <getopt.h>
-#include <linux/i2c-dev.h>
 #include <log.h>
 #include <rocsmq.h>
 #include <rocsmqthread.h>
-#include <messages.h>
 
 #include <signal.h>
 #include <stdio.h>
@@ -33,41 +30,39 @@
 
 #include <json-c/json.h>
 
-#include "tty.h"
 #include "customconfig.h"
 
-#define CLIENTNAME "tty"
-#define PROGNAME "rocsmq-tty"
+static const char* CLIENTNAME = "vision";
+#define PROGNAME "rocsmq-opencv"
 #define CONFIGFILE "conf/"PROGNAME".config"
 
-#define ORDER_WRITE	"tty.write"
 
-#define MESSAGE_KEY_VALUE	"value"
+#define MESSAGE_RESPONSE "sensor.vision"
 
-#define MESSAGE_RESPONSE "sensor.tty"
-#define MESSAGE_HEAD "{ \"input\" : \"%s\", }"
 TCPsocket sock;
 
 int32_t lastread = 0;
 
-t_rocsmq_baseconfig baseconfig = {
-	.serverip = "127.0.0.1",
-	.filter 	= MESSAGE_CLIENT_I2C,
-	.port = 8389,
-	.rundaemon = 0,
-	.loglevel = DEBUG,
-	.logfile = "",
-	.clientname = CLIENTNAME,
+t_rocsmq_baseconfig baseconfig;
+/*
+ = {
+	serverip : "127.0.0.1",
+	filter 	: MESSAGE_CLIENT_I2C,
+	port : 8389,
+	rundaemon : 0,
+	loglevel : DEBUG,
+	logfile : "",
+	clientname : CLIENTNAME,
 };
-
-t_clientconfig clientconfig = {
-	.device = "/dev/ttyUSB0",
-	.baudrate= 9600,
-	.bitrate = 8,
-	.parity = 1,
-	.stopbits = 1,
+*/
+t_clientconfig clientconfig;
+/*
+  = {
+	device   : "/dev/ttyUSB0",
 };
+*/
 
+void init_configs(void);
 void client_signal_handler(int sig);
 int handle_message(p_rocsmq_message message);
 
@@ -77,8 +72,6 @@ int handle_message(p_rocsmq_message message);
 int main(int argc, char **argv) {
 	SDL_Thread *thread;
 	t_rocsmq_message message;
-	char recvdata[255];
-	char b64data[255];
 	
 	/* initialize sdl */
 	SDL_Init(0);
@@ -86,9 +79,9 @@ int main(int argc, char **argv) {
 
 	// parse configuration
 	if (argc <= 1) {
-		parseconfig(CONFIGFILE, &baseconfig, CLIENTNAME, custom_config, &clientconfig);
+		parseconfig(CONFIGFILE, &baseconfig, (char *)CLIENTNAME, custom_config, &clientconfig);
 	} else if (argc == 2) {
-		parseconfig(argv[1], &baseconfig, CLIENTNAME, custom_config, &clientconfig);
+		parseconfig(argv[1], &baseconfig, (char *)CLIENTNAME, custom_config, &clientconfig);
 	} else {
 		printf("Usage: %s [configfile]\n", argv[0]);
 		exit(EXIT_FAILURE);
@@ -108,12 +101,7 @@ int main(int argc, char **argv) {
 
 	log_message(INFO, PROGNAME " starting..");
 
-	/* initialize tty */
-	memset(recvdata, 0, 255);
-	if(0 > tty_init(&clientconfig)) {
-		log_message(ERROR, "could not init tty ");		
-		exit(1);
-	}
+	/* initialize opencv */
 
 	/* initialize rocs */
 	sock = rocsmq_init(&baseconfig);
@@ -140,17 +128,7 @@ int main(int argc, char **argv) {
 			handle_message(&message);
 
 		}
-		//log_message(DEBUG, ".");
 		
-		/* if data received, send message */
-		if (tty_hasdata()) {
-			log_message(DEBUG, "reveiving data.");
-			strcpy(message.id, MESSAGE_RESPONSE);
-			tty_read(recvdata,255);
-			//b64encode(recvdata, b64data, 255);
-			sprintf(message.tail, MESSAGE_HEAD,recvdata);
-			rocsmq_send(sock, &message, 0);
-		}
 		/*
 		 * wait 1ms
 		 */
@@ -161,10 +139,8 @@ int main(int argc, char **argv) {
 	 * cleanup
 	 */
 	rocsmq_destroy_thread(thread);
-	rocsmq_error(sock);
+	rocsmq_error();
 
-	tty_close();
-	
 	if (baseconfig.logtofile)
 		closelog();
 
@@ -194,22 +170,29 @@ void client_signal_handler(int sig) {
  * handle rocsmq message
  */
 int handle_message(p_rocsmq_message message) {
-	char b64data[255];
-	char senddata[255];
-	memset(b64data, 0, 255);
-	
-	// parse message into json object
-	json_object *json = rocsmq_get_message_json(message);
-	get_stringval(json, MESSAGE_KEY_VALUE, senddata, 255);
-	//b64decode(b64data, senddata, 255);
-	
-	// if there's something to write
-	if (0 == strcmp(message->id, ORDER_WRITE) ) {
-		tty_write(senddata, strlen(senddata));
-	}
-	
+	log_message(DEBUG, "handling message %s", message->id);
 	return 0;
 }
 
 
 
+/**
+ * initialize configuration
+ */ 
+void init_configs(void) {
+/*
+ * base config
+ */ 	
+	
+	strcpy(baseconfig.serverip, "127.0.0.1");
+	strcpy(baseconfig.filter, "vision*");
+	strcpy(baseconfig.clientname, (char *)CLIENTNAME);
+	baseconfig.port = 8389;
+	baseconfig.rundaemon = 0;
+	baseconfig.loglevel= DEBUG;
+	
+/*
+ * client config
+ */
+	strcpy(clientconfig.device, "/dev/ttyUSB0");
+}

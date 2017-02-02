@@ -1,0 +1,13 @@
+{
+	"clientname" : "${PROJECTNAME}",
+	"server"	: "127.0.0.1",
+	"port" : 8389,
+	"daemonize" : false,
+	"loglevel" : "debug",
+	"logfile" : "",
+	"device" : "/dev/i2c-2",
+	"baudrate" : 125,
+	"slaves" : [
+		{"addr": 64 , "init":"conf/pca9685.init"}
+	],
+}

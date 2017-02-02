@@ -8,6 +8,11 @@
 #ifndef LINKEDLIST_H_
 #define LINKEDLIST_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include "log.h"
@@ -69,5 +74,10 @@ p_linkedlist ll_remove(p_linkedlist list, p_linkedlist item);
  * removes the first or last item from list
  */
 p_linkedlist ll_pop (p_linkedlist list, p_linkedlist *item, int where, _ll_compare comparefunc);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LINKEDLIST_H_ */
