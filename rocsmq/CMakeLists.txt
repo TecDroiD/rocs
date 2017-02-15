@@ -5,7 +5,7 @@ set(PROJECTUSER rocs)
 project(${PROJECTNAME})
 
 # in case of libraries which are needed...
-set (PROJECT_LINK_LIBS libjson-c.a) 
+set (PROJECT_LINK_LIBS libjson-c.a pthread) 
 # link_directories(JSON-C_LINK_DIR)
 # include_directories(JSON-C_INCLUDE_DIR)
 

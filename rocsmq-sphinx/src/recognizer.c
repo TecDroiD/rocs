@@ -123,7 +123,7 @@ char const * recognize() {
             log_message(INFO, "Ready....\n");
         }
 
-		SDL_Delay(1);
+		rocsmq_delayms(1);
 	}
 
 	/*

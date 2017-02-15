@@ -17,10 +17,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_net.h>
-#include <SDL/SDL_thread.h>
-#include <SDL/SDL_timer.h>
 //#include <unistd.h>
 
 
@@ -30,7 +26,7 @@
 #define CLIENTNAME "sphinx"	
 #define CONFIGFILE "rocsmq-"CLIENTNAME".config"
 
-TCPsocket sock;
+int sock;
 
 volatile int record;
 
@@ -59,8 +55,7 @@ void client_signal_handler(int sig);
 int handle_message(p_rocsmq_message message);
 
 int main(int argc, char **argv) {
-	SDL_Init(0);
-	SDL_Thread *thread;
+	pthread_t thread;
 
 	int opt;
 	t_rocsmq_message message;
@@ -86,7 +81,6 @@ int main(int argc, char **argv) {
 	
 	sock = rocsmq_init(&baseconfig);
 	if (!sock) {
-		SDL_Quit();
 		log_message(ERROR, "could not connect to Server: %s\n", rocsmq_error());
 		exit(1);
 	}
@@ -139,14 +133,14 @@ int main(int argc, char **argv) {
 			rocsmq_send(sock,&message, 0);
 			
 			log_message(DEBUG, "waiting %dms",clientconfig.delay_after);
-			SDL_Delay(clientconfig.delay_after);
+			rocsmq_delayms(clientconfig.delay_after);
 			
 		}
 		
 		/*
 		 * wait 1ms
 		 */
-		SDL_Delay(1);
+		rocsmq_delayms(1);
 	}
 
 	/*
@@ -155,12 +149,10 @@ int main(int argc, char **argv) {
 	sphinx_shutdown();
 	 
 	rocsmq_destroy_thread(thread);
-	rocsmq_error(sock);
+	rocsmq_exit(sock);
 
 	if (baseconfig.logtofile)
 		closelog();
-
-	SDL_Quit();
 
 	return 0;
 }

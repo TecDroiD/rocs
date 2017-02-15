@@ -13,9 +13,7 @@ extern "C"
 {
 #endif
 
-#include <SDL/SDL_mutex.h>
-#include <SDL/SDL_net.h>
-#include <SDL/SDL_thread.h>
+#include <pthread.h>
 
 #include "linkedlist.h"
 #include "rocsmq.h"
@@ -29,8 +27,8 @@ extern "C"
 typedef struct s_processdata{
 	int running;
 	volatile p_linkedlist queue;
-	TCPsocket sock;
-	SDL_mutex *mutex;
+	int sock;
+	pthread_mutex_t mutex;
 } t_processdata, *p_processdata;
 
 /**
@@ -46,12 +44,12 @@ void rocsmq_get_message(p_rocsmq_message message);
 /**
  * start the rocsmq thread
  */
-SDL_Thread * rocsmq_start_thread(TCPsocket socket);
+pthread_t rocsmq_start_thread(int socket);
 
 /**
  * destroy the rocsmq thread
  */
-void rocsmq_destroy_thread(SDL_Thread* thread);
+void rocsmq_destroy_thread(pthread_t thread);
 
 /**
  * @param run

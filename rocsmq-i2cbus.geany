@@ -24,9 +24,9 @@ long_line_column=72
 
 [files]
 current_page=2
-FILE_NAME_0=478;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2FCMakeLists.txt;0;4
+FILE_NAME_0=116;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2FCMakeLists.txt;0;4
 FILE_NAME_1=188;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2Fsrc%2Fi2cbus.c;0;4
-FILE_NAME_2=2367;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2Fsrc%2Frocs_i2c_main.c;0;4
+FILE_NAME_2=3560;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2Fsrc%2Frocs_i2c_main.c;0;4
 FILE_NAME_3=279;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2Fsrc%2Fcustomconfig.c;0;4
 FILE_NAME_4=41;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2Finclude%2Fcustomconfig.h;0;4
 FILE_NAME_5=383;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-i2cbus%2Finclude%2Fi2cbus.h;0;4
@@ -54,3 +54,8 @@ NF_03_WD=%p/build
 EX_00_LB=_Ausführen
 EX_00_CM=%p/build/rocsmq-i2cbus
 EX_00_WD=%p/build
+
+[editor]
+line_wrapping=false
+line_break_column=80
+auto_continue_multiline=true

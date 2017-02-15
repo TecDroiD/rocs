@@ -26,10 +26,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_net.h>
-#include <SDL/SDL_thread.h>
-#include <SDL/SDL_timer.h>
 
 #include <json-c/json.h>
 
@@ -50,7 +46,7 @@
 #define MESSAGE_RESPONSE "sensor.gpio"
 #define MESSAGE_PINVAL "%s{\"name\":\"%s\",\"value\":%d,},"
 #define MESSAGE_HEAD "{ \"pins\" : [ %s ], }"
-TCPsocket sock;
+int sock;
 
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
@@ -76,12 +72,9 @@ int handle_message(p_rocsmq_message message);
  * main function
  */
 int main(int argc, char **argv) {
-	SDL_Thread *thread;
+	pthread_t thread;
 	t_rocsmq_message message;
-	
-	/* initialize sdl */
-	SDL_Init(0);
-	
+		
 
 	// parse configuration
 	if (argc <= 1) {
@@ -140,21 +133,19 @@ int main(int argc, char **argv) {
 		/*
 		 * wait 1ms
 		 */
-		SDL_Delay(1);
+		rocsmq_delayms(1);
 	}
 
 	/*
 	 * cleanup
 	 */
 	rocsmq_destroy_thread(thread);
-	rocsmq_error(sock);
+	rocsmq_exit(sock);
 
 	release_config(&clientconfig);
 
 	if (baseconfig.logtofile)
 		closelog();
-
-	SDL_Quit();
 
 	return 0;
 }

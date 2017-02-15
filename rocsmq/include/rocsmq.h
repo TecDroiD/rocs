@@ -13,8 +13,15 @@ extern "C"
 {
 #endif
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_net.h>
+#include <unistd.h>
+#include <sys/types.h> 
+#include <sys/socket.h>
+#include <sys/time.h> // for FDSET
+#include <netinet/in.h>
+
+#include <errno.h>
+
+#include <unistd.h>
 #include <json-c/json.h>
 
 #include "messages.h"
@@ -52,10 +59,10 @@ typedef struct s_rocsmq_clientdata {
 } t_rocsmq_clientdata, *p_rocsmq_clientdata;
 
 
-TCPsocket rocsmq_init(p_rocsmq_baseconfig server) ;
-int rocsmq_exit	(TCPsocket sock);
-int rocsmq_recv (TCPsocket sock, p_rocsmq_message mesg, int flags);
-int rocsmq_send (TCPsocket sock, p_rocsmq_message mesg, int flags);
+int rocsmq_init(p_rocsmq_baseconfig server) ;
+int rocsmq_exit	(int sock);
+int rocsmq_recv (int sock, p_rocsmq_message mesg, int flags);
+int rocsmq_send (int sock, p_rocsmq_message mesg, int flags);
 char *rocsmq_error();
 
 json_object * rocsmq_get_message_json(p_rocsmq_message mesg);
@@ -66,6 +73,11 @@ int rocsmq_message_match(char *subject, char *pattern);
  * react on all system messages
  */ 
 int rocsmq_check_system_message(char *messageid);
+
+/**
+ * delay for some ms
+ */ 
+int rocsmq_delayms(long ms);
 
 #ifdef __cplusplus
 }

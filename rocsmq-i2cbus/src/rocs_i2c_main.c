@@ -49,7 +49,7 @@
 #define ORDER_WRITE	"i2c.write"
 
 #define MESSAGE_RESPONSE "sensor.i2c"
-TCPsocket sock;
+int sock;
 
 
 t_rocsmq_baseconfig baseconfig = {
@@ -171,7 +171,7 @@ void init_devices() {
 				buf[1] = val;
 				i2cbus_write(buf[0],&buf[1],1);
 			} else {
-				SDL_Delay(2);
+				rocsmq_delayms(2);
 			}
 		}
 		
@@ -183,11 +183,8 @@ void init_devices() {
  * main function
  */
 int main(int argc, char **argv) {
-	SDL_Thread *thread;
+	pthread_t thread;
 	t_rocsmq_message message;
-	
-	/* initialize sdl */
-	SDL_Init(0);
 	
 
 	// parse configuration
@@ -252,7 +249,7 @@ int main(int argc, char **argv) {
 		/*
 		 * wait 1ms
 		 */
-		SDL_Delay(1);
+		rocsmq_delayms(1);
 	}
 
 	/*
@@ -263,8 +260,6 @@ int main(int argc, char **argv) {
 
 	if (baseconfig.logtofile)
 		closelog();
-
-	SDL_Quit();
 
 	return 0;
 }

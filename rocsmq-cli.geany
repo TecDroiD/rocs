@@ -23,7 +23,7 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=9
+current_page=7
 FILE_NAME_0=104;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Fconf%2Fconfig.in;0;4
 FILE_NAME_1=3815;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmq.c;0;4
 FILE_NAME_2=545;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Frocsmq.h;0;4
@@ -31,7 +31,7 @@ FILE_NAME_3=818;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2
 FILE_NAME_4=660;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
 FILE_NAME_5=568;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2FCMakeLists.txt;0;4
 FILE_NAME_6=932;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2Fsrc%2Fserver.c;0;4
-FILE_NAME_7=4426;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Fsrc%2Fclimain.c;0;4
+FILE_NAME_7=2716;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Fsrc%2Fclimain.c;0;4
 FILE_NAME_8=316;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Finclude%2Fcli_functions.h;0;4
 FILE_NAME_9=222;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Fsrc%2Fcli_functions.c;0;4
 FILE_NAME_10=182;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-cli%2Finclude%2Fcli_config.h;0;4
@@ -56,3 +56,8 @@ NF_03_WD=%p/build
 EX_00_LB=_Ausführen
 EX_00_CM="%p/build/rocsmq-cli" -p
 EX_00_WD=%p/build
+
+[editor]
+line_wrapping=false
+line_break_column=80
+auto_continue_multiline=true

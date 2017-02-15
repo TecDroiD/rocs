@@ -23,11 +23,11 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=0
-FILE_NAME_0=65;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2FCMakeLists.txt;0;4
+current_page=3
+FILE_NAME_0=961;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2FCMakeLists.txt;0;4
 FILE_NAME_1=586;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Fsrc%2Fgpio.c;0;4
 FILE_NAME_2=532;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Finclude%2Fgpio.h;0;4
-FILE_NAME_3=2179;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Fsrc%2Fclientmain.c;0;4
+FILE_NAME_3=1366;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Fsrc%2Fclientmain.c;0;4
 FILE_NAME_4=1456;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Fsrc%2Fcustomconfig.c;0;4
 FILE_NAME_5=638;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-gpio%2Finclude%2Fcustomconfig.h;0;4
 FILE_NAME_6=914;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4

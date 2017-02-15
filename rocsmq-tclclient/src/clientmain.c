@@ -16,10 +16,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_net.h>
-#include <SDL/SDL_thread.h>
-#include <SDL/SDL_timer.h>
 #include <tcl/tcl.h>
 
 //#include <unistd.h>
@@ -32,7 +28,7 @@
 #define SCRIPTDIR "script/"
 
 
-TCPsocket sock;
+int sock;
 
 
 t_rocsmq_baseconfig baseconfig = {
@@ -92,8 +88,7 @@ int tcl_b64_decode(ClientData cdata, Tcl_Interp *interpreter, int argc, const ch
  * main function
  */ 
 int main(int argc, char **argv) {
-	SDL_Init(0);
-	SDL_Thread *thread;
+	pthread_t thread;
 	int i;
 	char buffer[32];
 	
@@ -139,7 +134,6 @@ int main(int argc, char **argv) {
 
 	sock = rocsmq_init(&baseconfig);
 	if (!sock) {
-		SDL_Quit();
 		log_message(ERROR,"could not connect to Server: %s\n", rocsmq_error());
 		exit(1);
 	}
@@ -161,7 +155,7 @@ int main(int argc, char **argv) {
 			handle_message(&message);
 		}
 
-		SDL_Delay(100);
+		rocsmq_delayms(100);
 	}
 
 	/*
@@ -172,7 +166,6 @@ int main(int argc, char **argv) {
 	log_message( INFO, "Process shutdown.");
 	rocsmq_destroy_thread(thread);
 	rocsmq_exit(sock);
-	SDL_Quit();
 	
 	return 0;
 }

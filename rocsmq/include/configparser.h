@@ -12,7 +12,6 @@ extern "C"
 {
 #endif
 
-#include <SDL/SDL.h>
 #include <json-c/json.h>
 #include <b64/cencode.h>
 #include <b64/cdecode.h>

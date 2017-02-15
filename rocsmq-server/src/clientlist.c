@@ -6,7 +6,7 @@ p_client clients = NULL;
 /**
  * add a client into our array of clients
  */
-t_client *add_client(TCPsocket sock, p_rocsmq_clientdata info) {
+t_client *add_client(int sock, p_rocsmq_clientdata info) {
 	char *tok;
 	char filter[ROCS_IDSIZE];
 	
@@ -53,7 +53,7 @@ void remove_client_idx(int i) {
 		return;
 
 	/* close the old socket, even if it's dead... */
-	SDLNet_TCP_Close(clients[i].sock);
+	close(clients[i].sock);
 
 	ll_destroy(clients[i].filters);
 	num_clients--;

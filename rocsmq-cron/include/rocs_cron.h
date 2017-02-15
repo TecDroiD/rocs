@@ -34,7 +34,7 @@ int parse_cronjob(json_object * json, p_cronjob job);
 int add_cronjob(p_cronjob job);
 int del_cronjob(p_cronjob job);
 
-int32_t tick (TCPsocket sock, uint32_t add);
+int32_t tick (int sock, uint32_t add);
 
 int get_timestamp();
 #endif
