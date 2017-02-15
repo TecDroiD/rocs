@@ -7,7 +7,7 @@ project(${PROJECTNAME})
 # if SDL or other packages are needed:
 find_package(SDL REQUIRED)
 find_package(SDL_net REQUIRED)
-
+find_package(OpenCV REQUIRED)
 #configure config file
 configure_file(
 	${PROJECT_SOURCE_DIR}/conf/config.in 
@@ -21,7 +21,7 @@ configure_file(
 
 
 # in case of libraries which are needed...
-set (PROJECT_LINK_LIBS rocsmq rocsmq-daemonizer ${SDL_LIBRARY} ${SDL_NET_LIBRARY} libjson-c.a libb64.a)
+set (PROJECT_LINK_LIBS rocsmq rocsmq-daemonizer ${SDL_LIBRARY} ${SDL_NET_LIBRARY} ${OpenCV_LIBS} libjson-c.a libb64.a)
 link_directories( ${SDL_LINK_DIR} ${SDL_NET_LINK_DIR})
 include_directories(../rocsmq/include ../rocsmq-daemonizer/include ${SDL_INCLUDE_DIR} ${SDL_NET_INCLUDE_DIR})
 
