@@ -1,0 +1,45 @@
+Json-Value not found (logfile).
+getting custom key lua
+script 0: 14948928, lua/helloworld.lua
+script 1: 14949448, lua/textorder.lua
+script 2: 14949968, lua/simple_reactions.lua
+logging to file.. ''
+loglevel = 0
+02/16/17 14:52:13 [luascripter] DEBUG	- clientname: luascripter
+02/16/17 14:52:13 [luascripter] DEBUG	- sending login info: luascripter
+
+02/16/17 14:52:13 [luascripter] DEBUG	-  -- 4, luascripter 
+
+02/16/17 14:52:13 [luascripter] DEBUG	- successfully logged in
+02/16/17 14:52:13 [luascripter] DEBUG	- reading Message from socket 4
+02/16/17 14:52:19 [luascripter] DEBUG	- Having 1276 bytes
+02/16/17 14:52:19 [luascripter] DEBUG	- incoming:{ "text": "Testservice runs." }
+
+02/16/17 14:52:19 [luascripter] DEBUG	- message-id lua.helloworld
+02/16/17 14:52:19 [luascripter] DEBUG	-   -> message-tail { "text": "Testservice runs." }
+02/16/17 14:52:19 [luascripter] DEBUG	- have scripts 3
+02/16/17 14:52:19 [luascripter] DEBUG	- script filter lua.helloworld
+02/16/17 14:52:19 [luascripter] DEBUG	- calling script lua/helloworld.lua
+helloworld triggered
+02/16/17 14:52:19 [luascripter] DEBUG	- { "text": "Testservice runs." }
+02/16/17 14:52:19 [luascripter] DEBUG	- sending message 'speech.speak' with tail '{'text':'hello world',}' from 'luascripter'
+02/16/17 14:52:19 [luascripter] INFO	- sent message to speech.
+02/16/17 14:52:19 [luascripter] DEBUG	- script filter lua.textorder
+02/16/17 14:52:19 [luascripter] DEBUG	- script filter input.*
+02/16/17 14:52:19 [luascripter] DEBUG	- reading Message from socket 4
+02/16/17 14:52:23 [luascripter] DEBUG	- Having 1276 bytes
+02/16/17 14:52:23 [luascripter] DEBUG	- incoming:{"text":"bobo shutdown","source":"sphinx",}
+
+02/16/17 14:52:23 [luascripter] DEBUG	- message-id lua.textorder
+02/16/17 14:52:23 [luascripter] DEBUG	-   -> message-tail {"text":"bobo shutdown","source":"sphinx",}
+02/16/17 14:52:23 [luascripter] DEBUG	- have scripts 3
+02/16/17 14:52:23 [luascripter] DEBUG	- script filter lua.helloworld
+02/16/17 14:52:23 [luascripter] DEBUG	- script filter lua.textorder
+02/16/17 14:52:23 [luascripter] DEBUG	- calling script lua/textorder.lua
+02/16/17 14:52:23 [luascripter] DEBUG	- textorder triggered.
+02/16/17 14:52:23 [luascripter] DEBUG	- order is bobo shutdown
+02/16/17 14:52:23 [luascripter] DEBUG	- sending message 'speech.speak' with tail '{"text":"got order bobo shutdown",}' from 'luascripter'
+02/16/17 14:52:23 [luascripter] DEBUG	- textorder handled.
+02/16/17 14:52:23 [luascripter] DEBUG	- script filter input.*
+02/16/17 14:52:23 [luascripter] DEBUG	- reading Message from socket 4
+02/16/17 14:52:39 [luascripter] DEBUG	- Having 0 bytes

@@ -23,7 +23,7 @@
 
 #include "client_config.h"
 
-#define CLIENTNAME "console"	
+#define CLIENTNAME "speech"	
 #define CONFIGFILE "conf/rocsmq-testclient.config"
 
 #define ORDER_SPEAK	"speech.speak"
@@ -36,7 +36,7 @@ t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
 	.port = 8389,
 	.rundaemon = 0,
-	.loglevel = INFO,
+	.loglevel = DEBUG,
 	.logfile = "",
 	.clientname = "speech output",
 	.filter = "speech*",
@@ -44,9 +44,10 @@ t_rocsmq_baseconfig baseconfig = {
 
 t_clientconfig clientconfig = {
 	.voice = "default",
-	.speed = 120,
+	.speed = 160,
 	.volume = 50,
 	.pitch = 50,
+	.gap = 12,
 };
 
 void client_signal_handler(int sig);
@@ -58,6 +59,8 @@ int main(int argc, char **argv) {
 
 	int opt;
 	t_rocsmq_message message;
+	memset(&message, 0, sizeof(t_rocsmq_message));
+	
 	int x_it = 0;
 	
 	// parse configuration
@@ -69,29 +72,28 @@ int main(int argc, char **argv) {
 		printf("Usage: %s [configfile]\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-
+	
 	/* daemonize if neccessary */
 	if(baseconfig.rundaemon) {
 		if(0 != daemonize("~", client_signal_handler))
 			return 1;
 	}
 	
-	
-	sock = rocsmq_init(&baseconfig);
-	if (!sock) {
-		log_message(ERROR, "could not connect to Server: %s\n", rocsmq_error());
-		exit(1);
-	}
-
 	/*
 	 * initialize logging system
 	 */
 	openlog(CLIENTNAME, baseconfig.logfile);
 	log_setlevel(baseconfig.loglevel);
 
-	log_message(DEBUG, CLIENTNAME " starting..");
+	log_message(DEBUG, "AM");
 
-	init_espeak(&clientconfig);
+	log_message(DEBUG, CLIENTNAME " starting..");
+	// initialize speech system
+	if (0 != init_espeak(&clientconfig)) {
+		log_message(ERROR, "could not initialize speech");
+		exit(2);
+	}
+
 
 	sock = rocsmq_init(&baseconfig);
 	if(! sock) {

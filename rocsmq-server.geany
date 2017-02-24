@@ -24,12 +24,13 @@ long_line_column=72
 
 [files]
 current_page=0
-FILE_NAME_0=2597;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2Fsrc%2Fserver.c;0;4
+FILE_NAME_0=4369;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2Fsrc%2Fserver.c;0;4
 FILE_NAME_1=516;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2Finclude%2Fclientlist.h;0;4
 FILE_NAME_2=1078;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2Fsrc%2Fclientlist.c;0;4
 FILE_NAME_3=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4
 FILE_NAME_4=3126;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Fconfigparser.c;0;4
 FILE_NAME_5=237;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2FCMakeLists.txt;0;4
+FILE_NAME_6=1971;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmq.c;0;4
 
 [VTE]
 last_dir=/home/tecdroid
@@ -55,3 +56,11 @@ EX_00_WD=%p/build
 line_wrapping=false
 line_break_column=80
 auto_continue_multiline=true
+
+[prjorg]
+source_patterns=*.c;*.C;*.cpp;*.cxx;*.c++;*.cc;*.m;
+header_patterns=*.h;*.H;*.hpp;*.hxx;*.h++;*.hh;
+ignored_dirs_patterns=.*;CVS;
+ignored_file_patterns=*.o;*.obj;*.a;*.lib;*.so;*.dll;*.lo;*.la;*.class;*.jar;*.pyc;*.mo;*.gmo;
+generate_tag_prefs=0
+external_dirs=/home/tecdroid/projects/rocs/rocsmq;

@@ -22,6 +22,7 @@ int rocsmq_init(p_rocsmq_baseconfig server) {
 	
 	/* create client information */
 	t_rocsmq_message message;
+	memset(&message, 0, sizeof(t_rocsmq_message));
 	message.id[0] = '\0';
 	strncpy(message.sender,server->clientname,ROCS_CLIENTNAMESIZE);
 
@@ -71,6 +72,9 @@ int rocsmq_exit	 (int sock) {
 	/*
 	 * todo: verbindung abbauen
 	 */
+//	int iMode = 0; 
+//	int result = ioctlsocket(sock, FIONBIO, &iMode); 
+	
 	close(sock);
 	return 0;
 }
@@ -80,13 +84,18 @@ int rocsmq_exit	 (int sock) {
  */
 int rocsmq_recv (int sock,p_rocsmq_message mesg, int flags) {
 	int result;
-
+	log_message(DEBUG, "reading Message from socket %d", sock);
+	/* cleaning up is never bad */
+	memset(mesg, 0, sizeof(t_rocsmq_message));
+	
 	/* receive the length of the string message */
 	result = read(sock, mesg, sizeof(t_rocsmq_message));
-	if (result < sizeof(t_rocsmq_message)) {
-		log_message(ERROR, "Could not read socket");
+
+	if (result < 0 ) {
+		log_message(ERROR, "Could not read socket: ", rocsmq_error());
 	}
 
+	log_message(DEBUG, "Having %d bytes", result);
 	return result;
 
 }

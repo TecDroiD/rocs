@@ -41,13 +41,6 @@ t_rocsmq_baseconfig baseconfig = {
 
 int server_sock; /*socket */
 
-
-/**
- * create a socket set that has the server socket and all the client sockets
- */
-int create_sockset(fd_set * set);
-
-
 /**
  * receive filter info from client
  */
@@ -89,7 +82,7 @@ int main(int argc, char **argv) {
 	const char *host = NULL;
 
 	// client set for activity monitoring
-	fd_set set;
+	fd_set set, readset;
 	
 
 	// parse options
@@ -131,6 +124,7 @@ int main(int argc, char **argv) {
 		log_message(ERROR, "Could not create socket");
 		exit(1);
 	}
+	
 	/* create server */
 	server.sin_family = AF_INET;
 	inet_aton(baseconfig.serverip, &server.sin_addr.s_addr);
@@ -147,13 +141,18 @@ int main(int argc, char **argv) {
 
 
 	/* listen on port */
-	if ( 0 > listen (server_sock, 3)) {
+	if ( 0 > listen (server_sock, 5)) {
 		log_message(ERROR, "listen failed :", rocsmq_error());
 		exit(2);
 	}
 
 	
-
+	/* 
+	 * add master to set
+	 */ 
+	FD_ZERO(&set);
+	FD_SET(server_sock, &set);
+	 
 	/**
 	 * infinite main loop
 	 */ 
@@ -161,56 +160,51 @@ int main(int argc, char **argv) {
 	while (1) {
 		/* check for data from sockets */
 		int i;
-		int maxsd =	create_sockset(&set);
-		int numready = select( maxsd, &set, NULL, NULL, NULL );
+
+
+		/* copy working set */
+		memcpy(&readset, &set, sizeof(set)); 
+		//readset = set;
 		
-		
-		/* on error break */
+		// wait for readable sockets
+		int numready = select( 500, &readset, NULL, NULL, NULL );
 		if (numready == -1) {
 			log_message(ERROR,"select (): %s\n", rocsmq_error());
 			break;
 		}
 		
-		/* when there is nothing to do, do it.. */
-		if (!numready)
-			continue;
-		
-		/* a new client has come */
-		if (FD_ISSET(server_sock, &set)) {
-			numready--;
-			/*printf("Connection...\n"); */
+		//if server socket is readable
+		if (FD_ISSET(server_sock, &readset)) {
+			// accept new client
 			int c =  sizeof(struct sockaddr_in);
 			client_sock = accept(server_sock, (struct sockaddr *) &client, (socklen_t *) &c );
 			if (client_sock) {
+				// add client socket
+				FD_SET(client_sock, &set);
+				
 				t_rocsmq_clientdata clientinfo;
-
 				/*printf("Accepted...\n"); */
 				if ( 0 != read_clientdata(client_sock, &clientinfo)) {
 					log_message(DEBUG,"welcoming client %s",clientinfo.name);
 					log_message(DEBUG," filter : %s", clientinfo.filter);
 					add_client(client_sock, &clientinfo);
-					log_message(DEBUG," client created");
+					log_message(DEBUG," client created, socket: %d", client_sock);
 				} else {
 					log_message(ERROR,"could not connect client: %s",rocsmq_error());
 					close(client_sock);
 				}
-			}
-
+			}					
 		}
 
-		/**
-		 * receive message and send it to all interested clients
-		 */
-		log_message(DEBUG,"clients: %d, numready: %d", count_clients(),numready);
-		
-		for (i = 0; numready && i < count_clients(); i++) {		
+		// check clients for setting them
+		for (i = 0; i < count_clients(); i++) {		
 			p_client client = get_client_idx(i);
-			
-			if (FD_ISSET(client->sock, &set)) {
+			if (FD_ISSET(client->sock, &readset)) {
+			log_message(DEBUG, "client %s isset : %d", client->name, FD_ISSET(client->sock, &readset));
+				
 				// receive message
 				if (rocsmq_recv(client->sock, (p_rocsmq_message) & message,
 						ROCSMQ_POLL)) {
-					numready--;
 					log_message(DEBUG,"received message");
 					log_message(DEBUG," id is '%s', sender is '%s'",
 								message.id, message.sender);
@@ -224,32 +218,17 @@ int main(int argc, char **argv) {
 						handle_message(&message);
 					}
 				} else {
+					// client disconnected, delete
 					log_message(DEBUG,"removing client %s\n", client->name);
+					FD_CLR(client->sock, &set);
 					remove_client(client);
 				}
+
 			}
+			rocsmq_delayms(1);
 		}
 	}
 	quit();
-}
-
-
-/**
- * create a socket set that has the server socket and all the client sockets
- */
-int create_sockset( fd_set * set) {
-	int i;
-	int n = count_clients();
-	// clear set
-	FD_ZERO(set);
-	// add server socket
-	FD_SET(server_sock, set);
-	// add client sockets
-	for (i = 0; i < n; i++) {
-		FD_SET(get_client_idx(i)->sock,set);
-	}
-	
-	return 1 + n; // clients + server socket
 }
 
 /**
@@ -327,6 +306,6 @@ int handle_message(p_rocsmq_message message) {
 void quit(void) {
 	log_message(INFO, "cleaning up server");
 	closelog();
-	close(server_sock);
+	rocsmq_exit(server_sock);
 	exit (0);
 }

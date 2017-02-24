@@ -8,7 +8,7 @@ cron = require "../lib/cronhelper"
 
 function speaktext(text)
    log_message("debug", "order is " .. text) 
-   cron.start("speech.speak", "{\"text\":\"got order " .. retrieve("lastorder") .."\",}",50,10,2)
+   --cron.start("speech.speak", "{\"text\":\"got order " .. retrieve("lastorder") .."\",}",50,10,2)
    send_message("speech.speak", "{\"text\":\"got order " .. text .."\",}")
    persist("lastorder",text);
 end

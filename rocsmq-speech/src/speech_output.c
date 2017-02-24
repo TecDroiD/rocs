@@ -51,6 +51,7 @@ int init_espeak (p_clientconfig config) {
     espeak_SetParameter(espeakRATE,config->speed, 0);
     espeak_SetParameter(espeakVOLUME,config->volume, 0);
     espeak_SetParameter(espeakPITCH,config->pitch, 0);
+    espeak_SetParameter(espeakWORDGAP,config->gap,0);
     
     return 0;
 }

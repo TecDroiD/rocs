@@ -1,0 +1,48 @@
+Json-Value not found (logfile).
+getting custom key sphinx
+Json-Value not found (device).
+Json-Value not found (lmfile).
+Json-Value not found (samplingrate).
+Json-Value not found (clientname).
+Json-Value not found (filter).
+02/16/17 14:52:13 [sphinx] DEBUG	- sphinx starting..
+02/16/17 14:52:13 [sphinx] DEBUG	- initializing sphinx params
+02/16/17 14:52:13 [sphinx] DEBUG	- setting keyword list sphinx/keywords.list
+02/16/17 14:52:13 [sphinx] DEBUG	- setting hmm dir sphinx/model/en_us
+02/16/17 14:52:13 [sphinx] DEBUG	- setting doct dir sphinx/model/cmu07a.dic
+02/16/17 14:52:13 [sphinx] DEBUG	- initializing decoder
+02/16/17 14:52:13 [sphinx] DEBUG	- opening device
+02/16/17 14:52:13 [sphinx] DEBUG	- sending login info: speech recognizer
+
+02/16/17 14:52:13 [sphinx] DEBUG	-  -- 9, speech recognizer 
+
+02/16/17 14:52:13 [sphinx] DEBUG	- successfully logged in
+02/16/17 14:52:13 [sphinx] DEBUG	- starting recognition....
+02/16/17 14:52:13 [sphinx] DEBUG	- waiting
+02/16/17 14:52:13 [sphinx] DEBUG	- Listening...
+02/16/17 14:52:13 [sphinx] DEBUG	- reading Message from socket 9
+02/16/17 14:52:14 [sphinx] INFO	- Listening...
+
+02/16/17 14:52:16 [sphinx] INFO	- Ready....
+
+02/16/17 14:52:19 [sphinx] INFO	- Listening...
+
+bobo shutdown
+02/16/17 14:52:23 [sphinx] DEBUG	- recognized 'bobo shutdown'
+02/16/17 14:52:23 [sphinx] DEBUG	- waiting 5000ms
+02/16/17 14:52:28 [sphinx] DEBUG	- starting recognition....
+02/16/17 14:52:28 [sphinx] ERROR	- ad_start_rec failed
+
+02/16/17 14:52:28 [sphinx] DEBUG	- waiting
+02/16/17 14:52:28 [sphinx] DEBUG	- Listening...
+02/16/17 14:52:28 [sphinx] INFO	- Listening...
+
+02/16/17 14:52:28 [sphinx] INFO	- Ready....
+
+02/16/17 14:52:31 [sphinx] INFO	- Listening...
+
+02/16/17 14:52:36 [sphinx] INFO	- Ready....
+
+02/16/17 14:52:38 [sphinx] INFO	- Listening...
+
+02/16/17 14:52:39 [sphinx] DEBUG	- Having 0 bytes

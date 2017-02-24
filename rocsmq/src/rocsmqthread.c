@@ -75,6 +75,9 @@ pthread_t rocsmq_start_thread(int socket) {
 		return 0;
 	}
 	
+	// activate thread
+	rocsmq_thread_set_running(1);
+	
 	// return thread
 	return thread;
 }

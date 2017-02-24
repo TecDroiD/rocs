@@ -22,12 +22,14 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=4
-FILE_NAME_0=908;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Ftest%2Ftest.config;0;4
-FILE_NAME_1=147;Lua;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Ftest%2Flua%2Ftextorder.lua;0;4
+current_page=3
+FILE_NAME_0=751;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Ftest%2Ftest.config;0;4
+FILE_NAME_1=281;Lua;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Ftest%2Flua%2Ftextorder.lua;0;4
 FILE_NAME_2=91;None;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Ftest%2Fsphinx%2Fkeywords.list;0;4
-FILE_NAME_3=604;Lua;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Ftest%2Flib%2Fcronhelper.lua;0;4
+FILE_NAME_3=539;Lua;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Ftest%2Flib%2Fcronhelper.lua;0;4
 FILE_NAME_4=0;Lua;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Ftest%2Flib%2Fintarray.lua;0;4
+FILE_NAME_5=0;Sh;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Ftest%2Frun.sh;0;4
+FILE_NAME_6=148;Lua;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Ftest%2Flua%2Fhelloworld.lua;0;4
 
 [VTE]
 last_dir=/home/tecdroid

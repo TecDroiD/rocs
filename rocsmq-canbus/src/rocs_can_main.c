@@ -16,9 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_net.h>
-#include <SDL/SDL_thread.h>
+
 
 #include "canbus.h"
 #include "customconfig.h"

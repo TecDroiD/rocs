@@ -106,7 +106,8 @@ int parseconfig(char const *filename, p_rocsmq_baseconfig baseconfig, char * cus
 	fseek(fp, 0, SEEK_SET);
 		
 	// allocate memory for file
-	text = malloc(filesize);
+	text = malloc(filesize + 1);
+	memset(text, 0, filesize + 1);
 	fread(text, filesize, 1, fp);
 	
 	// parse json text

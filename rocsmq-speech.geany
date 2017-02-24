@@ -22,14 +22,14 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=6
-FILE_NAME_0=599;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2FCMakeLists.txt;0;4
-FILE_NAME_1=27;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fclient_config.c;0;4
-FILE_NAME_2=335;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Finclude%2Fclient_config.h;0;4
+current_page=5
+FILE_NAME_0=37;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2FCMakeLists.txt;0;4
+FILE_NAME_1=20;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fclient_config.c;0;4
+FILE_NAME_2=126;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Finclude%2Fclient_config.h;0;4
 FILE_NAME_3=199;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Finclude%2Fspeech_output.h;0;4
-FILE_NAME_4=1837;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fspeech_output.c;0;4
-FILE_NAME_5=2522;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fclientmain.c;0;4
-FILE_NAME_6=460;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2FCMakeLists.txt;0;4
+FILE_NAME_4=1784;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fspeech_output.c;0;4
+FILE_NAME_5=1624;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fclientmain.c;0;4
+FILE_NAME_6=295;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Fsrc%2Frocs_can_main.c;0;4
 
 [VTE]
 last_dir=/home/tecdroid
