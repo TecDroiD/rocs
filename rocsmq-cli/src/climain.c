@@ -15,10 +15,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_net.h>
-#include <SDL/SDL_thread.h>
-#include <SDL/SDL_timer.h>
 
 #include "cli_config.h"
 #include "cli_functions.h"
@@ -26,7 +22,7 @@
 #define CLIENTNAME "cli"	
 #define CLIENTVERSION "0.1.0"
 
-TCPsocket sock;
+int sock;
 
 t_rocsmq_baseconfig baseconfig = {
 	.serverip = "127.0.0.1",
@@ -65,7 +61,7 @@ int get_parameters(int argc, char **argv);
 /**
  * thread reader
  */ 
-static int read_thread(void *data);
+void * read_thread(void *data);
 
 /**
  * stop program
@@ -106,9 +102,8 @@ int func_send(char *ptr) {
  * main function.. no comment..
  */ 
 int main(int argc, char **argv) {
-	SDL_Init(0);
-	SDL_Thread *thread, *readprocess;
-	int threadret;
+	pthread_t thread, readprocess;
+	void * threadret;
 	char input[1024];
 
 	// parse command line parameters 
@@ -125,7 +120,6 @@ int main(int argc, char **argv) {
 	// initializing rocs
 	sock = rocsmq_init(&baseconfig);
 	if (!sock) {
-		SDL_Quit();
 		log_message(ERROR,"could not connect to Server: %s\n\t ===dieing now.===", rocsmq_error());
 		exit(1);
 	}
@@ -138,9 +132,9 @@ int main(int argc, char **argv) {
 	if (cliconfig.mode == MODE_INTERACTIVE) {
 		log_message(INFO, "Entering interactive mode.");
 
-		readprocess = SDL_CreateThread(read_thread, 0);
-		if (readprocess == 0) {
-			log_message(ERROR, "could not create read thread %s\n\t ===dieing now.===", SDL_GetError());
+		int res = pthread_create(&readprocess, NULL, read_thread, NULL);
+		if (0 != res) {
+			exit(1);
 		}
 
 		// as long as program has to run..
@@ -160,11 +154,10 @@ int main(int argc, char **argv) {
 	}
 
 	// wait for read thread.
-	SDL_WaitThread(readprocess, &threadret);
+	pthread_join(readprocess, &threadret);
 	
 	rocsmq_destroy_thread(thread);
 	rocsmq_exit(sock);
-	SDL_Quit();
 	return 0;
 }
 
@@ -236,13 +229,13 @@ int get_parameters(int argc, char **argv) {
 /**
  * read thread
  */
-static int read_thread(void *data) {
+void *read_thread(void *data) {
 	while (rocsmq_thread_is_running()) {
 		while(rocsmq_has_messages()) {
 			rocsmq_get_message(&message);
 			log_message( INFO, "incoming message\n ->id:\t%d\n ->tail:\t'%s'\n",message.id, message.tail);
 		}
-		SDL_Delay(100);
+		rocsmq_delayms(100);
 	}
 	
 	return 0;

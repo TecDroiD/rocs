@@ -4,10 +4,6 @@ set(PROJECTUSER rocs)
 
 project(${PROJECTNAME})
 
-# if SDL or other packages are needed:
-find_package(SDL REQUIRED)
-find_package(SDL_net REQUIRED)
-
 #configure config file
 configure_file(
 	${PROJECT_SOURCE_DIR}/conf/config.in 
@@ -21,9 +17,9 @@ configure_file(
 
 
 # in case of libraries which are needed...
-set (PROJECT_LINK_LIBS rocsmq rocsmq-daemonizer ${SDL_LIBRARY} ${SDL_NET_LIBRARY} pocketsphinx sphinxbase sphinxad libjson-c.a libb64.a)
-link_directories( /usr/local/lib/ ${SDL_LINK_DIR} ${SDL_NET_LINK_DIR} /usr/lib/x86_64-linux-gnu)
-include_directories(../rocsmq/include ../rocsmq-daemonizer/include /usr/local/include/pocketsphinx /usr/local/include/sphinxbase/  ${SDL_INCLUDE_DIR} ${SDL_NET_INCLUDE_DIR} )
+set (PROJECT_LINK_LIBS rocsmq rocsmq-daemonizer pocketsphinx sphinxbase sphinxad libjson-c.a libb64.a pthread)
+link_directories( /usr/local/lib/  /usr/lib/x86_64-linux-gnu)
+include_directories(../rocsmq/include ../rocsmq-daemonizer/include /usr/local/include/pocketsphinx /usr/local/include/sphinxbase/  )
 
 # add all headers
 include_directories(include)

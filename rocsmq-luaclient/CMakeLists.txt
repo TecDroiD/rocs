@@ -6,8 +6,6 @@ set(PROJECTUSER rocs)
 project(${PROJECTNAME})
 
 # if SDL or other packages are needed:
-find_package(SDL REQUIRED)
-find_package(SDL_net REQUIRED)
 find_package(Lua REQUIRED)
 
 #configure config file
@@ -26,9 +24,9 @@ file (GLOB SCRIPTS "${PROJECT_SOURCE_DIR}/script/*.lua")
 file (COPY ${SCRIPTS} DESTINATION ${PROJECT_BINARY_DIR}/script)
 
 # in case of libraries which are needed...
-set (PROJECT_LINK_LIBS rocsmq rocsmq-daemonizer ${SDL_LIBRARY} ${SDL_NET_LIBRARY} ${LUA_LIBRARIES} cdb libjson-c.a libb64.a)
-link_directories( ${SDL_LINK_DIR} ${SDL_NET_LINK_DIR} ${LUA_LINK_DIR})
-include_directories(../rocsmq/include ${SDL_INCLUDE_DIR} ${SDL_NET_INCLUDE_DIR} ${LUA_INCLUDE_DIR})
+set (PROJECT_LINK_LIBS rocsmq rocsmq-daemonizer ${LUA_LIBRARIES} cdb libjson-c.a libb64.a pthread)
+link_directories( ${LUA_LINK_DIR})
+include_directories(../rocsmq/include  ${LUA_INCLUDE_DIR})
 
 # add all headers
 include_directories(include)

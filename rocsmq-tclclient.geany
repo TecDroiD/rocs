@@ -23,11 +23,11 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=1
+current_page=3
 FILE_NAME_0=10;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclient_config.c;0;4
-FILE_NAME_1=295;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclientmain.c;0;4
+FILE_NAME_1=5243;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fsrc%2Fclientmain.c;0;4
 FILE_NAME_2=362;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Finclude%2Fclient_config.h;0;4
-FILE_NAME_3=652;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2FCMakeLists.txt;0;4
+FILE_NAME_3=729;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2FCMakeLists.txt;0;4
 FILE_NAME_4=9;Sh;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fconf%2Finit.d.in;0;4
 FILE_NAME_5=530;Tcl;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tclclient%2Fscript%2Fhelloworld.tcl;0;4
 FILE_NAME_6=467;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fmessages.h;0;4
@@ -57,3 +57,8 @@ NF_03_WD=%p/build
 EX_00_LB=_Ausführen
 EX_00_CM=%p/build/rocsmq-tclclient
 EX_00_WD=%p/build
+
+[editor]
+line_wrapping=false
+line_break_column=80
+auto_continue_multiline=true

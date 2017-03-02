@@ -36,7 +36,7 @@
 #define CONFIGFILE "conf/rocsmq-luaclient.config"
 #define SCRIPTDIR "script/"
 
-TCPsocket sock;
+int sock;
 
 
 t_rocsmq_baseconfig baseconfig = {
@@ -113,8 +113,7 @@ int lua_exists(lua_State *interpreter);
  * main function
  */ 
 int main(int argc, char **argv) {
-	SDL_Init(0);
-	SDL_Thread *thread;
+	pthread_t thread;
 	int i;
 	char buffer[32];
 
@@ -160,7 +159,6 @@ int main(int argc, char **argv) {
 
 	sock = rocsmq_init(&baseconfig);
 	if (!sock) {
-		SDL_Quit();
 		log_message(ERROR,"could not connect to Server: %s\n", rocsmq_error());
 		exit(1);
 	}
@@ -182,7 +180,7 @@ int main(int argc, char **argv) {
 			handle_message(&message);
 		}
 
-			SDL_Delay(50);
+			rocsmq_delayms(10);
 	}
 
 	/*
@@ -193,7 +191,6 @@ int main(int argc, char **argv) {
 	log_message( INFO, "Process shutdown.");
 	rocsmq_destroy_thread(thread);
 	rocsmq_exit(sock);
-	SDL_Quit();
 	
 	return 0;
 }

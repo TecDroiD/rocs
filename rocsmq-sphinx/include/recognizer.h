@@ -9,11 +9,6 @@
 #include <rocsmq.h>
 #include <configparser.h>
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_net.h>
-#include <SDL/SDL_thread.h>
-#include <SDL/SDL_timer.h>
-
 #include "client_config.h"
 
 

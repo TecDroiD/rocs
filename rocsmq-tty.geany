@@ -25,7 +25,7 @@ long_line_column=72
 [files]
 current_page=1
 FILE_NAME_0=450;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tty%2FCMakeLists.txt;0;4
-FILE_NAME_1=3867;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tty%2Fsrc%2Fclientmain.c;0;4
+FILE_NAME_1=3110;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tty%2Fsrc%2Fclientmain.c;0;4
 FILE_NAME_2=723;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tty%2Fsrc%2Fcustomconfig.c;0;4
 FILE_NAME_3=671;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-tty%2Finclude%2Fcustomconfig.h;0;4
 FILE_NAME_4=914;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4

@@ -6,22 +6,23 @@
  */
 
 #include <getopt.h>
-#include <log.h>
-#include <configparser.h>
-#include <messages.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <string.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_endian.h>
-#include <SDL/SDL_error.h>
-#include <SDL/SDL_net.h>
-#include <SDL/SDL_stdinc.h>
+
+#include <unistd.h>
+#include <sys/types.h> 
+#include <sys/socket.h>
+#include <sys/time.h> // for FDSET
+#include <netinet/in.h>
 
 #include <rocsmq.h>
 #include <daemonizer.h>
-//#include <unistd.h>
+#include <log.h>
+#include <configparser.h>
+#include <messages.h>
+
 
 #include "clientlist.h"
 
@@ -38,19 +39,12 @@ t_rocsmq_baseconfig baseconfig = {
 
   
 
-TCPsocket server;
-
-
-/**
- * create a socket set that has the server socket and all the client sockets
- */
-SDLNet_SocketSet create_sockset();
-
+int server_sock; /*socket */
 
 /**
  * receive filter info from client
  */
-Uint32 read_clientdata(TCPsocket sock, p_rocsmq_clientdata client);
+int read_clientdata(int sock, p_rocsmq_clientdata client);
 
 /**
  * send message to all clients
@@ -81,12 +75,15 @@ void quit (void);
  * server main routine
  */
 int main(int argc, char **argv) {
-	IPaddress ip;
-	TCPsocket sock;
-	SDLNet_SocketSet set;
+	int client_sock;
+	struct sockaddr_in server, client;
+	
 	t_rocsmq_message message;
 	const char *host = NULL;
-	Uint32 ipaddr;
+
+	// client set for activity monitoring
+	fd_set set, readset;
+	
 
 	// parse options
 	switch (argc) {
@@ -121,101 +118,93 @@ int main(int argc, char **argv) {
 	log_setlevel(baseconfig.loglevel);
 	log_message(DEBUG,  "%s starting server ..", baseconfig.clientname);
 
-	/* initialize SDL */
-	if (SDL_Init(0) == -1) {
-		log_message(ERROR,"SDL_Init: %s\n", SDL_GetError());
+	/* create socket */
+	server_sock = socket(AF_INET, SOCK_STREAM,0);
+	if (-1 == server_sock) {
+		log_message(ERROR, "Could not create socket");
 		exit(1);
 	}
+	
+	/* create server */
+	server.sin_family = AF_INET;
+	inet_aton(baseconfig.serverip, &server.sin_addr.s_addr);
+	server.sin_port=htons(baseconfig.port);
+	
+	/* bind socket to address and port */
+	if ( 0 > bind (server_sock, (struct sockaddr *) &server, sizeof(server))) {
+		log_message(ERROR, "Bind host address failed :", rocsmq_error());
+		exit(2);
+	}
+	
+	/* output the IP address nicely */
+	log_message(DEBUG,"IP Address : %s, port: %d", baseconfig.serverip, baseconfig.port);
 
-	/* initialize SDL_net */
-	if (SDLNet_Init() == -1) {
-		log_message(ERROR,"SDLNet_Init: %s\n", SDLNet_GetError());
-		SDL_Quit();
+
+	/* listen on port */
+	if ( 0 > listen (server_sock, 5)) {
+		log_message(ERROR, "listen failed :", rocsmq_error());
 		exit(2);
 	}
 
-	/* Resolve the argument into an IPaddress type */
-	if (SDLNet_ResolveHost(&ip, NULL, baseconfig.port) == -1) {
-		log_message(ERROR,"SDLNet_ResolveHost: %s\n", SDLNet_GetError());
-		SDLNet_Quit();
-		SDL_Quit();
-		exit(3);
-	}
-
-	/* perform a byte endianess correction for the next printf */
-	ipaddr = SDL_SwapBE32(ip.host);
-
-	/* output the IP address nicely */
-	log_message(DEBUG,"IP Address : %d.%d.%d.%d\n", ipaddr >> 24, (ipaddr >> 16) & 0xff,
-			(ipaddr >> 8) & 0xff, ipaddr & 0xff);
-
-	/* resolve the hostname for the IPaddress */
-	host = SDLNet_ResolveIP(&ip);
-
-	/* open the server socket */
-	server = SDLNet_TCP_Open(&ip);
-	if (!server) {
-		log_message(ERROR,"SDLNet_TCP_Open: %s\n", SDLNet_GetError());
-		SDLNet_Quit();
-		SDL_Quit();
-		exit(4);
-	}
-
+	
+	/* 
+	 * add master to set
+	 */ 
+	FD_ZERO(&set);
+	FD_SET(server_sock, &set);
+	 
 	/**
 	 * infinite main loop
 	 */ 
 	log_message(INFO,"Server started. waiting for clients");
 	while (1) {
 		/* check for data from sockets */
-		int numready, i;
-		set = create_sockset(0);
-		numready = SDLNet_CheckSockets(set, (Uint32) -1);
+		int i;
+
+
+		/* copy working set */
+		memcpy(&readset, &set, sizeof(set)); 
+		//readset = set;
 		
-		/* on error break */
+		// wait for readable sockets
+		int numready = select( 500, &readset, NULL, NULL, NULL );
 		if (numready == -1) {
-			log_message(ERROR,"SDLNet_CheckSockets: %s\n", SDLNet_GetError());
+			log_message(ERROR,"select (): %s\n", rocsmq_error());
 			break;
 		}
 		
-		/* when there is nothing to do, do it.. */
-		if (!numready)
-			continue;
-		
-		/* a new client has come */
-		if (SDLNet_SocketReady(server)) {
-			numready--;
-			/*printf("Connection...\n"); */
-			sock = SDLNet_TCP_Accept(server);
-			if (sock) {
+		//if server socket is readable
+		if (FD_ISSET(server_sock, &readset)) {
+			// accept new client
+			int c =  sizeof(struct sockaddr_in);
+			client_sock = accept(server_sock, (struct sockaddr *) &client, (socklen_t *) &c );
+			if (client_sock) {
+				// add client socket
+				FD_SET(client_sock, &set);
+				
 				t_rocsmq_clientdata clientinfo;
-
 				/*printf("Accepted...\n"); */
-				if ( 0 != read_clientdata(sock, &clientinfo)) {
+				if ( 0 != read_clientdata(client_sock, &clientinfo)) {
 					log_message(DEBUG,"welcoming client %s",clientinfo.name);
 					log_message(DEBUG," filter : %s", clientinfo.filter);
-					add_client(sock, &clientinfo);
-					log_message(DEBUG," client created");
+					add_client(client_sock, &clientinfo);
+					log_message(DEBUG," client created, socket: %d", client_sock);
 				} else {
 					log_message(ERROR,"could not connect client: %s",rocsmq_error());
-					SDLNet_TCP_Close(sock);
+					close(client_sock);
 				}
-			}
-
+			}					
 		}
 
-		/**
-		 * receive message and send it to all interested clients
-		 */
-		log_message(DEBUG,"clients: %d, numready: %d", count_clients(),numready);
-		
-		for (i = 0; numready && i < count_clients(); i++) {		
+		// check clients for setting them
+		for (i = 0; i < count_clients(); i++) {		
 			p_client client = get_client_idx(i);
-			
-			if (SDLNet_SocketReady(client->sock)) {
+			if (FD_ISSET(client->sock, &readset)) {
+			log_message(DEBUG, "client %s isset : %d", client->name, FD_ISSET(client->sock, &readset));
+				
 				// receive message
 				if (rocsmq_recv(client->sock, (p_rocsmq_message) & message,
 						ROCSMQ_POLL)) {
-					numready--;
 					log_message(DEBUG,"received message");
 					log_message(DEBUG," id is '%s', sender is '%s'",
 								message.id, message.sender);
@@ -229,42 +218,24 @@ int main(int argc, char **argv) {
 						handle_message(&message);
 					}
 				} else {
+					// client disconnected, delete
 					log_message(DEBUG,"removing client %s\n", client->name);
+					FD_CLR(client->sock, &set);
 					remove_client(client);
 				}
+
 			}
+			rocsmq_delayms(1);
 		}
 	}
 	quit();
 }
 
-
-/**
- * create a socket set that has the server socket and all the client sockets
- */
-SDLNet_SocketSet create_sockset() {
-	
-	static SDLNet_SocketSet set = NULL;
-	int i;
-
-	if (set)
-		SDLNet_FreeSocketSet(set);
-	set = SDLNet_AllocSocketSet(count_clients() + 1);
-	if (!set) {
-		printf("SDLNet_AllocSocketSet: %s\n", SDLNet_GetError());
-		exit(1); /*most of the time this is a major error, but do what you want. */
-	}
-	SDLNet_TCP_AddSocket(set, server);
-	for (i = 0; i < count_clients(); i++)
-		SDLNet_TCP_AddSocket(set, get_client_idx(i)->sock);
-	return (set);
-}
-
 /**
  * receive filter info from client
  */
-Uint32 read_clientdata(TCPsocket sock, p_rocsmq_clientdata client) {
-	Uint32 result;
+int read_clientdata(int sock, p_rocsmq_clientdata client) {
+	int result;
 	t_rocsmq_message message;
 	result = rocsmq_recv(sock, &message,0);
 	log_message(DEBUG, "-->sender: %s\n",message.sender);
@@ -318,13 +289,8 @@ void server_signal_handler(int sig) {
 	simple_signal_handler(sig);
 	
 	if (sig == SIGTERM) {
-		log_message(INFO, "catched TERM signal. quitting..\n");
-		closelog();
-		/* shutdown SDL_net */
-		SDLNet_Quit();
-		/* shutdown SDL */
-		SDL_Quit();
-		exit (0);
+		log_message(INFO, "catched TERM signal.");
+		quit();
 	}
 }
 
@@ -338,11 +304,8 @@ int handle_message(p_rocsmq_message message) {
 
 
 void quit(void) {
-		log_message(INFO, "cleaning up server");
+	log_message(INFO, "cleaning up server");
 	closelog();
-	/* shutdown SDL_net */
-	SDLNet_Quit();
-	/* shutdown SDL */
-	SDL_Quit();
+	rocsmq_exit(server_sock);
 	exit (0);
 }

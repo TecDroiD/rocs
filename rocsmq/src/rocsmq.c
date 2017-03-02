@@ -11,17 +11,18 @@
 #define tcputil_h 1
 
 char *rocsmq_error() {
-	return SDLNet_GetError();
+	return strerror(errno);
 }
 
 
 
-TCPsocket rocsmq_init(p_rocsmq_baseconfig server) {
-	TCPsocket sock;
-	IPaddress ip;
+int rocsmq_init(p_rocsmq_baseconfig server) {
+	int sock;
+	struct sockaddr_in servaddr;
 	
 	/* create client information */
 	t_rocsmq_message message;
+	memset(&message, 0, sizeof(t_rocsmq_message));
 	message.id[0] = '\0';
 	strncpy(message.sender,server->clientname,ROCS_CLIENTNAMESIZE);
 
@@ -29,34 +30,35 @@ TCPsocket rocsmq_init(p_rocsmq_baseconfig server) {
 		strncpy(cdata->filter,server->filter, ROCS_IDSIZE);
 		strncpy(cdata->name,server->clientname,ROCS_CLIENTNAMESIZE);
 
-
-
 	/*
 	 * verbindung aufbauen
 	 */
-	/* initialize SDL_net */
-	if(SDLNet_Init()==-1) return 0;
 
-	if(SDLNet_ResolveHost(&ip,server->serverip,server->port)==-1)
-	{
-		SDLNet_Quit();
+	/* create socket socket */
+	sock=socket(AF_INET, SOCK_STREAM, 0);
+	if(-1 == sock) {
+		log_message(ERROR, "Could not create socket");
 		return 0;
 	}
 
-	/* open the server socket */
-	sock=SDLNet_TCP_Open(&ip);
-	if(!sock)
-	{
-		SDLNet_Quit();
-		return 0;
-	}
+	/* create server connection */
+	servaddr.sin_family = AF_INET;
+	inet_aton(server->serverip, &servaddr.sin_addr.s_addr);
+	servaddr.sin_port=htons(server->port);
 
-	log_message(DEBUG,"sending login info: %s\n", message.sender);
-	log_message(DEBUG," -- %d, %s \n", sock, message.tail);
+	/* connect server */
+	if (0 > connect(sock, (struct sockaddr *)&servaddr, sizeof(servaddr))) {
+		log_message(ERROR, "could not connect to server.");
+		return 0; 
+	}
+	
 	/*
 	 * send client data
 	 */
+	log_message(DEBUG,"sending login info: %s\n", message.sender);
+	log_message(DEBUG," -- %d, %s \n", sock, message.tail);
 	if (!rocsmq_send(sock,&message, 0)) {
+		close(sock);
 		return 0;
 	}
 
@@ -66,28 +68,34 @@ TCPsocket rocsmq_init(p_rocsmq_baseconfig server) {
 /**
  * exit rocsmq system
  */
-int rocsmq_exit	 (TCPsocket sock) {
+int rocsmq_exit	 (int sock) {
 	/*
 	 * todo: verbindung abbauen
 	 */
-	SDLNet_TCP_Close(sock);
-	SDLNet_Quit();
+//	int iMode = 0; 
+//	int result = ioctlsocket(sock, FIONBIO, &iMode); 
+	
+	close(sock);
 	return 0;
 }
 
 /*
  * warten auf daten und transferieren in message
  */
-int rocsmq_recv (TCPsocket sock,p_rocsmq_message mesg, int flags) {
-	Uint32 result;
-
+int rocsmq_recv (int sock,p_rocsmq_message mesg, int flags) {
+	int result;
+	log_message(DEBUG, "reading Message from socket %d", sock);
+	/* cleaning up is never bad */
+	memset(mesg, 0, sizeof(t_rocsmq_message));
+	
 	/* receive the length of the string message */
-	result = SDLNet_TCP_Recv(sock, mesg, sizeof(t_rocsmq_message));
-	if (result < sizeof(t_rocsmq_message)) {
-		if (SDLNet_GetError() && strlen(SDLNet_GetError())) /* sometimes blank! */
-			log_message(ERROR, "SDLNet_TCP_Recv: %s\n", SDLNet_GetError());
+	result = read(sock, mesg, sizeof(t_rocsmq_message));
+
+	if (result < 0 ) {
+		log_message(ERROR, "Could not read socket: ", rocsmq_error());
 	}
 
+	log_message(DEBUG, "Having %d bytes", result);
 	return result;
 
 }
@@ -95,13 +103,12 @@ int rocsmq_recv (TCPsocket sock,p_rocsmq_message mesg, int flags) {
 /**
  * senden von daten
  */
-int rocsmq_send (TCPsocket sock,p_rocsmq_message mesg, int flags) {
-	Uint32 result;
-	result=SDLNet_TCP_Send(sock,mesg,sizeof(t_rocsmq_message));
-		if(result<sizeof(t_rocsmq_message)) {
-			if(SDLNet_GetError() && strlen(SDLNet_GetError())) /* sometimes blank! */
-				log_message(ERROR, "SDLNet_TCP_Send: %s\n", SDLNet_GetError());
-		}
+int rocsmq_send (int sock,p_rocsmq_message mesg, int flags) {
+	int result;
+	result=write(sock,mesg,sizeof(t_rocsmq_message));
+	if(result<sizeof(t_rocsmq_message)) {
+		log_message(ERROR, "Could not write socket");
+	}
 	
 	return result;
 }
@@ -187,4 +194,10 @@ int rocsmq_check_system_message(char *messageid) {
 	return 0;
 }
 
+/**
+ * sleep for n milliseconds 
+ */ 
+int rocsmq_delayms(long ms) {
+	usleep (ms * 1000);
+}
 #endif

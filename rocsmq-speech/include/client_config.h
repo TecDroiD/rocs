@@ -10,6 +10,7 @@
 #define CONFIG_KEY_SPEED	 "speed"
 #define CONFIG_KEY_VOLUME	 "volume"
 #define CONFIG_KEY_PITCH	 "pitch"
+#define CONFIG_KEY_GAP		 "gap"
 
 
 typedef struct s_clientconfig {
@@ -17,6 +18,7 @@ typedef struct s_clientconfig {
 	int speed;
 	int volume;
 	int pitch;
+	int gap;
 } t_clientconfig, *p_clientconfig;
 
 

@@ -39,7 +39,7 @@ static const char* CLIENTNAME = "vision";
 
 #define MESSAGE_RESPONSE "sensor.vision"
 
-TCPsocket sock;
+int sock;
 
 int32_t lastread = 0;
 
@@ -70,11 +70,8 @@ int handle_message(p_rocsmq_message message);
  * main function
  */
 int main(int argc, char **argv) {
-	SDL_Thread *thread;
+	pthread_t thread;
 	t_rocsmq_message message;
-	
-	/* initialize sdl */
-	SDL_Init(0);
 	
 
 	// parse configuration
@@ -132,19 +129,18 @@ int main(int argc, char **argv) {
 		/*
 		 * wait 1ms
 		 */
-		SDL_Delay(1);
+		rocsmq_delayms(1);
 	}
 
 	/*
 	 * cleanup
 	 */
 	rocsmq_destroy_thread(thread);
-	rocsmq_error();
+	rocsmq_exit(sock);
 
 	if (baseconfig.logtofile)
 		closelog();
 
-	SDL_Quit();
 
 	return 0;
 }

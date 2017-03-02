@@ -83,7 +83,7 @@ int del_cronjob(p_cronjob job){
 	ll_destroy(item);
 }
 
-int32_t tick (TCPsocket sock, uint32_t add) {
+int32_t tick (int sock, uint32_t add) {
 	
 	p_linkedlist item, next;
 	p_cronjob job;

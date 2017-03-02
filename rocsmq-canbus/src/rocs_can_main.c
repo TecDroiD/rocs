@@ -16,9 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_net.h>
-#include <SDL/SDL_thread.h>
+
 
 #include "canbus.h"
 #include "customconfig.h"
@@ -127,17 +125,14 @@ void create_rocs_message(canmsg_t * can, p_rocsmq_message message) {
  * main function
  */
 int main(int argc, char **argv) {
-	TCPsocket sock;
-	SDL_Thread *thread;
+	int sock;
+	pthread_t thread;
 	t_rocsmq_message message;
 	canmsg_t canmessage;
 	
 	
 	int recv;
 
-	/* initialize sdl */
-	SDL_Init(0);
-	
 	/* parse configuration file */
 //	parseconfig(CONFIGFILE, &baseconfig, CLIENTNAME, canbus_custom_config, &customconfig);
 	// parse configuration
@@ -203,7 +198,7 @@ int main(int argc, char **argv) {
 		/*
 		 * wait 100ms
 		 */
-		SDL_Delay(100);
+		rocsmq_delayms(10);
 	}
 
 	/*
@@ -211,11 +206,9 @@ int main(int argc, char **argv) {
 	 */
 	can_uninit();
 	rocsmq_destroy_thread(thread);
-	rocsmq_error(sock);
+	rocsmq_exit(sock);
 
 	closelog();
-
-	SDL_Quit();
 
 	return 0;
 }

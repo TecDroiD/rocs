@@ -1,0 +1,25 @@
+Json-Value not found (logfile).
+getting custom key speech
+Json-Value not found (voice).
+voice configuration: defaultpitch configuration: 99Json-Value not found (volume).
+volume configuration: 50speed configuration: 160wordgap configuration: 13Json-Value not found (clientname).
+Json-Value not found (filter).
+02/16/17 14:52:13 [speech] DEBUG	- AM
+02/16/17 14:52:13 [speech] DEBUG	- speech starting..
+02/16/17 14:52:13 [speech] DEBUG	- sending login info: speech output
+
+02/16/17 14:52:13 [speech] DEBUG	-  -- 4, speech output 
+
+02/16/17 14:52:13 [speech] DEBUG	- successfully logged in
+02/16/17 14:52:13 [speech] DEBUG	- reading Message from socket 4
+02/16/17 14:52:19 [speech] DEBUG	- Having 1276 bytes
+02/16/17 14:52:19 [speech] INFO	- incoming:{'text':'hello world',}
+
+02/16/17 14:52:19 [speech] DEBUG	- speaking message 'hello world'
+02/16/17 14:52:19 [speech] DEBUG	- reading Message from socket 4
+02/16/17 14:52:23 [speech] DEBUG	- Having 1276 bytes
+02/16/17 14:52:23 [speech] INFO	- incoming:{"text":"got order bobo shutdown",}
+
+02/16/17 14:52:23 [speech] DEBUG	- speaking message 'got order bobo shutdown'
+02/16/17 14:52:23 [speech] DEBUG	- reading Message from socket 4
+02/16/17 14:52:39 [speech] DEBUG	- Having 0 bytes

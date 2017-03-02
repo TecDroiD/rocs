@@ -1,0 +1,68 @@
+Json-Value not found (logfile).
+getting custom key cron
+Json-Value not found (clientname).
+logging to file.. ''
+loglevel = 0
+02/16/17 14:52:14 [cron] DEBUG	- clientname: cron
+02/16/17 14:52:14 [cron] DEBUG	- Delay: 500, Ticks: 1
+02/16/17 14:52:14 [cron] DEBUG	- sending login info: cron
+
+02/16/17 14:52:14 [cron] DEBUG	-  -- 4, cron 
+
+02/16/17 14:52:14 [cron] DEBUG	- successfully logged in
+02/16/17 14:52:14 [cron] DEBUG	- Tick : 2, cronlist: 14412560
+02/16/17 14:52:14 [cron] DEBUG	- reading Message from socket 4
+02/16/17 14:52:14 [cron] DEBUG	- Tick : 3, cronlist: 14412560
+02/16/17 14:52:15 [cron] DEBUG	- Tick : 4, cronlist: 14412560
+02/16/17 14:52:15 [cron] DEBUG	- Tick : 5, cronlist: 14412560
+02/16/17 14:52:16 [cron] DEBUG	- Tick : 6, cronlist: 14412560
+02/16/17 14:52:16 [cron] DEBUG	- Tick : 7, cronlist: 14412560
+02/16/17 14:52:17 [cron] DEBUG	- Tick : 8, cronlist: 14412560
+02/16/17 14:52:17 [cron] DEBUG	- Tick : 9, cronlist: 14412560
+02/16/17 14:52:18 [cron] DEBUG	- Tick : 10, cronlist: 14412560
+02/16/17 14:52:18 [cron] DEBUG	- Tick : 11, cronlist: 14412560
+02/16/17 14:52:19 [cron] DEBUG	- Tick : 12, cronlist: 14412560
+02/16/17 14:52:19 [cron] DEBUG	- Found a job!
+02/16/17 14:52:19 [cron] DEBUG	- message 'lua.helloworld' sent!
+02/16/17 14:52:19 [cron] DEBUG	- removing item
+02/16/17 14:52:19 [cron] DEBUG	- Tick : 13, cronlist: 0
+02/16/17 14:52:20 [cron] DEBUG	- Tick : 14, cronlist: 0
+02/16/17 14:52:20 [cron] DEBUG	- Tick : 15, cronlist: 0
+02/16/17 14:52:21 [cron] DEBUG	- Tick : 16, cronlist: 0
+02/16/17 14:52:21 [cron] DEBUG	- Tick : 17, cronlist: 0
+02/16/17 14:52:22 [cron] DEBUG	- Tick : 18, cronlist: 0
+02/16/17 14:52:22 [cron] DEBUG	- Tick : 19, cronlist: 0
+02/16/17 14:52:23 [cron] DEBUG	- Tick : 20, cronlist: 0
+02/16/17 14:52:23 [cron] DEBUG	- Tick : 21, cronlist: 0
+02/16/17 14:52:24 [cron] DEBUG	- Tick : 22, cronlist: 0
+02/16/17 14:52:24 [cron] DEBUG	- Tick : 23, cronlist: 0
+02/16/17 14:52:25 [cron] DEBUG	- Tick : 24, cronlist: 0
+02/16/17 14:52:25 [cron] DEBUG	- Tick : 25, cronlist: 0
+02/16/17 14:52:26 [cron] DEBUG	- Tick : 26, cronlist: 0
+02/16/17 14:52:26 [cron] DEBUG	- Tick : 27, cronlist: 0
+02/16/17 14:52:27 [cron] DEBUG	- Tick : 28, cronlist: 0
+02/16/17 14:52:27 [cron] DEBUG	- Tick : 29, cronlist: 0
+02/16/17 14:52:28 [cron] DEBUG	- Tick : 30, cronlist: 0
+02/16/17 14:52:28 [cron] DEBUG	- Tick : 31, cronlist: 0
+02/16/17 14:52:29 [cron] DEBUG	- Tick : 32, cronlist: 0
+02/16/17 14:52:29 [cron] DEBUG	- Tick : 33, cronlist: 0
+02/16/17 14:52:30 [cron] DEBUG	- Tick : 34, cronlist: 0
+02/16/17 14:52:30 [cron] DEBUG	- Tick : 35, cronlist: 0
+02/16/17 14:52:31 [cron] DEBUG	- Tick : 36, cronlist: 0
+02/16/17 14:52:31 [cron] DEBUG	- Tick : 37, cronlist: 0
+02/16/17 14:52:32 [cron] DEBUG	- Tick : 38, cronlist: 0
+02/16/17 14:52:32 [cron] DEBUG	- Tick : 39, cronlist: 0
+02/16/17 14:52:33 [cron] DEBUG	- Tick : 40, cronlist: 0
+02/16/17 14:52:33 [cron] DEBUG	- Tick : 41, cronlist: 0
+02/16/17 14:52:34 [cron] DEBUG	- Tick : 42, cronlist: 0
+02/16/17 14:52:34 [cron] DEBUG	- Tick : 43, cronlist: 0
+02/16/17 14:52:35 [cron] DEBUG	- Tick : 44, cronlist: 0
+02/16/17 14:52:35 [cron] DEBUG	- Tick : 45, cronlist: 0
+02/16/17 14:52:36 [cron] DEBUG	- Tick : 46, cronlist: 0
+02/16/17 14:52:36 [cron] DEBUG	- Tick : 47, cronlist: 0
+02/16/17 14:52:37 [cron] DEBUG	- Tick : 48, cronlist: 0
+02/16/17 14:52:37 [cron] DEBUG	- Tick : 49, cronlist: 0
+02/16/17 14:52:38 [cron] DEBUG	- Tick : 50, cronlist: 0
+02/16/17 14:52:38 [cron] DEBUG	- Tick : 51, cronlist: 0
+02/16/17 14:52:39 [cron] DEBUG	- Tick : 52, cronlist: 0
+02/16/17 14:52:39 [cron] DEBUG	- Having 0 bytes
