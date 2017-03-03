@@ -16,10 +16,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_net.h>
-#include <SDL/SDL_thread.h>
-#include <SDL/SDL_timer.h>
 #include <lua5.1/lua.h>
 #include <lua5.1/lualib.h>
 #include <lua5.1/lauxlib.h>
