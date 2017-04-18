@@ -1,6 +1,8 @@
 #ifndef __CUSTOMCONFIG_H
 #define __CUSTOMCONFIG_H
 
+#include "configparser.h"
+
 #include <json-c/json.h>
 #include <log.h>
 

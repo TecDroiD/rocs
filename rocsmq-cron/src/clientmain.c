@@ -139,15 +139,7 @@ void handle_message(p_rocsmq_message message) {
 	log_message(DEBUG, "message-id '%s'", message->id);
 
 	char mesgid[ROCS_IDSIZE];
-	strncpy(mesgid, message->id, ROCS_IDSIZE);
-	
-	
-	// react on system messages
-	if(rocsmq_check_system_message(message->id)){
-		log_message(INFO, "system message handled.");
-		return;
-	}
-	
+	strncpy(mesgid, message->id, ROCS_IDSIZE);	
 
 	// copy json content from message
 	log_message(DEBUG, "  -> message-tail (%s)", message->tail);

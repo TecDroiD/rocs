@@ -21,6 +21,7 @@
 
 #include <espeak/speak_lib.h>
 
+#include "speech_output.h"
 #include "client_config.h"
 
 #define CLIENTNAME "speech"	

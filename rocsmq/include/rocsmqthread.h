@@ -44,7 +44,7 @@ void rocsmq_get_message(p_rocsmq_message message);
 /**
  * start the rocsmq thread
  */
-pthread_t rocsmq_start_thread(int socket);
+pthread_t rocsmq_start_thread(rocsmq_socket socket);
 
 /**
  * destroy the rocsmq thread

@@ -199,8 +199,6 @@ void handle_message(p_rocsmq_message message) {
 	char val[32];
 	int i;
 	char *result;
-	// react on system messages
-	rocsmq_check_system_message(message->id);
 	 
 	// copy json content from message
 
@@ -287,9 +285,9 @@ void uninit_interpreter() {
  * lua procedure for encoding to b64
  */
 int lua_b64_encode(lua_State *interpreter) {
-	char *data = luaL_checkstring(interpreter, 1);
+	const char *data = luaL_checkstring(interpreter, 1);
 	char retval[1000]; 
-	b64encode(data, retval, 1000);
+	b64encode((char *)data, retval, 1000);
 
 	lua_pushstring(interpreter,retval);
 	return lua_OK;
@@ -299,9 +297,9 @@ int lua_b64_encode(lua_State *interpreter) {
  * lua procedure for decoding b64
  */
 int lua_b64_decode(lua_State *interpreter) {
-	char *data = luaL_checkstring(interpreter, 1);
+	const char *data = luaL_checkstring(interpreter, 1);
 	char retval[1000]; 
-	b64decode(data, retval, 1000);
+	b64decode((char *)data, retval, 1000);
 
 	lua_pushstring(interpreter,retval);
 	return lua_OK;
@@ -318,7 +316,7 @@ int lua_send_message(lua_State *interpreter) {
 	
 	strncpy(message.id, luaL_checkstring(interpreter, 1), ROCS_IDSIZE);
 	strncpy (message.sender, baseconfig.clientname, 20);
-	char * tail = luaL_checkstring(interpreter, 2);
+	const char * tail = luaL_checkstring(interpreter, 2);
 	strncpy (message.tail,tail,ROCS_MESSAGESIZE);
 	
 	log_message(DEBUG, "sending message '%s' with tail '%s' from '%s'", message.id, message.tail,message.sender);
@@ -330,10 +328,10 @@ int lua_send_message(lua_State *interpreter) {
  * lua procedure for sending messages
  */
 int lua_log_message(lua_State *interpreter) {
-	char *level = luaL_checkstring(interpreter,1);
-	char *message = luaL_checkstring(interpreter,2);
+	const char *level = luaL_checkstring(interpreter,1);
+	const char *message = luaL_checkstring(interpreter,2);
 	 
-	log_message(log_getlevel(level),message);
+	log_message(log_getlevel((char*)level),message);
 	 
 	return lua_OK;
 }  
@@ -345,8 +343,8 @@ int lua_log_message(lua_State *interpreter) {
 int lua_persist(lua_State *interpreter) {
 	struct cdb_make cdbm;
 	
-	char *key = luaL_checkstring(interpreter,1);
-	char *val = luaL_checkstring(interpreter,2);
+	const char *key = luaL_checkstring(interpreter,1);
+	const char *val = luaL_checkstring(interpreter,2);
 	int keylen = strlen(key);
 	int vallen = strlen(val);
 	
@@ -373,7 +371,7 @@ int lua_persist(lua_State *interpreter) {
  */ 
 int lua_exists(lua_State *interpreter) {
 	struct cdb cdb;
-	char *key = luaL_checkstring(interpreter,1);
+	const char *key = luaL_checkstring(interpreter,1);
 	
 	// init db file
 	int fp = open(clientconfig.dbpath, O_RDWR|O_CREAT);
@@ -396,7 +394,7 @@ int lua_exists(lua_State *interpreter) {
  */ 
 int lua_retrieve(lua_State *interpreter) {
 	struct cdb cdb;
-	char *key = luaL_checkstring(interpreter,1);
+	const char *key = luaL_checkstring(interpreter,1);
 	char *val;
 	int vlen, vpos;
 	

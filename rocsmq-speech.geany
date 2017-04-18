@@ -28,7 +28,7 @@ FILE_NAME_1=20;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-sp
 FILE_NAME_2=126;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Finclude%2Fclient_config.h;0;4
 FILE_NAME_3=199;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Finclude%2Fspeech_output.h;0;4
 FILE_NAME_4=1784;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fspeech_output.c;0;4
-FILE_NAME_5=1624;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fclientmain.c;0;4
+FILE_NAME_5=399;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-speech%2Fsrc%2Fclientmain.c;0;4
 FILE_NAME_6=295;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-canbus%2Fsrc%2Frocs_can_main.c;0;4
 
 [VTE]

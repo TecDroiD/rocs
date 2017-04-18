@@ -3,6 +3,7 @@ set(PROJECTNAME rocsmq)
 set(PROJECTUSER rocs)
 
 project(${PROJECTNAME})
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # in case of libraries which are needed...
 set (PROJECT_LINK_LIBS libjson-c.a pthread) 

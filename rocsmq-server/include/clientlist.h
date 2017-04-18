@@ -61,10 +61,15 @@ p_client get_clients();
 p_client get_client_idx(int number);
 
 /**
- * find a client 
+ * find a client by message id
  */ 
 p_client next_client_by_message(p_client client, char *message);
 
-
+/**
+ * find client index 
+ * @param client the client data to match
+ * @return the client index
+ */ 
+int find_client_idx(p_client client);
 
 #endif

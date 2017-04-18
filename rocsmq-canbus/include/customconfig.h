@@ -46,5 +46,5 @@ int get_message(p_clientconfig config, int can_id, char *message, p_messagemap r
 int add_messagemap(p_clientconfig config, p_messagemap map);
 int del_messagemap(p_clientconfig config, p_messagemap message);
 
-
+int parse_mapentry(json_object *json, p_messagemap map);
 #endif

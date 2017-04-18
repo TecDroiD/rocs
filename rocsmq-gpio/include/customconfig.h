@@ -14,6 +14,8 @@
  *  ]
  */
   
+#include "configparser.h"
+  
 #include <json-c/json.h>
 #include <log.h>
 

@@ -10,14 +10,19 @@
 #ifndef tcputil_h
 #define tcputil_h 1
 
+/*
+ *
+ */  
 char *rocsmq_error() {
 	return strerror(errno);
 }
 
 
-
-int rocsmq_init(p_rocsmq_baseconfig server) {
-	int sock;
+/*
+ * 
+ */ 
+rocsmq_socket rocsmq_init(p_rocsmq_baseconfig server) {
+	rocsmq_socket sock;
 	struct sockaddr_in servaddr;
 	
 	/* create client information */
@@ -43,7 +48,7 @@ int rocsmq_init(p_rocsmq_baseconfig server) {
 
 	/* create server connection */
 	servaddr.sin_family = AF_INET;
-	inet_aton(server->serverip, &servaddr.sin_addr.s_addr);
+	inet_aton(server->serverip, &servaddr.sin_addr);
 	servaddr.sin_port=htons(server->port);
 
 	/* connect server */
@@ -68,7 +73,7 @@ int rocsmq_init(p_rocsmq_baseconfig server) {
 /**
  * exit rocsmq system
  */
-int rocsmq_exit	 (int sock) {
+rocsmq_result rocsmq_exit	 (rocsmq_socket sock) {
 	/*
 	 * todo: verbindung abbauen
 	 */
@@ -82,7 +87,7 @@ int rocsmq_exit	 (int sock) {
 /*
  * warten auf daten und transferieren in message
  */
-int rocsmq_recv (int sock,p_rocsmq_message mesg, int flags) {
+rocsmq_result rocsmq_recv (rocsmq_socket sock,p_rocsmq_message mesg, int flags) {
 	int result;
 	log_message(DEBUG, "reading Message from socket %d", sock);
 	/* cleaning up is never bad */
@@ -103,7 +108,7 @@ int rocsmq_recv (int sock,p_rocsmq_message mesg, int flags) {
 /**
  * senden von daten
  */
-int rocsmq_send (int sock,p_rocsmq_message mesg, int flags) {
+rocsmq_result rocsmq_send (rocsmq_socket sock,p_rocsmq_message mesg, int flags) {
 	int result;
 	result=write(sock,mesg,sizeof(t_rocsmq_message));
 	if(result<sizeof(t_rocsmq_message)) {
@@ -125,52 +130,42 @@ json_object * rocsmq_get_message_json(p_rocsmq_message mesg) {
 	return obj; 
 }
 
-int rocsmq_set_message_json(p_rocsmq_message mesg, json_object *object) {
+rocsmq_result rocsmq_set_message_json(p_rocsmq_message mesg, json_object *object) {
 	strncpy (mesg->tail, json_object_to_json_string(object), ROCS_MESSAGESIZE);
 }
 
 /**
  * returns true if message matches pattern 
  */ 
-int rocsmq_message_match(char *subject, char *pattern) {
+rocsmq_result rocsmq_message_match(char *subject, char *pattern) {
 	char *s = subject;
 	char *p = pattern;
 
     for (p = pattern; *p != '\0'; p++) {
-//		log_message(DEBUG, "pattern : %c", *p);
 		if (!p) {
-//			log_message(ERROR, "NO P");
 			return 0;
 		}
         if ((*p) == '*') {
-//			log_message(DEBUG,"gg");
             if (*(p + 1) == '\0') {
-//				log_message(DEBUG, "done");
                 return 1;
             }
             for (s = subject; *s != '\0' ; s++) {
                 if (rocsmq_message_match(s, p + 1)) {
-//					log_message(DEBUG, "matched");
                     return 1;
                 }
             }
             return 0;
 
        } else {
-//			log_message(DEBUG, "subject : %c", *s);
             if (*s == '\0') {
-//				log_message(DEBUG, "unexpected end");
                 return 0;
             }
             
-//			log_message(DEBUG, "compare");
             if (*p != *s) {
-//				log_message(DEBUG, "nomatch");
                 return 0;				
 			}
             s++;
         }
-//				log_message(DEBUG, "nomatch");
     }
 
     /* End of pattern reached.  If this also the end of the subject, then
@@ -178,7 +173,9 @@ int rocsmq_message_match(char *subject, char *pattern) {
     return (*s == '\0');
 } 
 
-int rocsmq_check_system_message(char *messageid) {
+/*
+ * react on system message
+rocsmq_result rocsmq_check_system_message(char *messageid) {
 	
 	char id[ROCS_IDSIZE];
 	strcpy(id, messageid);
@@ -193,11 +190,12 @@ int rocsmq_check_system_message(char *messageid) {
 	} 
 	return 0;
 }
+ */ 
 
 /**
  * sleep for n milliseconds 
  */ 
-int rocsmq_delayms(long ms) {
+void rocsmq_delayms(long ms) {
 	usleep (ms * 1000);
 }
 #endif

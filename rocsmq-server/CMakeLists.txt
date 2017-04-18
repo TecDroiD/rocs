@@ -4,9 +4,12 @@ set(PROJECTUSER rocs)
 
 project(${PROJECTNAME})
 
-# in case of libraries which are needed...
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
+# in case of libraries which are needed...
 set (PROJECT_LINK_LIBS rocsmq rocsmq-daemonizer libjson-c.a libb64.a pthread)
+
 #link_directories( )
 include_directories(../rocsmq/include ../rocsmq-daemonizer/include )
 

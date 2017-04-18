@@ -1,5 +1,17 @@
 #include "customconfig.h"
 
+/**
+ * parse a message map entry json text 
+ */ 
+int parse_mapentry(json_object *json, p_messagemap map) {
+	get_stringval (json, CONFIG_KEY_MESSAGEMAP, map->message, ROCS_IDSIZE);
+	get_intval    (json, CONFIG_KEY_CAN,&(map->can_id));
+	get_boolval	  (json, CONFIG_KEY_PERMANENT, &(map->permanent));
+} 
+
+/**
+ * run custom config
+ */ 
 int canbus_custom_config (json_object *json, void * p_datastruct) {
 	p_clientconfig config = (p_clientconfig) p_datastruct;
 	json_object *messagemap, *messageitem;
@@ -27,14 +39,6 @@ int canbus_custom_config (json_object *json, void * p_datastruct) {
 	}
 }
 
-/**
- * parse a message map entry json text 
- */ 
-int parse_mapentry(json_object *json, p_messagemap map) {
-	get_stringval (json, CONFIG_KEY_MESSAGEMAP, map->message, ROCS_IDSIZE);
-	get_intval    (json, CONFIG_KEY_CAN,&(map->can_id));
-	get_boolval	  (json, CONFIG_KEY_PERMANENT, &(map->permanent));
-} 
 
 
 /**

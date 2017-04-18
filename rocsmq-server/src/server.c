@@ -16,6 +16,7 @@
 #include <sys/socket.h>
 #include <sys/time.h> // for FDSET
 #include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include <rocsmq.h>
 #include <daemonizer.h>
@@ -127,7 +128,7 @@ int main(int argc, char **argv) {
 	
 	/* create server */
 	server.sin_family = AF_INET;
-	inet_aton(baseconfig.serverip, &server.sin_addr.s_addr);
+	inet_aton(baseconfig.serverip, &server.sin_addr);
 	server.sin_port=htons(baseconfig.port);
 	
 	/* bind socket to address and port */

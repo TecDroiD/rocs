@@ -18,6 +18,7 @@ extern "C"
 #include <sys/socket.h>
 #include <sys/time.h> // for FDSET
 #include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include <errno.h>
 
@@ -41,6 +42,16 @@ extern "C"
 #define MESSAGE_SEPARATOR ","
 
 /**
+ * increase abstraction level for socket connector
+ */ 
+typedef int rocsmq_socket;
+
+/**
+ * increase abstraction level for function result
+ */
+typedef int rocsmq_result;
+   
+/**
  * data type for the standard message
  */
 typedef struct s_rocsmq_message {
@@ -50,8 +61,8 @@ typedef struct s_rocsmq_message {
 } t_rocsmq_message, *p_rocsmq_message;
 
 
-/*
- *
+/**
+ * client data, contains name and filter set for message routing 
  */
 typedef struct s_rocsmq_clientdata {
 	char   name[ROCS_CLIENTNAMESIZE];
@@ -59,25 +70,75 @@ typedef struct s_rocsmq_clientdata {
 } t_rocsmq_clientdata, *p_rocsmq_clientdata;
 
 
-int rocsmq_init(p_rocsmq_baseconfig server) ;
-int rocsmq_exit	(int sock);
-int rocsmq_recv (int sock, p_rocsmq_message mesg, int flags);
-int rocsmq_send (int sock, p_rocsmq_message mesg, int flags);
+/**
+ * initialize rocsmq connection to server
+ * @param server base configuration with server connection data
+ * @return socket to server
+ */  
+rocsmq_socket rocsmq_init(p_rocsmq_baseconfig server);
+/**
+ * disconnect from server
+ * @param sock socket to server 
+ * @return 0 or error code
+ */ 
+rocsmq_result rocsmq_exit	(rocsmq_socket sock);
+/**
+ * receive data
+ * @param sock socket to com partner
+ * @param mesg pointer to pre allocated message data
+ * @param flags currently unused
+ * @return number of bytes read
+ */ 
+rocsmq_result rocsmq_recv (rocsmq_socket sock, p_rocsmq_message mesg, int flags);
+/**
+ * send data
+ * @param sock socket to com partner
+ * @param mesg pointer to pre allocated message data
+ * @param flags currently unused
+ * @return number of bytes written
+ */ 
+rocsmq_result rocsmq_send (rocsmq_socket sock, p_rocsmq_message mesg, int flags);
+/**
+ * print last rocsmq error
+ * @return error message text
+ */ 
 char *rocsmq_error();
 
+/**
+ * convert message text to json object
+ * @param mesg pointer to message data
+ * @return pointer to json object
+ */ 
 json_object * rocsmq_get_message_json(p_rocsmq_message mesg);
-int rocsmq_set_message_json(p_rocsmq_message mesg, json_object *object);
 
-int rocsmq_message_match(char *subject, char *pattern);
+/**
+ * convert json object to message text
+ * @param pointer to pre allocated message data
+ * @param object pointer to json object
+ * @return 0 or error code
+ */ 
+rocsmq_result rocsmq_set_message_json(p_rocsmq_message mesg, json_object *object);
+
+/**
+ * wildchar match
+ * @param subject text to search in
+ * @param pattern pattern to search
+ * @return 1 if pattern matches or 0 if not
+ */ 
+rocsmq_result rocsmq_message_match(char *subject, char *pattern);
+
 /**
  * react on all system messages
+ * @param messageid id of message to react on
+ * @return 0 or error code
  */ 
-int rocsmq_check_system_message(char *messageid);
+//rocsmq_result rocsmq_check_system_message(char *messageid);
 
 /**
  * delay for some ms
+ * @param ms time to delay
  */ 
-int rocsmq_delayms(long ms);
+void rocsmq_delayms(long ms);
 
 #ifdef __cplusplus
 }

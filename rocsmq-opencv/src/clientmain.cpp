@@ -30,7 +30,7 @@
 
 static const char* CLIENTNAME = "vision";
 #define PROGNAME "rocsmq-opencv"
-#define CONFIGFILE "conf/"PROGNAME".config"
+#define CONFIGFILE "conf/" PROGNAME ".config"
 
 
 #define MESSAGE_RESPONSE "sensor.vision"
