@@ -6,7 +6,7 @@
 #include <json-c/json.h>
 #include <log.h>
 
-#define CONFIG_KEY_QUEUENUM "queue"
+#define CONFIG_KEY_QUEUENUM "key"
 
 typedef struct s_clientconfig {
 	int queue;
