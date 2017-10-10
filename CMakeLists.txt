@@ -19,6 +19,8 @@ add_subdirectory(rocsmq-i2cbus)
 add_subdirectory(rocsmq-gpio)
 add_subdirectory(rocsmq-tty)
 add_subdirectory(rocsmq-opencv)
+add_subdirectory(rocsmq-queue)
+
 
 SET(CPACK_GENERATOR "RPM")
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Jens Rapp")
