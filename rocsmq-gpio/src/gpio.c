@@ -136,7 +136,7 @@ int init_pin(char * pin, int inout) {
 	/*wait for system acting..*/
 	struct timespec ts;
 	ts.tv_sec = 0;
-	ts.tv_nsec = 50 * 1000000;
+	ts.tv_nsec = 200 * 1000000;
 	nanosleep(&ts,0);
 	#endif
 	

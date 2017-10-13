@@ -4,22 +4,29 @@ Json-Value not found (voice).
 voice configuration: defaultpitch configuration: 99Json-Value not found (volume).
 volume configuration: 50speed configuration: 160wordgap configuration: 13Json-Value not found (clientname).
 Json-Value not found (filter).
-02/16/17 14:52:13 [speech] DEBUG	- AM
-02/16/17 14:52:13 [speech] DEBUG	- speech starting..
-02/16/17 14:52:13 [speech] DEBUG	- sending login info: speech output
+10/10/17 22:48:37 [speech] DEBUG	- AM
+10/10/17 22:48:37 [speech] DEBUG	- speech starting..
+10/10/17 22:48:38 [speech] DEBUG	- sending login info: speech output
 
-02/16/17 14:52:13 [speech] DEBUG	-  -- 4, speech output 
+10/10/17 22:48:38 [speech] DEBUG	-  -- 4, speech output 
 
-02/16/17 14:52:13 [speech] DEBUG	- successfully logged in
-02/16/17 14:52:13 [speech] DEBUG	- reading Message from socket 4
-02/16/17 14:52:19 [speech] DEBUG	- Having 1276 bytes
-02/16/17 14:52:19 [speech] INFO	- incoming:{'text':'hello world',}
+10/10/17 22:48:38 [speech] DEBUG	- successfully logged in
+10/10/17 22:48:38 [speech] DEBUG	- reading Message from socket 4
+10/10/17 22:48:43 [speech] DEBUG	- Having 1276 bytes
+10/10/17 22:48:43 [speech] INFO	- incoming:{'text':'hello world',}
 
-02/16/17 14:52:19 [speech] DEBUG	- speaking message 'hello world'
-02/16/17 14:52:19 [speech] DEBUG	- reading Message from socket 4
-02/16/17 14:52:23 [speech] DEBUG	- Having 1276 bytes
-02/16/17 14:52:23 [speech] INFO	- incoming:{"text":"got order bobo shutdown",}
+10/10/17 22:48:43 [speech] DEBUG	- speaking message 'hello world'
+10/10/17 22:48:43 [speech] DEBUG	- reading Message from socket 4
+10/10/17 22:49:55 [speech] DEBUG	- Having 1276 bytes
+10/10/17 22:49:55 [speech] INFO	- incoming:{"text":"got order bobo go",}
 
-02/16/17 14:52:23 [speech] DEBUG	- speaking message 'got order bobo shutdown'
-02/16/17 14:52:23 [speech] DEBUG	- reading Message from socket 4
-02/16/17 14:52:39 [speech] DEBUG	- Having 0 bytes
+10/10/17 22:49:55 [speech] DEBUG	- speaking message 'got order bobo go'
+10/10/17 22:49:56 [speech] DEBUG	- reading Message from socket 4
+10/10/17 22:50:24 [speech] DEBUG	- Having 1276 bytes
+10/10/17 22:50:24 [speech] INFO	- incoming:{"text":"got order bobo go",}
+
+10/10/17 22:50:24 [speech] DEBUG	- speaking message 'got order bobo go'
+10/10/17 22:50:24 [speech] DEBUG	- reading Message from socket 4
+10/10/17 22:50:44 [speech] DEBUG	- Having 0 bytes
+10/10/17 22:50:44 [speech] DEBUG	- reading Message from socket 4
+10/10/17 22:50:44 [speech] DEBUG	- Having 0 bytes

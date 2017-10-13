@@ -18,6 +18,9 @@ void simple_signal_handler(int sig) {
 	case SIGTERM:
 		log_message(INFO, "terminate signal catched");
 		break;
+	case SIGKILL:
+		log_message(INFO, "kill signal catched");
+		break;
 	default: /* ignore the rest */
 		break;
 	}
@@ -72,6 +75,7 @@ int daemonize(const char *runningdir, t_sighandler sig_handler_func) {
 	signal(SIGTTIN, sig_handler);
 	signal(SIGHUP, sig_handler); /* catch hangup signal */
 	signal(SIGTERM, sig_handler); /* catch kill signal */
+	signal(SIGKILL, sig_handler); /* catch kill signal */
 
 	return 0;
 }
