@@ -113,6 +113,8 @@ int main(int argc, char **argv) {
 	/* 
 	 * handle signals
 	 */
+	t_sighandler sig_handler = server_signal_handler;
+	 
 		/* signal handler */
 	signal(SIGCHLD, sig_handler); /* ignore child */
 	signal(SIGTSTP, sig_handler); /* ignore tty signals */
