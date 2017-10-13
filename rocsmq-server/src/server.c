@@ -110,6 +110,18 @@ int main(int argc, char **argv) {
 		}
 	}
 	
+	/* 
+	 * handle signals
+	 */
+		/* signal handler */
+	signal(SIGCHLD, sig_handler); /* ignore child */
+	signal(SIGTSTP, sig_handler); /* ignore tty signals */
+	signal(SIGTTOU, sig_handler);
+	signal(SIGTTIN, sig_handler);
+	signal(SIGHUP, sig_handler); /* catch hangup signal */
+	signal(SIGTERM, sig_handler); /* catch kill signal */
+	signal(SIGKILL, sig_handler); /* catch kill signal */
+  
 	log_message(DEBUG, "	-> done...");
 
 	/*
