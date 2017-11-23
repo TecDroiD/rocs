@@ -18,7 +18,7 @@
 #include <string.h>
 
 
-#include "canbus.h"
+#include "canport.h"
 #include "customconfig.h"
 
 #define CLIENTNAME "can"
@@ -39,7 +39,7 @@ t_rocsmq_baseconfig baseconfig = {
 	
 t_clientconfig custom_config = {
 	.kbaud = 125,
-	.devicefile = "/dev/can0\0",
+	.devicefile = "can0\0",
 	.messagemap = 0,
 };
 
@@ -67,18 +67,18 @@ int handle_message(p_rocsmq_message message) {
 	char data[1000];
 	char decoded[250];
 	int id;
-	canmsg_t can;
+	t_frame can;
 	json_object *json = rocsmq_get_message_json(message);
 
 	if(0 == strcmp(message->id, ORDER_SEND)) {
 		// get can bus message id
 		get_intval(json, CAN_MESSAGE_ID, &id);
-		can.id = id;
+		can.can_id = id;
 		// get can message data
 		get_stringval(json, CAN_MESSAGE, data, 250);
 		// decode data
 		b64decode(data,decoded,250);
-		strncpy(can.data,decoded, CAN_MSG_LENGTH);
+		strncpy(can.data,decoded, CAN_MAX_DLEN);
 		// send data via can bus
 		can_send(&can);
 
@@ -103,12 +103,12 @@ int handle_message(p_rocsmq_message message) {
 	return 1;
 }
 
-void create_rocs_message(canmsg_t * can, p_rocsmq_message message) {
+void create_rocs_message(p_frame can, p_rocsmq_message message) {
 	json_object *json;
 	char b64data[250];
 	// get message id from map or generate id
 	t_messagemap map;
-	if (get_message(&custom_config, can->id, 0, &map, 0)) {
+	if (get_message(&custom_config, can->can_id, 0, &map, 0)) {
 		strncpy (message->id, map.message, ROCS_IDSIZE);
 	} else {
 		strncpy (message->id, CREATE_CLIENTORDER(MESSAGE_ID_SENSOR, MESSAGE_CLIENT_CAN), ROCS_IDSIZE);
@@ -117,7 +117,7 @@ void create_rocs_message(canmsg_t * can, p_rocsmq_message message) {
 	// encode binary data for 
 	b64encode(can->data,b64data,250);
 	memset(message->tail,'\0',ROCS_MESSAGESIZE);
-	sprintf(message->tail, "{\""CAN_MESSAGE_ID"\":%d,\""CAN_MESSAGE"\":\"%s\"}",can->id,b64data);
+	sprintf(message->tail, "{\""CAN_MESSAGE_ID"\":%d,\""CAN_MESSAGE"\":\"%s\"}",can->can_id,b64data);
 	log_message(DEBUG,"sending received can message %s, %s", message->id, message->tail);
 }
 
@@ -128,7 +128,7 @@ int main(int argc, char **argv) {
 	int sock;
 	pthread_t thread;
 	t_rocsmq_message message;
-	canmsg_t canmessage;
+	t_frame canmessage;
 	
 	
 	int recv;
@@ -161,7 +161,7 @@ int main(int argc, char **argv) {
 	log_message(DEBUG, PROGNAME " starting..");
 
 	/* do initialization stuff */
-	can_init(custom_config.devicefile, custom_config.kbaud);
+	can_open(custom_config.devicefile, custom_config.kbaud);
 
 	sock = rocsmq_init(&baseconfig);
 	if(! sock) {
@@ -189,7 +189,7 @@ int main(int argc, char **argv) {
 		}
 
 		// if can bus has something to say
-		recv = can_recv(&canmessage);
+		recv = can_read(&canmessage);
 		if (recv) {
 			// send a new rocs message
 			create_rocs_message(&canmessage, &message);
@@ -204,7 +204,7 @@ int main(int argc, char **argv) {
 	/*
 	 * cleanup
 	 */
-	can_uninit();
+	can_close();
 	rocsmq_destroy_thread(thread);
 	rocsmq_exit(sock);
 
