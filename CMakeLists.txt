@@ -15,10 +15,10 @@ add_subdirectory(rocsmq-sphinx)
 add_subdirectory(rocsmq-luaclient)
 add_subdirectory(rocsmq-cli)
 add_subdirectory(rocsmq-canbus)
-add_subdirectory(rocsmq-i2cbus)
+#add_subdirectory(rocsmq-i2cbus)
 add_subdirectory(rocsmq-gpio)
 add_subdirectory(rocsmq-tty)
-add_subdirectory(rocsmq-opencv)
+#add_subdirectory(rocsmq-opencv)
 add_subdirectory(rocsmq-queue)
 
 

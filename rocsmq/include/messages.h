@@ -1,5 +1,8 @@
 /*
  * messages.h
+ * 
+ * 
+ * deprecated: TODO: remove
  *
  *  Created on: 29.09.2015
  *      Author: tecdroid

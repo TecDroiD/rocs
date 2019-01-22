@@ -1,7 +1,7 @@
 #ifndef RECOGNIZER_H
 #define RECOGNIZER_H
 
-#include "pocketsphinx.h"
+#include <pocketsphinx.h>
 #include "err.h"
 #include "ad.h"
 

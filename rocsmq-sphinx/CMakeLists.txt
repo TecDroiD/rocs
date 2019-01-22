@@ -19,7 +19,7 @@ configure_file(
 # in case of libraries which are needed...
 set (PROJECT_LINK_LIBS rocsmq rocsmq-daemonizer pocketsphinx sphinxbase sphinxad libjson-c.a libb64.a pthread)
 link_directories( /usr/local/lib/  /usr/lib/x86_64-linux-gnu)
-include_directories(../rocsmq/include ../rocsmq-daemonizer/include /usr/local/include/pocketsphinx /usr/local/include/sphinxbase/  )
+include_directories(../rocsmq/include ../rocsmq-daemonizer/include /usr/local/include/pocketsphinx /usr/local/include/sphinxbase  )
 
 # add all headers
 include_directories(include)

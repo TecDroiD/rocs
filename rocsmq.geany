@@ -14,24 +14,18 @@ indent_mode=2
 
 [project]
 name=rocsmq
-base_path=/home/tecdroid/projects/rocs/rocsmq
+base_path=/home/tecdroid/Projekte/Rapp/rocs/software
 description=
+file_patterns=
 
 [long line marker]
 long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=2
-FILE_NAME_0=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Flinkedlist.c;0;4
-FILE_NAME_1=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Flog.c;0;4
-FILE_NAME_2=2690;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmq.c;0;4
-FILE_NAME_3=3000;C++;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Frocsmq.h;0;4
-FILE_NAME_4=1284;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmqthread.c;0;4
-FILE_NAME_5=709;C++;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Frocsmqthread.h;0;4
-FILE_NAME_6=1685;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Fconfigparser.c;0;4
-FILE_NAME_7=218;C++;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Fconfigparser.h;0;4
-FILE_NAME_8=195;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2FCMakeLists.txt;0;4
+current_page=1
+FILE_NAME_0=353;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2FProjekte%2FRapp%2Frocs%2Fsoftware%2Frocsmq-cron%2FCMakeLists.txt;0;4
+FILE_NAME_1=2438;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2FProjekte%2FRapp%2Frocs%2Fsoftware%2Frocsmq-cron%2Fsrc%2Fclientmain.c;0;4
 
 [VTE]
 last_dir=/home/tecdroid
@@ -40,3 +34,11 @@ last_dir=/home/tecdroid
 line_wrapping=false
 line_break_column=80
 auto_continue_multiline=true
+
+[prjorg]
+source_patterns=*.c;*.C;*.cpp;*.cxx;*.c++;*.cc;*.m;
+header_patterns=*.h;*.H;*.hpp;*.hxx;*.h++;*.hh;
+ignored_dirs_patterns=.*;CVS;
+ignored_file_patterns=*.o;*.obj;*.a;*.lib;*.so;*.dll;*.lo;*.la;*.class;*.jar;*.pyc;*.mo;*.gmo;
+generate_tag_prefs=0
+external_dirs=

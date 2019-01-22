@@ -1,62 +1,30 @@
 Json-Value not found (logfile).
 getting custom key lua
-script 0: 295733840, lua/helloworld.lua
-script 1: 295734360, lua/textorder.lua
-script 2: 295734880, lua/simple_reactions.lua
+script 0: 1176123984, lua/helloworld.lua
+script 1: 1176124504, lua/textorder.lua
+script 2: 1176125024, lua/simple_reactions.lua
 logging to file.. ''
 loglevel = 0
-10/10/17 22:48:37 [luascripter] DEBUG	- clientname: luascripter
-10/10/17 22:48:37 [luascripter] DEBUG	- sending login info: luascripter
+01/08/19 15:15:30 [luascripter] DEBUG	- clientname: luascripter
+01/08/19 15:15:30 [luascripter] DEBUG	- sending login info: luascripter
 
-10/10/17 22:48:37 [luascripter] DEBUG	-  -- 4, luascripter 
+01/08/19 15:15:30 [luascripter] DEBUG	-  -- 4, luascripter 
 
-10/10/17 22:48:37 [luascripter] DEBUG	- successfully logged in
-10/10/17 22:48:37 [luascripter] DEBUG	- reading Message from socket 4
-10/10/17 22:48:43 [luascripter] DEBUG	- Having 1276 bytes
-10/10/17 22:48:43 [luascripter] DEBUG	- incoming:{ "text": "Testservice runs." }
+01/08/19 15:15:30 [luascripter] DEBUG	- successfully logged in
+01/08/19 15:15:30 [luascripter] DEBUG	- reading Message from socket 4
+01/08/19 15:15:36 [luascripter] DEBUG	- Having 1276 bytes
+01/08/19 15:15:36 [luascripter] DEBUG	- incoming:{ "text": "Testservice runs." }
 
-10/10/17 22:48:43 [luascripter] DEBUG	- message-id lua.helloworld
-10/10/17 22:48:43 [luascripter] DEBUG	-   -> message-tail { "text": "Testservice runs." }
-10/10/17 22:48:43 [luascripter] DEBUG	- have scripts 3
-10/10/17 22:48:43 [luascripter] DEBUG	- script filter lua.helloworld
-10/10/17 22:48:43 [luascripter] DEBUG	- calling script lua/helloworld.lua
+01/08/19 15:15:36 [luascripter] DEBUG	- message-id lua.helloworld
+01/08/19 15:15:36 [luascripter] DEBUG	-   -> message-tail { "text": "Testservice runs." }
+01/08/19 15:15:36 [luascripter] DEBUG	- have scripts 3
+01/08/19 15:15:36 [luascripter] DEBUG	- script filter lua.helloworld
+01/08/19 15:15:36 [luascripter] DEBUG	- calling script lua/helloworld.lua
 helloworld triggered
-10/10/17 22:48:43 [luascripter] DEBUG	- { "text": "Testservice runs." }
-10/10/17 22:48:43 [luascripter] DEBUG	- sending message 'speech.speak' with tail '{'text':'hello world',}' from 'luascripter'
-10/10/17 22:48:43 [luascripter] INFO	- sent message to speech.
-10/10/17 22:48:43 [luascripter] DEBUG	- script filter lua.textorder
-10/10/17 22:48:43 [luascripter] DEBUG	- script filter input.*
-10/10/17 22:48:43 [luascripter] DEBUG	- reading Message from socket 4
-10/10/17 22:49:55 [luascripter] DEBUG	- Having 1276 bytes
-10/10/17 22:49:55 [luascripter] DEBUG	- incoming:{"text":"bobo go","source":"sphinx",}
-
-10/10/17 22:49:55 [luascripter] DEBUG	- message-id lua.textorder
-10/10/17 22:49:55 [luascripter] DEBUG	-   -> message-tail {"text":"bobo go","source":"sphinx",}
-10/10/17 22:49:55 [luascripter] DEBUG	- have scripts 3
-10/10/17 22:49:55 [luascripter] DEBUG	- script filter lua.helloworld
-10/10/17 22:49:55 [luascripter] DEBUG	- script filter lua.textorder
-10/10/17 22:49:55 [luascripter] DEBUG	- calling script lua/textorder.lua
-10/10/17 22:49:55 [luascripter] DEBUG	- textorder triggered.
-10/10/17 22:49:55 [luascripter] DEBUG	- order is bobo go
-10/10/17 22:49:55 [luascripter] DEBUG	- sending message 'speech.speak' with tail '{"text":"got order bobo go",}' from 'luascripter'
-10/10/17 22:49:55 [luascripter] DEBUG	- textorder handled.
-10/10/17 22:49:55 [luascripter] DEBUG	- script filter input.*
-10/10/17 22:49:56 [luascripter] DEBUG	- reading Message from socket 4
-10/10/17 22:50:24 [luascripter] DEBUG	- Having 1276 bytes
-10/10/17 22:50:24 [luascripter] DEBUG	- incoming:{"text":"bobo go","source":"sphinx",}
-
-10/10/17 22:50:24 [luascripter] DEBUG	- message-id lua.textorder
-10/10/17 22:50:24 [luascripter] DEBUG	-   -> message-tail {"text":"bobo go","source":"sphinx",}
-10/10/17 22:50:24 [luascripter] DEBUG	- have scripts 3
-10/10/17 22:50:24 [luascripter] DEBUG	- script filter lua.helloworld
-10/10/17 22:50:24 [luascripter] DEBUG	- script filter lua.textorder
-10/10/17 22:50:24 [luascripter] DEBUG	- calling script lua/textorder.lua
-10/10/17 22:50:24 [luascripter] DEBUG	- textorder triggered.
-10/10/17 22:50:24 [luascripter] DEBUG	- order is bobo go
-10/10/17 22:50:24 [luascripter] DEBUG	- sending message 'speech.speak' with tail '{"text":"got order bobo go",}' from 'luascripter'
-10/10/17 22:50:24 [luascripter] DEBUG	- textorder handled.
-10/10/17 22:50:24 [luascripter] DEBUG	- script filter input.*
-10/10/17 22:50:24 [luascripter] DEBUG	- reading Message from socket 4
-10/10/17 22:50:44 [luascripter] DEBUG	- Having 0 bytes
-10/10/17 22:50:44 [luascripter] DEBUG	- reading Message from socket 4
-10/10/17 22:50:44 [luascripter] DEBUG	- Having 0 bytes
+01/08/19 15:15:36 [luascripter] DEBUG	- { "text": "Testservice runs." }
+01/08/19 15:15:36 [luascripter] DEBUG	- sending message 'speech.speak' with tail '{'text':'hello world',}' from 'luascripter'
+01/08/19 15:15:36 [luascripter] INFO	- sent message to speech.
+01/08/19 15:15:36 [luascripter] DEBUG	- script filter lua.textorder
+01/08/19 15:15:36 [luascripter] DEBUG	- script filter input.*
+01/08/19 15:15:36 [luascripter] DEBUG	- reading Message from socket 4
+01/08/19 15:16:28 [luascripter] DEBUG	- Having 0 bytes

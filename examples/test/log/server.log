@@ -1,3 +1,86 @@
 Json-Value not found (logfile).
-10/10/17 22:48:36 [rocsmq-server] DEBUG	- rocsmq-server starting server ..
-10/10/17 22:48:36 [rocsmq-server] ERROR	- Bind host address failed :
+01/08/19 15:15:29 [rocsmq-server] DEBUG	- rocsmq-server starting server ..
+01/08/19 15:15:29 [rocsmq-server] DEBUG	- IP Address : 127.0.0.1, port: 8389
+01/08/19 15:15:29 [rocsmq-server] INFO	- Server started. waiting for clients
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- reading Message from socket 5
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- Having 1276 bytes
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- -->sender: luascripter
+
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- welcoming client luascripter
+01/08/19 15:15:30 [rocsmq-server] DEBUG	-  filter : lua*,input*
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- Adding filter lua* [5] to client luascripter.
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- Adding filter input* [7] to client luascripter.
+01/08/19 15:15:30 [rocsmq-server] DEBUG	-  client created, socket: 5
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- reading Message from socket 6
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- Having 1276 bytes
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- -->sender: speech recognizer
+
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- welcoming client speech recognizer
+01/08/19 15:15:30 [rocsmq-server] DEBUG	-  filter : sphinx*
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- Adding filter sphinx* [8] to client speech recognizer.
+01/08/19 15:15:30 [rocsmq-server] DEBUG	-  client created, socket: 6
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- reading Message from socket 7
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- Having 1276 bytes
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- -->sender: speech output
+
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- welcoming client speech output
+01/08/19 15:15:30 [rocsmq-server] DEBUG	-  filter : speech*
+01/08/19 15:15:30 [rocsmq-server] DEBUG	- Adding filter speech* [8] to client speech output.
+01/08/19 15:15:30 [rocsmq-server] DEBUG	-  client created, socket: 7
+01/08/19 15:15:31 [rocsmq-server] DEBUG	- reading Message from socket 8
+01/08/19 15:15:31 [rocsmq-server] DEBUG	- Having 1276 bytes
+01/08/19 15:15:31 [rocsmq-server] DEBUG	- -->sender: speech recognizer
+
+01/08/19 15:15:31 [rocsmq-server] DEBUG	- welcoming client speech recognizer
+01/08/19 15:15:31 [rocsmq-server] DEBUG	-  filter : sphinx*
+01/08/19 15:15:31 [rocsmq-server] DEBUG	- Adding filter sphinx* [8] to client speech recognizer.
+01/08/19 15:15:31 [rocsmq-server] DEBUG	-  client created, socket: 8
+01/08/19 15:15:31 [rocsmq-server] DEBUG	- reading Message from socket 9
+01/08/19 15:15:31 [rocsmq-server] DEBUG	- Having 1276 bytes
+01/08/19 15:15:31 [rocsmq-server] DEBUG	- -->sender: cron
+
+01/08/19 15:15:31 [rocsmq-server] DEBUG	- welcoming client cron
+01/08/19 15:15:31 [rocsmq-server] DEBUG	-  filter : cron*
+01/08/19 15:15:31 [rocsmq-server] DEBUG	- Adding filter cron* [6] to client cron.
+01/08/19 15:15:31 [rocsmq-server] DEBUG	-  client created, socket: 9
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- client cron isset : 1
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- reading Message from socket 9
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- Having 1276 bytes
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- received message
+01/08/19 15:15:36 [rocsmq-server] DEBUG	-  id is 'lua.helloworld', sender is 'cron'
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- 	tail is { "text": "Testservice runs." }
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- Sending message '{ "text": "Testservice runs." }', possibly to 5 clients.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- checking filter lua* on message lua.helloworld for client luascripter.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	-   match lua* on message lua.helloworld for client luascripter.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	-   - to client luascripter
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- checking filter sphinx* on message lua.helloworld for client speech recognizer.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- next item 0
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- checking filter speech* on message lua.helloworld for client speech output.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- next item 0
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- checking filter sphinx* on message lua.helloworld for client speech recognizer.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- next item 0
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- checking filter cron* on message lua.helloworld for client cron.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- next item 0
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- client luascripter isset : 1
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- reading Message from socket 5
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- Having 1276 bytes
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- received message
+01/08/19 15:15:36 [rocsmq-server] DEBUG	-  id is 'speech.speak', sender is 'luascripter'
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- 	tail is {'text':'hello world',}
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- Sending message '{'text':'hello world',}', possibly to 5 clients.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- checking filter lua* on message speech.speak for client luascripter.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- next item 309660208
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- checking filter input* on message speech.speak for client luascripter.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- next item 0
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- checking filter sphinx* on message speech.speak for client speech recognizer.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- next item 0
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- checking filter speech* on message speech.speak for client speech output.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	-   match speech* on message speech.speak for client speech output.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	-   - to client speech output
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- checking filter sphinx* on message speech.speak for client speech recognizer.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- next item 0
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- checking filter cron* on message speech.speak for client cron.
+01/08/19 15:15:36 [rocsmq-server] DEBUG	- next item 0
+01/08/19 15:16:28 [rocsmq-server] INFO	- terminate signal catched
+01/08/19 15:16:28 [rocsmq-server] INFO	- catched TERM signal.
+01/08/19 15:16:28 [rocsmq-server] INFO	- cleaning up server

@@ -31,10 +31,11 @@ current_page=4
 FILE_NAME_0=77;C++;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-queue%2Finclude%2Fcustomconfig.h;0;4
 FILE_NAME_1=253;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-queue%2Fsrc%2Fcustomconfig.c;0;4
 FILE_NAME_2=0;C++;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Finclude%2Frocsmq.h;0;4
-FILE_NAME_3=154;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-queue%2FCMakeLists.txt;0;4
-FILE_NAME_4=3212;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-queue%2Fsrc%2Fqueuemain.c;0;4
+FILE_NAME_3=962;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-queue%2FCMakeLists.txt;0;4
+FILE_NAME_4=3100;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-queue%2Fsrc%2Fqueuemain.c;0;4
 FILE_NAME_5=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmq.c;0;4
 FILE_NAME_6=0;C;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq%2Fsrc%2Frocsmqthread.c;0;4
+FILE_NAME_7=423;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ftecdroid%2Fprojects%2Frocs%2Frocsmq-server%2FCMakeLists.txt;0;4
 
 [VTE]
 last_dir=/home/tecdroid

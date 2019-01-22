@@ -18,7 +18,7 @@ int tty_init(p_clientconfig clientconfig) {
 
 	// open tty
 	file=open(clientconfig->device, O_RDWR | O_NONBLOCK);   
-	if (! file) {
+	if (file < 0) {
 		log_message(ERROR,"Could not open tty %s",clientconfig->device);
 		return -1;
 	}

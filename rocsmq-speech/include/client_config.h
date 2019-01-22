@@ -1,7 +1,5 @@
-#ifndef TCLCLIENT_H
-#define TCLCLIENT_H
-
-#include <tcl/tcl.h>
+#ifndef SPEECHCLIENT_H
+#define SPEECHCLIENT_H
 
 #include <rocsmq.h>
 #include <configparser.h>

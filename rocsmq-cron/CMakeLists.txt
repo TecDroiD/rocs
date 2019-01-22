@@ -16,7 +16,6 @@ configure_file(
 	${PROJECT_BINARY_DIR}/etc/init.d/${PROJECTNAME}
 )
 
-
 # in case of libraries which are needed...
 set (PROJECT_LINK_LIBS rocsmq rocsmq-daemonizer  libjson-c.a libb64.a pthread)
 link_directories(  /usr/lib/x86_64-linux-gnu)

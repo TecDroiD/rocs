@@ -103,7 +103,7 @@ int handle_message(p_rocsmq_message message) {
 		.length=0
 	};
 	
-	get_intval(json, JSON_KEY_READ, &read);
+	get_intval(json, JSON_KEY_SLAVE, &read);
 	i2c.slave = d;
 	get_intval(json, JSON_KEY_ADDR, &d);
 	i2c.addr = d;
